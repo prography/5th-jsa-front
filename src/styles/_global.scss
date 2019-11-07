@@ -12,3 +12,33 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+
+
+// padding & margin
+.no-padding {
+  padding: 0 !important;
+}
+
+.no-margin {
+  margin: 0 !important;
+}
+
+$list-direction: (
+  "t": "top",
+  "r": "right",
+  "b": "bottom",
+  "l": "left",
+);
+$list-size: 0 1 2 3 4 5;
+
+@each $direction-short, $direction in $list-direction {
+  @each $size in $list-size {
+    .p#{$direction-short}-#{$size} {
+      padding-#{$direction}: #{$size}rem !important;
+    }
+    .m#{$direction-short}-#{$size} {
+      margin-#{$direction}: #{$size}rem !important;
+    }
+  }
+}

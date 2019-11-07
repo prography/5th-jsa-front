@@ -7,3 +7,4 @@ export { default as SelectPage } from './SelectPage';
 export { default as SelectPageToppingList } from './SelectPageToppingList';
 export { default as MyPage } from './MyPage';
 export { default as EventList } from './EventList';
+export { default as Footer } from './Footer';
