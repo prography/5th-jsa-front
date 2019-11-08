@@ -50,6 +50,10 @@ const NavButton = styled.div`
     .h, .x{
       margin-top: 27%;
     }
+    &: hover{
+      box-shadow: 0 80px 0 0 rgba(0,0,0,0.25) inset;
+    }
+    transition: 0.125s all ease-in;
 `;
 const NavMenu = styled.div`
   .menus ul{
@@ -64,5 +68,9 @@ const NavMenu = styled.div`
     .menus a{
       text-decoration: none;
       color: #EDE6D1;
+      &: hover{
+        text-decoration: underline;
+      }
+      transition: 0.125s all ease-in;
     }
 `;
