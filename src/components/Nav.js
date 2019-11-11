@@ -51,10 +51,8 @@ const NavStyle = styled.div`
   .NavButton {
     width: 46px;
     height: 46px;
-    background-color: ${props => {
-      if (props.open) return "rgba(150,150,150, 0.7)";
-      else return "rgba(183,183,183, 0.7)";
-    }};
+    background-color: ${props =>
+      props.open ? "rgba(150,150,150, 0.7)" : "rgba(183,183,183, 0.7)"};
     border-radius: 50%;
     cursor: pointer;
     text-align: center;
