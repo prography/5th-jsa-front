@@ -2,20 +2,20 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-import btn from 'img/landing/btn.png';
-import tomato from 'img/landing/tomato.png';
+import button from 'img/landing/button.png';
+import sauce from 'img/landing/sauce.png';
 
 export default function Landing() {
   return (
     <LandingStyle>
       <div className="content">
-        <img src={tomato} alt="tomato" className="tomato" />
+        <img src={sauce} alt="sauce" className="sauce" />
         <div className="main">토핑만<br />고르세요</div>
         <div className="sub">좋아하는 토핑을 골라 도우에 올려놓으세요.<br />선택한 토핑에 맞는 피자를 보여드립니다 </div>
         <Link to="selectTopping">
           <div className="btnWrapper">
-            <img src={btn} alt="start button" />
-            <div className="text">START</div>
+            <img src={button} alt="start button" />
+            {/* <div className="text">START</div> */}
           </div>
         </Link>
 
@@ -34,7 +34,7 @@ const LandingStyle = styled.div`
   justify-content: center;
   align-items: center;
   position: relative;
-  .tomato{
+  .sauce{
     width: 100%;
     position: absolute;
     top: 0;

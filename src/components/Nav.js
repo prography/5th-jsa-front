@@ -1,76 +1,87 @@
-import React, { useState } from 'react';
-import styled, { css } from 'styled-components';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import styled from "styled-components";
+import { Link } from "react-router-dom";
 
-import h from 'img/nav/h.png';
-import x from 'img/nav/x.png';
+import h from "img/nav/h.png";
+import x from "img/nav/x.png";
 
 export default function Nav() {
   const [open, setOpen] = useState(false);
-  const onToggle = () => setOpen(!open);
   return (
     <NavStyle>
-      <NavButton onClick={onToggle} open={open}> 
-        {!open ? <img src={h} alt="menu button" className="h"></img> : <img src={x} alt="menu button" className="x"></img>}
-      </NavButton>
-      <NavMenu>
-          {open && (
-              <div className="menus">
-                <ul>
-                  <li><Link to="LogIn">로그인</Link></li>&nbsp;&nbsp;
-                  <li><Link to="EventList">이벤트페이지</Link></li>
-                </ul>
-              </div>    
-            )}
-        </NavMenu>
+      <div className="NavButton" onClick={() => setOpen(!open)} open={open}>
+        {!open ? (
+          <img src={h} alt="menu button" className="h" />
+        ) : (
+          <img src={x} alt="menu button" className="x" />
+        )}
+      </div>
+      <div className="NavMenu">
+        {open && (
+          <div className="menus">
+            <ul>
+              <li>
+                <Link to="MyPage">마이페이지</Link>
+              </li>
+              &nbsp;
+              <li>
+                <Link to="EventList">이벤트페이지</Link>
+              </li>
+              &nbsp;
+              <li>
+                <Link to="EventList">팀원소개</Link>
+              </li>
+            </ul>
+          </div>
+        )}
+      </div>
     </NavStyle>
-
   );
 }
 const NavStyle = styled.div`
-    background: #9F6B36;
-    opacity: 0.8;
-    display: flex;
-    flex-direction: row-reverse;
-    position: absolute;
-    right: 30px;
-    top: 20px;
-    align-content: center;
-    align-items: center;
-    border-radius: 20px 20px;
-    
-`;
-const NavButton = styled.div`
-    width: 40px;
-    height: 40px;
-    background: #714317;
+  background-color: rgba(183, 183, 183, 0.7);
+  display: flex;
+  flex-direction: row-reverse;
+  position: absolute;
+  right: 30px;
+  top: 22px;
+  align-content: center;
+  align-items: center;
+  border-radius: 23px 23px;
+  .NavButton {
+    width: 46px;
+    height: 46px;
+    background-color: ${props =>
+      props.open ? "rgba(150,150,150, 0.7)" : "rgba(183,183,183, 0.7)"};
     border-radius: 50%;
     cursor: pointer;
     text-align: center;
-    .h, .x{
-      margin-top: 27%;
+    .h,
+    .x {
+      margin-top: 30%;
     }
-    &: hover{
-      box-shadow: 0 80px 0 0 rgba(0,0,0,0.25) inset;
+    &: hover {
+      box-shadow: 0 80px 0 0 rgba(0, 0, 0, 0.25) inset;
     }
-    transition: 0.125s all ease-in;
-`;
-const NavMenu = styled.div`
-  .menus ul{
+  }
+  .NavMenu {
+    .menus ul {
       list-style: none;
-      margin: 0 10px 0 15px;
+      margin: 0 10px 0 30px;
       padding: 0;
     }
-    .menus li{
-      margin:0;
+    .menus li {
+      margin: 0;
       display: inline;
     }
-    .menus a{
+    .menus a {
       text-decoration: none;
-      color: #EDE6D1;
-      &: hover{
-        text-decoration: underline;
+      color: #fff;
+      &: hover {
+        font-weight: bold;
       }
-      transition: 0.125s all ease-in;
+
+      font-size: 15px;
     }
+  }
 `;
