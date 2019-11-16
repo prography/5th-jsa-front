@@ -1,20 +1,19 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import { Link } from "react-router-dom";
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
-import h from "img/nav/h.png";
-import x from "img/nav/x.png";
+import h from 'img/nav/h.png';
+import x from 'img/nav/x.png';
 
 export default function Nav() {
   const [open, setOpen] = useState(false);
   return (
-    <NavStyle>
+    <NavStyle open={open}>
+      {/* styled-component로 props 값을 전달하려면 이렇게 넣어줘야해! styled-component에서 open 값을 못 읽구 있길래 추가해쏘 */}
       <div className="NavButton" onClick={() => setOpen(!open)} open={open}>
-        {!open ? (
-          <img src={h} alt="menu button" className="h" />
-        ) : (
-          <img src={x} alt="menu button" className="x" />
-        )}
+        {!open
+          ? <i className="material-icons">menu</i>
+          : <i className="material-icons">close</i>}
       </div>
       <div className="NavMenu">
         {open && (
@@ -39,7 +38,7 @@ export default function Nav() {
   );
 }
 const NavStyle = styled.div`
-  background-color: rgba(183, 183, 183, 0.7);
+  background-color: rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: row-reverse;
   position: absolute;
@@ -49,19 +48,20 @@ const NavStyle = styled.div`
   align-items: center;
   border-radius: 23px 23px;
   .NavButton {
-    width: 46px;
-    height: 46px;
-    background-color: ${props =>
-      props.open ? "rgba(150,150,150, 0.7)" : "rgba(183,183,183, 0.7)"};
+    width: 41px;
+    height: 41px;
+    user-select: none;
+    background-color: ${(props) => (props.open ? 'rgba(0,0,0,0.2)' : 'rgba(0,0,0,0)')};
     border-radius: 50%;
-    cursor: pointer;
-    text-align: center;
-    .h,
-    .x {
-      margin-top: 30%;
+    transition: 0.2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    i{
+      color: white;
     }
-    &: hover {
-      box-shadow: 0 80px 0 0 rgba(0, 0, 0, 0.25) inset;
+    &:hover {
+      background-color: ${(props) => (props.open ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,0.1)')}
     }
   }
   .NavMenu {
@@ -77,11 +77,12 @@ const NavStyle = styled.div`
     .menus a {
       text-decoration: none;
       color: #fff;
-      &: hover {
+      margin-right: 10px;
+      font-size: 13px;
+      transition: 0.2s;
+      &:hover {
         font-weight: bold;
       }
-
-      font-size: 15px;
     }
   }
 `;
