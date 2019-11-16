@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import { Link } from "react-router-dom";
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
-import h from "img/nav/h.png";
-import x from "img/nav/x.png";
+import h from 'img/nav/h.png';
+import x from 'img/nav/x.png';
 
 export default function Nav() {
   const [open, setOpen] = useState(false);
@@ -39,7 +39,7 @@ export default function Nav() {
   );
 }
 const NavStyle = styled.div`
-  background-color: rgba(183, 183, 183, 0.7);
+  background-color: rgba(183, 183, 183, 0.2);
   display: flex;
   flex-direction: row-reverse;
   position: absolute;
@@ -51,8 +51,8 @@ const NavStyle = styled.div`
   .NavButton {
     width: 46px;
     height: 46px;
-    background-color: ${props =>
-      props.open ? "rgba(150,150,150, 0.7)" : "rgba(183,183,183, 0.7)"};
+    background-color: ${(props) =>
+    (props.open ? "rgba(150,150,150, 0.2)" : "rgba(183,183,183, 0.2)")};
     border-radius: 50%;
     cursor: pointer;
     text-align: center;
