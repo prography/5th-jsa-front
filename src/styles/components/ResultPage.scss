@@ -7,13 +7,13 @@
   // background-image url로 불러오는건, styled-component로 안되서 scss파일 만드어서 여기서 넣엇다
   background-image: url("../../img/detail/bg.png");
   overflow: hidden;
-
+  padding-top: 100px;
   a{
     &.ResultsPageHeaderStyle{
       background-color: rgba(0,0,0,0.3);
       font-size: 14px;
       font-weight: bold;
-      padding: 12px 32px;
+      padding: 9px 32px 9px 21px;
       position: absolute;
       top: 22px;
       left: 31px;
@@ -21,11 +21,13 @@
       transition: 0.2s;
       color: white !important;
       text-decoration: none !important;
+      display: flex;
+      align-items: center;
       &:hover{
         background-color: rgba(0,0,0,0.4);
       }
-      span{
-        margin-right: 32px;
+      i{
+        margin-right: 16px;
       }
     }
   }

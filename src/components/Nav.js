@@ -2,9 +2,6 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-import h from 'img/nav/h.png';
-import x from 'img/nav/x.png';
-
 export default function Nav() {
   const [open, setOpen] = useState(false);
   return (
