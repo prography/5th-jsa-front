@@ -10,7 +10,7 @@ import chatIcon from 'img/detail/chat-icon.png';
 
 export default function ResultsPageDetail() {
   return (
-    <DetailBackgroundStyle>
+    <DetailBackgroundStyle className="scale-up">
       <div className="layout">
         <DetailContentStyle>
           <div className="detail-header">
@@ -18,33 +18,35 @@ export default function ResultsPageDetail() {
             <div className="explain">
               <div className="typo-b3">존스페이버릿</div>
               <div className="iconWrapper">
-                <div onClick={() => console.log(2)} className="icon">
+                <div onClick={() => console.log(2)} className="icon flex">
                   <img src={emptyHeartIcon} alt="hearticon" />
                 </div>
                 <span>312</span>
-                <div onClick={() => console.log(2)} className="icon">
+                <div onClick={() => console.log(2)} className="icon flex">
                   <img src={shareIcon} alt="shareIcon" />
                 </div>
                 <span>312</span>
               </div>
               <table>
-                <tr>
-                  <td>브랜드</td>
-                  {/* 브랜드 누르면 이동 시키나요? */}
-                  <td>파파존스</td>
-                </tr>
-                <tr>
-                  <td>칼로리</td>
-                  <td>13,000kcal</td>
-                </tr>
-                <tr>
-                  <td>가격</td>
-                  <td>15,000원</td>
-                </tr>
-                <tr>
-                  <td>세부토핑</td>
-                  <td>어떤 세부 토핑들이 있겟지? 자세한건 잘 모루겟다 허허</td>
-                </tr>
+                <tbody>
+                  <tr>
+                    <td>브랜드</td>
+                    {/* 브랜드 누르면 이동 시키나요? */}
+                    <td>파파존스</td>
+                  </tr>
+                  <tr>
+                    <td>칼로리</td>
+                    <td>13,000kcal</td>
+                  </tr>
+                  <tr>
+                    <td>가격</td>
+                    <td>15,000원</td>
+                  </tr>
+                  <tr>
+                    <td>세부토핑</td>
+                    <td>어떤 세부 토핑들이 있겟지? 자세한건 잘 모루겟다 허허</td>
+                  </tr>
+                </tbody>
               </table>
             </div>
           </div>
@@ -59,7 +61,7 @@ export default function ResultsPageDetail() {
           </div>
           <div className="detail-chat">
             <div className="chat-header">
-              <div><img src={chatIcon} alt="chaticon" width="24px" /></div>
+              <div className="flex"><img src={chatIcon} alt="chaticon" width="24px" /></div>
               <span className="typo-s1">312</span>
             </div>
             {/* 댓글 작성하는 곳 */}
@@ -160,9 +162,11 @@ const DetailContentStyle = styled.div`
     .chat-header{
       display: flex;
       align-items: center;
+      margin-bottom: 10px;
       span{
         margin-left: 8px;
       }
+
     }
     /* 댓글 작성 */
     .chat-input{

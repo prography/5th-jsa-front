@@ -1,0 +1,50 @@
+.scale-up{
+  animation: scale-up 0.2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+}
+.scale-up-tr {
+  animation: scale-up-tr 0.2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+}
+.scale-up-hor-right {
+  animation: scale-up-hor-right 0.15s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+}
+
+@keyframes scale-up {
+  0% {
+    transform: scale(0.98);
+    transform-origin: 50% 50%;
+  }
+  50% {
+    transform: scale(1.005);
+    transform-origin: 50% 50%;
+  }
+  100% {
+    transform: scale(1);
+    transform-origin: 50% 50%;
+  }
+}
+
+@keyframes scale-up-tr {
+  0% {
+    transform: scale(0.8);
+    transform-origin: 100% 0%;
+  }
+  50% {
+    transform: scale(1.05);
+    transform-origin: 100% 0%;
+  }
+  100% {
+    transform: scale(1);
+    transform-origin: 100% 0%;
+  }
+}
+
+@keyframes scale-up-hor-right {
+  0% {
+    transform: scaleX(0.4);
+    transform-origin: 100% 100%;
+  }
+  100% {
+    transform: scaleX(1);
+    transform-origin: 100% 100%;
+  }
+}

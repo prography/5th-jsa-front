@@ -11,21 +11,37 @@ import chatIcon from 'img/detail/chat-icon.png';
 export default function ResultsPageList() {
   const [openFilter, setOpenFilter] = useState(false);
   const [openSorting, setOpenSorting] = useState(false);
+  // 처음에 페이지 들어오면, 리스트가 조금 신기하게 나와야 한다. 하나씩 촤라락 애니메이션 속도를 각각 지정해줘야 할거같아
+
   return (
     <ResultsPageListStyle>
       <header>
         <div>총 00개</div>
         <div className="sortingWrapper">
           {/* 이걸 누르면, 메뉴가 열린다. */}
-          <Menu type="filter" openFilter={openFilter} closeFilter={() => setOpenFilter(false)}>
-            <span onClick={() => setOpenFilter(true)} className="filter">브랜드</span>
+          <Menu
+            type="filter"
+            openFilter={openFilter}
+            closeFilter={() => setOpenFilter(false)}
+          >
+            <span
+              onClick={() => { setOpenFilter(true); setOpenSorting(false); }}
+              className="filter"
+            >브랜드
+            </span>
           </Menu>
-          {openFilter && <MenuBack onClick={() => setOpenFilter(false)} />}
-          <Menu type="sorting" openSorting={openSorting} closeSorting={() => setOpenSorting(false)}>
-            <span onClick={() => setOpenSorting(true)}>정렬</span>
+          <Menu
+            type="sorting"
+            openSorting={openSorting}
+            closeSorting={() => setOpenSorting(false)}
+          >
+            <span
+              onClick={() => { setOpenFilter(false); setOpenSorting(true); }}
+            >정렬
+            </span>
           </Menu>
-          {openSorting && <MenuBack onClick={() => setOpenSorting(false)} />}
-
+          {/* 메뉴밖을 클릭하면 메뉴가 닫힙 */}
+          {(openSorting || openFilter) && <MenuBack onClick={() => { setOpenFilter(false); setOpenSorting(false); }} />}
         </div>
       </header>
       <body>
@@ -92,7 +108,7 @@ const ResultsPageListStyle = styled.div`
     height: calc(100% - 32px);
     .listBg{
       width: 484px;
-      box-shadow: 5px 10px 30px 0 rgba(0, 0, 0, 0.3);
+      /* box-shadow: 5px 10px 30px 0 rgba(0, 0, 0, 0.3); */
       margin-bottom: 16px;
     }
     .elementStyle{
@@ -156,7 +172,7 @@ const ResultsPageListStyle = styled.div`
 
 const MenuBack = styled.div`
   position: fixed;
-  background-color: rgba(0,0,0,0.2);
+  /* background-color: rgba(0,0,0,0.2); */
   top: 0;
   left: 0;
   width: 100%;

@@ -50,6 +50,15 @@ $list-size: 0 1 2 3 4 5;
 .absolute{
   position: absolute;
 }
+.flex{
+  display: flex;
+}
+.inline-block{
+  display: inline-block;
+}
+.block{
+  display: block;
+}
 .bold{
   font-weight: 700;
 }
