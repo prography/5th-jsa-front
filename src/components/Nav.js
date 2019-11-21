@@ -14,20 +14,11 @@ export default function Nav() {
       </div>
       <div className="NavMenu">
         {open && (
-          <div className="menus">
-            <ul>
-              <li>
-                <Link to="MyPage">마이페이지</Link>
-              </li>
-              &nbsp;
-              <li>
-                <Link to="EventList">이벤트페이지</Link>
-              </li>
-              &nbsp;
-              <li>
-                <Link to="EventList">팀원소개</Link>
-              </li>
-            </ul>
+          <div className="menus scale-up-hor-right">
+            <Link to="/">홈</Link>
+            <Link to="MyPage">마이페이지</Link>
+            <Link to="EventList">이벤트페이지</Link>
+            <Link to="EventList">팀원소개</Link>
           </div>
         )}
       </div>
@@ -44,6 +35,7 @@ const NavStyle = styled.div`
   align-content: center;
   align-items: center;
   border-radius: 23px 23px;
+  z-index: 3;
   .NavButton {
     width: 41px;
     height: 41px;
@@ -62,14 +54,9 @@ const NavStyle = styled.div`
     }
   }
   .NavMenu {
-    .menus ul {
-      list-style: none;
-      margin: 0 10px 0 30px;
-      padding: 0;
-    }
-    .menus li {
-      margin: 0;
-      display: inline;
+    .menus{
+      margin: 0 10px 0 34px;
+      display: flex;
     }
     .menus a {
       text-decoration: none;
