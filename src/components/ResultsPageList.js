@@ -1,72 +1,67 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import { Menu } from 'components';
-
 import listBg from 'img/detail/list-bg.png';
 import heartIcon from 'img/detail/heart-icon.png';
 import shareIcon from 'img/detail/share-icon.png';
 import chatIcon from 'img/detail/chat-icon.png';
+import pizzahut from 'img/detail/pizzahut.png';
+import avolo from 'img/detail/avolo.png';
+import pizzaschool from 'img/detail/pizzaschool.png';
+import papajones from 'img/detail/papajones.png';
+import domino from 'img/detail/domino.png';
+import mrpizza from 'img/detail/mrpizza.png';
 
-export default function ResultsPageList() {
-  const [openFilter, setOpenFilter] = useState(false);
-  const [openSorting, setOpenSorting] = useState(false);
-  // 처음에 페이지 들어오면, 리스트가 조금 신기하게 나와야 한다. 하나씩 촤라락 애니메이션 속도를 각각 지정해줘야 할거같아
+const logo = [
+  { name: 'pizzahut', value: pizzahut },
+  { name: 'avolo', value: avolo },
+  { name: 'pizzaschool', value: pizzaschool },
+  { name: 'papajones', value: papajones },
+  { name: 'domino', value: domino },
+  { name: 'mrpizza', value: mrpizza },
+];
+const sorting = [
+  { name: '높은칼로리순', value: '높은칼로리순' },
+  { name: '낮은칼로리순', value: '낮은칼로리순' },
+  { name: '높은가격순', value: '높은가격순' },
+  { name: '낮은가격순', value: '낮은가격순' },
+  { name: '좋아요순', value: '좋아요순' },
+  { name: '댓글수순', value: '댓글수순' },
+];
 
+export default function ResultsPageList({ handleFilter, OpenDetail, resultList }) {
   return (
     <ResultsPageListStyle>
       <header>
         <div>총 00개</div>
         <div className="sortingWrapper">
-          {/* 이걸 누르면, 메뉴가 열린다. */}
-          <Menu
-            type="filter"
-            openFilter={openFilter}
-            closeFilter={() => setOpenFilter(false)}
-          >
-            <span
-              onClick={() => { setOpenFilter(true); setOpenSorting(false); }}
-              className="filter"
-            >브랜드
-            </span>
-          </Menu>
-          <Menu
-            type="sorting"
-            openSorting={openSorting}
-            closeSorting={() => setOpenSorting(false)}
-          >
-            <span
-              onClick={() => { setOpenFilter(false); setOpenSorting(true); }}
-            >정렬
-            </span>
-          </Menu>
-          {/* 메뉴밖을 클릭하면 메뉴가 닫힙 */}
-          {(openSorting || openFilter) && <MenuBack onClick={() => { setOpenFilter(false); setOpenSorting(false); }} />}
+          <Menu handleFilter={handleFilter} />
         </div>
       </header>
       <body>
         {/* 데이터 받아오면 index말고 val.id값으로 바꿔서 경고 없애주자 */}
-        {[...Array(10)].map((val, i) => (
-          <div className="elementStyle" key={i}>
+        {resultList.pizzas.map((val, i) => (
+          <div className="elementStyle" key={i} onClick={OpenDetail}>
             <div className="element">
-              <div className="element-img" />
+              {/* <div className="element-img" /> */}
+              <img src={val.image} alt="pizza" className="element-img" />
               <div className="element-content">
                 <div className="title">
-                  <span>No 1. </span>
-                  파파존스 존스페이버릿파ㅇㅇ
+                  <span>No {i + 1}. </span>
+                  {val.name}
                 </div>
                 <div className="explain">
-                  <div><span>브랜드</span>파파존스</div>
-                  <div><span>칼로리</span>15500kcal</div>
-                  <div><span>가격</span>15000원</div>
+                  <div><span>브랜드</span>{val.brand}</div>
+                  <div><span>칼로리</span>{val.m_cal} kcal</div>
+                  <div><span>가격</span>{val.m_price} 원</div>
                 </div>
                 <div className="iconWrapper">
                   <img src={heartIcon} alt="heart" />
-                  <span>312</span>
+                  <span className="typo-s2">00</span>
                   <img src={shareIcon} alt="share" />
-                  <span>10</span>
+                  <span className="typo-s2">00</span>
                   <img src={chatIcon} alt="chat" />
-                  <span>8</span>
+                  <span className="typo-s2">00</span>
                 </div>
               </div>
             </div>
@@ -78,9 +73,49 @@ export default function ResultsPageList() {
   );
 }
 
+function Menu({ handleFilter }) {
+  const [openFilter, setOpenFilter] = useState(false);
+  const [openSorting, setOpenSorting] = useState(false);
+  return (
+    <>
+      <span
+        onClick={() => { setOpenFilter(true); setOpenSorting(false); }}
+        style={{ borderRight: '1px solid white' }}
+        className="mr-1 pr-1"
+      >브랜드
+      </span>
+      <span
+        onClick={() => { setOpenFilter(false); setOpenSorting(true); }}
+      >정렬
+      </span>
+      {(openSorting || openFilter)
+        && <MenuBack onClick={() => { setOpenFilter(false); setOpenSorting(false); }} />}
+      <MenuStyle>
+        {openFilter && (
+          <div className="wrapper wrapper-filter scale-up-tr pointer">
+            {logo.map((val, i) => (
+              <div onClick={() => { handleFilter('filter', val.name); setOpenFilter(false); }} className="imgWrapper" key={i}>
+                <img src={val.value} alt={val.name} />
+              </div>
+            ))}
+          </div>
+        )}
+        {openSorting && (
+          <div className="wrapper wrapper-sorting scale-up-tr pointer">
+            {sorting.map((val) => (
+              <div onClick={() => { handleFilter('sorting', val.name); setOpenSorting(false); }}>{val.name}</div>
+            ))}
+          </div>
+        )}
+      </MenuStyle>
+    </>
+  );
+}
+
 const ResultsPageListStyle = styled.div`
   margin-right: 30px;
   width: 500px;
+  height: 100%;
   header{
     color: white;
     display: flex;
@@ -104,16 +139,16 @@ const ResultsPageListStyle = styled.div`
     }
   }
   body{
-    overflow: auto;
     height: calc(100% - 32px);
+    overflow: auto;
     .listBg{
       width: 484px;
-      /* box-shadow: 5px 10px 30px 0 rgba(0, 0, 0, 0.3); */
       margin-bottom: 16px;
     }
     .elementStyle{
       position: relative;
       color: black;
+      cursor: pointer;
       .element{
         position: absolute;
         width: 484px;
@@ -164,6 +199,69 @@ const ResultsPageListStyle = styled.div`
               margin-right: 16px;
             }
           }
+        }
+      }
+    }
+  }
+`;
+
+
+const MenuStyle = styled.div`
+  display: inline-block;
+  position: relative;
+  z-index: 11;
+  user-select: none;
+  .wrapper{
+    position: absolute;
+    top: 20px;
+    right: 0;
+    background-color: white;
+    box-shadow: 10px 20px 30px 0 rgba(0,0,0,0.2);
+    color: red;
+    &.wrapper-filter{
+      display: flex;
+      padding: 13px 32px;
+      border-radius: 100px 0 100px 100px;
+      margin-right: 3rem;
+      .imgWrapper{
+        width: 48px;
+        height: 48px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 100px;
+        border: 1px dashed #efefef;
+        margin-right: 5px;
+        transition: 0.2s;
+        &:last-child{
+          margin-right: 0;
+        }
+        &:hover{
+          background-color: #f9f9f9;
+        }
+        img{
+          width: 40px;
+          transition: 0.1s ease;
+          &:hover{
+            width: 48px;
+          }
+        }
+      }
+    }
+    &.wrapper-sorting{
+      padding: 10px 0;
+      border-radius: 10px 0 10px 10px;
+      width: 150px;
+      color: #444;
+      div{
+        border-top: 1px solid #f2f2f2;
+        padding: 8px 0 8px 24px;
+        transition: 0.2s;
+        &:last-child{
+          border-bottom: 1px solid #f2f2f2;
+        }
+        &:hover{
+          background-color: #f2f2f2;
         }
       }
     }

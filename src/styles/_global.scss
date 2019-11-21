@@ -44,6 +44,10 @@ $list-size: 0 1 2 3 4 5;
   }
 }
 
+.pointer{
+  cursor: pointer;
+}
+
 .relative{
   position: relative;
 }
@@ -117,10 +121,6 @@ $list-size: 0 1 2 3 4 5;
   }
   ::-webkit-scrollbar-button:end {
     background-color: orange; /* Bottom, Right 방향의 이동버튼 */
-  }
-  ::-webkit-scrollbar-button:vertical:increment {
-  }
-  ::-webkit-scrollbar-button:vertical:decrement {
   }
   ::-webkit-scrollbar-corner {
     background-color: #f2f2f2; /* 우측 하단의 코너 부분 */

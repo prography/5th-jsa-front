@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 // import detailBg from 'img/detail/detail-bg.png';
@@ -8,7 +8,8 @@ import heartIcon from 'img/detail/heart-icon.png';
 import shareIcon from 'img/detail/share-icon.png';
 import chatIcon from 'img/detail/chat-icon.png';
 
-export default function ResultsPageDetail() {
+export default function ResultsPageDetail({ handleFavorite }) {
+  const [favorite, setFavorite] = useState(true);
   return (
     <DetailBackgroundStyle className="scale-up">
       <div className="layout">
@@ -18,8 +19,11 @@ export default function ResultsPageDetail() {
             <div className="explain">
               <div className="typo-b3">존스페이버릿</div>
               <div className="iconWrapper">
-                <div onClick={() => console.log(2)} className="icon flex">
-                  <img src={emptyHeartIcon} alt="hearticon" />
+                {/* 클릭하면 붉은색 */}
+                <div onClick={() => { handleFavorite(favorite, '피자아이디'); setFavorite(!favorite); }} className="icon flex">
+                  {favorite
+                    ? <img src={emptyHeartIcon} alt="hearticon" className="flip-vertical-right" />
+                    : <img src={heartIcon} alt="hearticon" className="flip-vertical-left" />}
                 </div>
                 <span>312</span>
                 <div onClick={() => console.log(2)} className="icon flex">
