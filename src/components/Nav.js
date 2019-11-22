@@ -25,6 +25,7 @@ export default function Nav() {
     </NavStyle>
   );
 }
+
 const NavStyle = styled.div`
   background-color: rgba(0, 0, 0, 0.3);
   display: flex;
