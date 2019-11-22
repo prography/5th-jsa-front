@@ -13,7 +13,7 @@ export default function Footer() {
 
 const FooterStyle = styled.div`
   position: relative;
-  footer{
+  footer {
     position: absolute;
     bottom: 0;
     left: 0;

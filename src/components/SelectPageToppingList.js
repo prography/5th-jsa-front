@@ -1,123 +1,90 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import expand from "img/select/expand.png";
-import contract from "img/select/contract.png";
-import dough from "img/select/dough.png";
-import large_steak from "img/sample/large_steak.png";
-import steak from "img/sample/steak.png";
-import { useDrag, useDrop } from "react-dnd";
-import itemTypes from "../constants/itemTypes";
+import React, { useState, useEffect, useCallback } from 'react';
+import styled from 'styled-components';
+import expand from 'img/select/expand.png';
+import contract from 'img/select/contract.png';
+import expanddown from 'img/select/expanddown.png';
+import expandup from 'img/select/expandup.png';
+import large_steak from 'img/sample/large_steak.png';
 
-export default function SelectPageToppingList() {
-  const [open, setOpen] = useState(true);
-  const [{ isDragging }, drag] = useDrag({
-    item: { type: itemTypes.IMAGE_small },
-    collect: monitor => ({
-      isDragging: !!monitor.isDragging()
-    })
-  });
-  const [{ canDrop, isOver }, drop] = useDrop({
-    accept: itemTypes.IMAGE_small,
-    drop: () => ({ name: "dough" }),
-    collect: monitor => ({
-      isOver: monitor.isOver(),
-      isOverCurrent: monitor.isOver({ shallow: true })
-    })
-  });
+import axios from 'axios';
+
+export default function SelectPageToppingList({ toppingType, j }) {
+  // api 연동
+
+  const [smallToppings, setSmallToppings] = useState({ toppings: [] });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchToppings = async () => {
+      try {
+        setError(null);
+        setSmallToppings({ toppings: [] });
+        setLoading(true);
+        const response = await axios.get(
+          'http://13.209.50.101:3000/pizzas/toppings',
+        );
+        setSmallToppings(response.data);
+      } catch (e) {
+        setError(e);
+      }
+      setLoading(false);
+    };
+
+    fetchToppings();
+  }, []);
+
+  const mappingSmallToppings = Object.values(smallToppings);
+
+  // 토핑 리스트 열고닫기
+  const [visible, setVisible] = useState(false);
 
   return (
-    <SelectTopping>
-      <div className="topping-small-container">
-        {open && (
-          <div className="topping-box">
-            <div className="topping-flavor">맛(4)</div>
-            <div className="topping-cheese">치즈(19)</div>
-            <div className="topping-meat">
-              고기(8)
-              <img
-                src={steak}
-                ref={drag}
-                style={{
-                  opacity: isDragging ? 0.5 : 1,
-                  cursor: "move"
-                }}
-              />
-              <img src={steak} />
-              <img src={steak} />
-              <img src={steak} />
-              <img src={steak} />
-              <img src={steak} />
-            </div>
-            <div className="topping-seafood">해산물(5)</div>
-            <div className="topping-vegetable">야채(16)</div>
-
-            <div className="topping-etc">기타(7)</div>
+    <SelectTopping
+      visible={visible}
+      onClick={() => {
+        setVisible(!visible);
+      }}
+    >
+      {toppingType}
+      {visible ? (
+        <>
+          <img src={expandup} className="expandUpDown"></img>
+          <div className="topping-small-list">
+            {mappingSmallToppings[j].map(topping => (
+              <div key={topping._id} className="topping-small">
+                <img
+                  src={topping.image}
+                  draggable
+                  className={topping.name}
+                ></img>
+                <div className="topping-small-name">{topping.name}</div>
+              </div>
+            ))}
           </div>
-        )}
-        <div
-          className="expand-topping"
-          onClick={() => setOpen(!open)}
-          open={open}
-        >
-          {!open ? (
-            <img src={contract} className="contract" alt="contract" />
-          ) : (
-            <img src={expand} className="expand" alt="expand" />
-          )}
-        </div>
-      </div>
-      <div className="topping-big-container">
-        <img src={dough} className="dough" alt="dough" ref={drop} />
-        <div className="topping-big">
-          <img src={large_steak} className="large_steak" />
-        </div>
-      </div>
+        </>
+      ) : (
+        <>
+          <img src={expanddown} className="expandUpDown"></img>
+        </>
+      )}
     </SelectTopping>
   );
 }
 
 const SelectTopping = styled.div`
-  .topping-small-container {
-    display: flex;
-    align-items: center;
-    width: 456px;
-    height: 100vh;
+  cursor: pointer;
+  width: 360px;
+  margin-left: 16px;
+  margin-top: 29px;
+  .expandUpDown {
+    width: 5%;
+    height: 5%;
+    margin-left: 5px;
+    z-index: 1;
+    display: inline;
   }
-  .dough {
-    width: 75%;
-    height: 58%;
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    z-index: -4000;
-  }
-  .topping-box {
-    width: 396px;
-    height: 100vh;
-    background: rgba(51, 34, 28, 0.9);
-    overflow: hidden;
-    color: #fff;
-  }
-  .expand-topping {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    overflow: hidden;
-    right: 30px;
-    position: relative;
-    background: rgba(51, 34, 28, 0.6);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    curser: pointer;
-  }
-  .expand,
-  .contract {
-    width: 20%;
-    height: 30%;
-    position: relative;
-    left: 10px;
-  }
+
   .large_steak {
     width: 75%;
     height: 58%;
@@ -125,5 +92,34 @@ const SelectTopping = styled.div`
     right: 0;
     bottom: 0;
     z-index: -3000;
+  }
+  .topping-small-list {
+    z-index: 1;
+    margin-top: 22px;
+  }
+  .topping-small {
+    flex-direction: column;
+    display: inline-flex;
+    flex-wrap: wrap;
+    width: 60px;
+    margin: 0;
+    text-align: center;
+    align-content: center;
+    margin-right: 8px;
+    margin-bottom: 29px;
+  }
+  .topping-small img {
+    cursor: move;
+    width: 45px;
+    height: 45px;
+    border: 0.3px solid black;
+    padding: 4.5px;
+    border-radius: 50%;
+    margin-bottom: 3px;
+  }
+  .topping-small-name {
+    font-size: 10px;
+    color: #fff;
+    justify-content: center;
   }
 `;

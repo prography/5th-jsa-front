@@ -38,6 +38,7 @@ export default function Nav() {
     </NavStyle>
   );
 }
+
 const NavStyle = styled.div`
   background-color: rgba(183, 183, 183, 0.2);
   display: flex;
@@ -51,8 +52,8 @@ const NavStyle = styled.div`
   .NavButton {
     width: 46px;
     height: 46px;
-    background-color: ${(props) =>
-    (props.open ? "rgba(150,150,150, 0.2)" : "rgba(183,183,183, 0.2)")};
+    background-color: ${props =>
+      props.open ? 'rgba(150,150,150, 0.2)' : 'rgba(183,183,183, 0.2)'};
     border-radius: 50%;
     cursor: pointer;
     text-align: center;
