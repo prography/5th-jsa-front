@@ -8,4 +8,3 @@ export { default as SelectPageToppingList } from './SelectPageToppingList';
 export { default as MyPage } from './MyPage';
 export { default as EventList } from './EventList';
 export { default as Footer } from './Footer';
-export { default as Menu } from './Menu';
