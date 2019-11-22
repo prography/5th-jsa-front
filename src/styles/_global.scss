@@ -13,7 +13,9 @@ code {
     monospace;
 }
 
-
+div{
+  box-sizing: border-box;
+}
 
 // padding & margin
 .no-padding {
@@ -31,7 +33,6 @@ $list-direction: (
   "l": "left",
 );
 $list-size: 0 1 2 3 4 5;
-
 @each $direction-short, $direction in $list-direction {
   @each $size in $list-size {
     .p#{$direction-short}-#{$size} {
@@ -42,3 +43,88 @@ $list-size: 0 1 2 3 4 5;
     }
   }
 }
+
+.pointer{
+  cursor: pointer;
+}
+
+.relative{
+  position: relative;
+}
+.absolute{
+  position: absolute;
+}
+.flex{
+  display: flex;
+}
+.inline-block{
+  display: inline-block;
+}
+.block{
+  display: block;
+}
+.bold{
+  font-weight: 700;
+}
+.regular{
+  font-weight: 400;
+}
+.light{
+  font-weight: 300;
+}
+.thin{
+  font-weight: 100;
+}
+.typo-s3{
+  font-size: 10px;
+}
+.typo-s2{
+  font-size: 12px;
+}
+.typo-s1{
+  font-size: 14px;
+}
+.typo-b1{
+  font-size: 18px;
+}
+.typo-b2{
+  font-size: 20px;
+}
+.typo-b3{
+  font-size: 24px;
+}
+
+
+
+// scroll css
+  ::-webkit-scrollbar {
+    width: 10px;  /* 세로축 스크롤바 길이 */
+    height: 20px;  /* 가로축 스크롤바 길이 */
+  }
+  ::-webkit-scrollbar-track {
+    background-color: rgba(0,0,0,0);
+  }
+  ::-webkit-scrollbar-track-piece {
+    background-color: rgba(0,0,0,0);
+  }
+  ::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: rgba(0,0,0,0.3);
+  }
+  ::-webkit-scrollbar-button {
+    background-color: darkblue;
+    width: 20px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-button:start {
+    background-color: red; /* Top, Left 방향의 이동버튼 */
+  }
+  ::-webkit-scrollbar-button:end {
+    background-color: orange; /* Bottom, Right 방향의 이동버튼 */
+  }
+  ::-webkit-scrollbar-corner {
+    background-color: #f2f2f2; /* 우측 하단의 코너 부분 */
+  }
+  ::-webkit-resizer {
+    background-color: green;
+  }

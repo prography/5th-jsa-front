@@ -4,13 +4,12 @@ import { Link } from 'react-router-dom';
 import expand from 'img/select/expand.png';
 import contract from 'img/select/contract.png';
 import bg from 'img/select/bg.png';
-import SelectPageToppingList from './SelectPageToppingList';
 import dough from 'img/select/dough.png';
-import DropOnTheDough from './DropOnTheDough';
 import { DropTarget, useDrag, DragSource } from 'react-dnd';
-import ItemTypes from './ItemTypes';
 import { NativeTypes } from 'react-dnd-html5-backend';
-import SmallTopping from './SmallTopping';
+import SelectPageToppingList from './SelectPageToppingList';
+import DropOnTheDough from './DropOnTheDough';
+import ItemTypes from './ItemTypes';
 
 // 손 애니메이션 추가할 예정
 
@@ -52,7 +51,7 @@ export default function SelectPage() {
               />
               <SelectPageToppingList
                 toppingType="고기(11)"
-                visible={true}
+                visible
                 j={0}
               />
               <SelectPageToppingList
