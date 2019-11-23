@@ -1,0 +1,40 @@
+.ResultPage{
+  background-color: #be3827;
+  width: 100%;
+  height: 100vh;
+  background: top right #efefef no-repeat;
+  background-size: cover;
+  // background-image url로 불러오는건, styled-component로 안되서 scss파일 만드어서 여기서 넣엇다
+  background-image: url("../../img/detail/bg-nologo.png");
+  overflow: hidden;
+  padding-top: 100px;
+  .prographyLogo{
+    position: absolute;
+    bottom: 20px;
+    right: 10px;
+    width: 100px;
+  }
+  a{
+    &.ResultsPageHeaderStyle{
+      background-color: rgba(0,0,0,0.3);
+      font-size: 14px;
+      font-weight: bold;
+      padding: 9px 32px 9px 21px;
+      position: absolute;
+      top: 22px;
+      left: 31px;
+      border-radius: 100px;
+      transition: 0.2s;
+      color: white !important;
+      text-decoration: none !important;
+      display: flex;
+      align-items: center;
+      &:hover{
+        background-color: rgba(0,0,0,0.4);
+      }
+      i{
+        margin-right: 16px;
+      }
+    }
+  }
+}
