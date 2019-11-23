@@ -3,6 +3,7 @@ export { default as Nav } from './Nav';
 export { default as ResultPage } from './ResultPage';
 export { default as ResultsPageDetail } from './ResultsPageDetail';
 export { default as ResultsPageList } from './ResultsPageList';
+export { default as SelectTopping } from './SelectTopping';
 export { default as SelectPage } from './SelectPage';
 export { default as SelectPageToppingList } from './SelectPageToppingList';
 export { default as MyPage } from './MyPage';

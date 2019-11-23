@@ -16,7 +16,11 @@ export default function ResultPage({ handleFilter, handleFavorite, resultList })
         다시 고르러 가기
       </Link>
       <ResultsWrapperStyle>
-        <ResultsPageList handleFilter={handleFilter} OpenDetail={() => setOpenDetail(true)} resultList={resultList} />
+        <ResultsPageList
+          handleFilter={handleFilter}
+          OpenDetail={() => setOpenDetail(true)}
+          resultList={resultList}
+        />
         {/* 리스트에서 하나를 클릭하면 */}
         {openDetail && <ResultsPageDetail handleFavorite={handleFavorite} />}
       </ResultsWrapperStyle>
