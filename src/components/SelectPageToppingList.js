@@ -4,8 +4,6 @@ import expand from 'img/select/expand.png';
 import contract from 'img/select/contract.png';
 import expanddown from 'img/select/expanddown.png';
 import expandup from 'img/select/expandup.png';
-import large_steak from 'img/sample/large_steak.png';
-
 import axios from 'axios';
 
 export default function SelectPageToppingList({ toppingType, j }) {
@@ -40,23 +38,26 @@ export default function SelectPageToppingList({ toppingType, j }) {
   const [visible, setVisible] = useState(false);
 
   return (
-    <SelectTopping
-      visible={visible}
-      onClick={() => {
-        setVisible(!visible);
-      }}
-    >
-      {toppingType}
+    <SelectTopping visible={visible}>
       {visible ? (
         <>
-          <img src={expandup} className="expandUpDown"></img>
+          <div
+            onClick={() => {
+              setVisible(!visible);
+            }}
+          >
+            {toppingType}
+            <img src={expandup} className="expandUpDown"></img>
+          </div>
           <div className="topping-small-list">
             {mappingSmallToppings[j].map(topping => (
               <div key={topping._id} className="topping-small">
                 <img
                   src={topping.image}
-                  draggable
+                  draggable={true}
                   className={topping.name}
+                  onDragStart={e => dragStart_(e)}
+                  onDrag={e => drag_(e)}
                 ></img>
                 <div className="topping-small-name">{topping.name}</div>
               </div>
@@ -65,18 +66,40 @@ export default function SelectPageToppingList({ toppingType, j }) {
         </>
       ) : (
         <>
-          <img src={expanddown} className="expandUpDown"></img>
+          <div
+            onClick={() => {
+              setVisible(!visible);
+            }}
+          >
+            {toppingType}
+            <img
+              src={expanddown}
+              className="expandUpDown"
+              onClick={() => {
+                setVisible(!visible);
+              }}
+            ></img>
+          </div>
         </>
       )}
     </SelectTopping>
   );
 }
+const dragStart_ = e => {
+  console.warn('drag Start');
+  e.dataTransfer.setData('targetClass', e.target.className);
+  console.log(e.target.className);
+};
+const drag_ = e => {
+  console.log('drag');
+};
 
 const SelectTopping = styled.div`
   cursor: pointer;
   width: 360px;
   margin-left: 16px;
   margin-top: 29px;
+
   .expandUpDown {
     width: 5%;
     height: 5%;
@@ -85,14 +108,6 @@ const SelectTopping = styled.div`
     display: inline;
   }
 
-  .large_steak {
-    width: 75%;
-    height: 58%;
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    z-index: -3000;
-  }
   .topping-small-list {
     z-index: 1;
     margin-top: 22px;

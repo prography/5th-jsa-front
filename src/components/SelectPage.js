@@ -1,38 +1,55 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import expand from 'img/select/expand.png';
 import contract from 'img/select/contract.png';
 import bg from 'img/select/bg.png';
 import dough from 'img/select/dough.png';
-import { DropTarget, useDrag, DragSource } from 'react-dnd';
-import { NativeTypes } from 'react-dnd-html5-backend';
+
 import SelectPageToppingList from './SelectPageToppingList';
-import DropOnTheDough from './DropOnTheDough';
-import ItemTypes from './ItemTypes';
+
+import axios from 'axios';
 
 // 손 애니메이션 추가할 예정
 
 export default function SelectPage() {
   const [open, setOpen] = useState(true);
-  // const dragStart = ev => {
-  //   ev.dataTransfer.setData(
-  //     'data',
-  //     ' http://13.209.50.101:3000/pizzas/toppings/image?topping',
-  //   );
-  // };
-  // console.log(dragStart);
+  const [toppingName, setToppingName] = useState('');
+  const [toppingImages, setToppingImages] = useState([]);
+  const dragOver_ = e => {
+    e.preventDefault();
+    console.log('dragOver');
+  };
 
-  // const cancelDefault = useCallback(e => {
-  //   e.preventDefault();
-  //   e.stopPropagation();
-  // }, []);
-  // const drop = ev => {
-  //   ev.dataTransfer.getData('data');
-  // };
-  // const mappingBigToppings = Object.values(drop);
-  // console.log(mappingBigToppings);
-  // console.log(drop);
+  useEffect(() => {
+    const fetchToppings = async toppingName => {
+      const response = await axios.get(
+        'http://13.209.50.101:3000/pizzas/toppings/image',
+        { params: { topping: toppingName } },
+      );
+      console.log(response);
+      if (response.data.result === null) {
+      } else {
+        setToppingImages(() => [
+          ...toppingImages,
+          response.data.result.resultImage,
+        ]);
+        console.log(toppingImages);
+      }
+    };
+    fetchToppings(toppingName);
+  }, [toppingName]);
+  //
+  const drop_ = e => {
+    console.log('drop');
+    e.preventDefault();
+    const targetClass = e.dataTransfer.getData('targetClass');
+    console.log(targetClass);
+    // 토핑 이름이 나온다
+    console.log(e.target);
+    // div 태그가 나온다!!
+    setToppingName(targetClass);
+  };
   return (
     <SelectStyle>
       <>
@@ -49,11 +66,7 @@ export default function SelectPage() {
                 visible={false}
                 j={3}
               />
-              <SelectPageToppingList
-                toppingType="고기(11)"
-                visible
-                j={0}
-              />
+              <SelectPageToppingList toppingType="고기(11)" visible j={0} />
               <SelectPageToppingList
                 toppingType="해산물(5)"
                 visible={false}
@@ -84,23 +97,17 @@ export default function SelectPage() {
           </div>
         </div>
         {/* 배경 */}
-        <div className="backGround-container">
+        <div
+          className="backGround-container"
+          droppable="true"
+          onDragOver={dragOver_}
+          onDrop={drop_}
+        >
           <img src={bg} className="bg" alt="bg" />
           <img src={dough} className="dough" />
-          {/* <div>
-            {mappingBigToppings.map(topping => (
-              <div
-                key={topping._id}
-                className="topping-small"
-                onDragStart={dragStart}
-                onDrop={drop}
-                onDragOver={cancelDefault}
-              >
-                <img src={topping.image}></img>
-              </div>
-            ))}
-          </div> */}
-          {/* <DropOnTheDough></DropOnTheDough> */}
+          {toppingImages.map((images, idx) => (
+            <img key={idx} src={images} className="topping" />
+          ))}
 
           <div className="goToOven">
             <Link to="result">피자 굽기▶</Link>
@@ -110,12 +117,10 @@ export default function SelectPage() {
     </SelectStyle>
   );
 }
+
 const SelectStyle = styled.div`
-  body {
-    width: 100%;
-    height: 100vh;
-    overflow: hidden;
-  }
+  width: 100%;
+  height: 100vh;
   .topping-small-container {
     display: flex;
     align-items: center;
@@ -162,13 +167,29 @@ const SelectStyle = styled.div`
     height: 100vh;
     z-index: 0;
   }
+
+  .background-container {
+    display: block;
+    position: absolute;
+    z-index: 0;
+    width: 75%;
+    height: 58%;
+  }
   .dough {
     position: absolute;
     right: 0;
     bottom: 0;
     z-index: 0;
-    width: 75%;
-    height: 58%;
+    width: 67%;
+    height: 54%;
+  }
+  .topping {
+    position: absolute;
+    z-index: 0;
+    right: 186px;
+    bottom: 75px;
+    width: 49%;
+    height: 41%;
   }
 
   .goToOven {
