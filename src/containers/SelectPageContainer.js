@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import { SelectTopping, SelectPage, SelectPageToppingList } from 'components';
+import { SelectTopping, SelectPageDody, SelectPageToppingList } from 'components';
 
 
 export default function SelectPageContainer() {
@@ -34,6 +34,6 @@ export default function SelectPageContainer() {
   const mappingSmallToppings = Object.values(smallToppings);
 
   return (
-    <SelectPage smallToppings={smallToppings} />
+    <SelectPageDody smallToppings={smallToppings} />
   );
 }
