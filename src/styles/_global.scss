@@ -6,6 +6,7 @@ html{
 
 body {
   margin: 0;
+  user-select: none;
 }
 
 code {
@@ -109,7 +110,7 @@ $list-size: 0 1 2 3 4 5;
   }
   ::-webkit-scrollbar-thumb {
     border-radius: 10px;
-    background-color: rgba(0,0,0,0.1);
+    background-color: rgba(0,0,0,0.03);
   }
   ::-webkit-scrollbar-button {
     background-color: darkblue;

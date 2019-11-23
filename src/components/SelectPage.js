@@ -11,91 +11,86 @@ import toBottom from 'img/select/toBottom.png';
 import line from 'img/select/line.png';
 
 const toppingGroup = [
-  { title: '소스 (4)' },
-  { title: '치즈 (16)' },
-  { title: '고기 (11)' },
-  { title: '해산물 (5)' },
-  { title: '야채 (18)' },
-  { title: '기타 (8)' },
+  { title: '소스 (4)', name: 'sauce' },
+  { title: '치즈 (16)', name: 'cheese' },
+  { title: '고기 (11)', name: 'meat' },
+  { title: '해산물 (5)', name: 'seafood' },
+  { title: '야채 (18)', name: 'vegetable' },
+  { title: '기타 (8)', name: 'etc' },
 ];
 
-export default function SelectPage() {
+export default function SelectPage({ smallToppings }) {
   return (
     <SelectPageStyle className="SelectPage">
-      <SelectTopping />
+      <SelectTopping smallToppings={smallToppings} />
       <div className="large_topping">토핑여기에 드래그앤 드롭하자</div>
       <img src={dough} alt="doughImg" className="img-dough" />
-      {/* 제출하기 버튼 */}
-      <SubmitBtn />
-      {/* 선택된 토핑 리스트 */}
-      <SelectedTopping />
-      {/* 안내 멘트 */}
-      <Snackbar />
+      <SubmitBtn /> {/* 제출하기 버튼 */}
+      <SelectedTopping /> {/* 선택된 토핑 리스트 */}
+      <Snackbar /> {/* 안내 멘트 */}
     </SelectPageStyle>
   );
 }
 
-
-function SelectTopping() {
+function SelectTopping({ smallToppings }) {
   const [open, setOpen] = useState(true);
   return (
     <div style={{ zIndex: '10' }}>
+      {/* select box */}
       {open && (
         <SelectToppingStyle>
           {toppingGroup.map((val, i) => (
-            <div key={i}>
-              {/* title : 소스, 치즈, 고기, 해산물, 야채, 기타 등 */}
-              <div className="topping-title">
-                {val.title}
-                <i className="material-icons">arrow_drop_down</i>
-              </div>
-
-              {/* 토핑 item */}
-              {[...Array(10)].map((idx) => (
-                <div className="topping-item" key={idx}>
-                  <div className="circle" />
-                  <span>매콤한 소스</span>
-                </div>
-              ))}
-            </div>
+            <SelectToppingMenu key={i} smallToppings={smallToppings} val={val} />
           ))}
         </SelectToppingStyle>
       )}
-
       {/* select box를 열고 닫는 버튼 */}
-      {/* 버튼을 누르면 자연스럽게 없어지는 애니메이샤ㅕㄴ이 필요해 */}
-      {/* 버튼을 클릭하면, class에 새로운 css가 추가되어야 합니ㅏㄷ. */}
-      {open ? (
-        <SelectToppingCloseBtn open={open} onClick={() => setOpen(false)}>
-          <img src={expand} alt="close" />
-        </SelectToppingCloseBtn>
-      ) : (
-        <SelectToppingCloseBtn open={open} onClick={() => setOpen(true)}>
-          <img src={contract} alt="open" />
-        </SelectToppingCloseBtn>
-      )}
+      <SelectToppingCloseBtnStyle open={open} onClick={() => setOpen(!open)}>
+        <img src={open ? expand : contract} alt="close" />
+      </SelectToppingCloseBtnStyle>
     </div>
   );
 }
 
+function SelectToppingMenu({ smallToppings, val }) {
+  const [open, setOpen] = useState(true);
+  return (
+    <>
+      <div className="topping-title" onClick={() => setOpen(!open)}>
+        {val.title}
+        <i className="material-icons">arrow_drop_down</i>
+      </div>
+      {open && (smallToppings[val.name]).map((topping, idx) => (
+        <div className="topping-item" key={idx}>
+          <div className="circle">
+            <img src={topping.image} alt="topping" width="40" />
+          </div>
+          <span>{topping.name}</span>
+        </div>
+      ))}
+    </>
+  );
+}
 
 function SubmitBtn() {
   const [submit, setSubmit] = useState(false);
   return (
-    <div className="SubmitBtn" onMouseOver={() => setSubmit(true)} onFocus={() => setSubmit(true)} onMouseLeave={() => setSubmit(false)}>
-      {/* 이미지 바뀔때 애니메이션 필요함 */}
+    <div
+      className="SubmitBtn"
+      onMouseOver={() => setSubmit(true)}
+      onFocus={() => setSubmit(true)}
+      onMouseLeave={() => setSubmit(false)}
+    >
       {submit && <div className="SubmitBtnText ml-1">피자 굽기!!</div>}
-      {submit
-        ? <div className="pointer" onClick={() => console.log(2)}><img src={submitbtnHover} alt="submit btn" /></div>
-        : <img src={submitbtn} alt="submit btn" />}
+      <div className="pointer" onClick={() => (submitbtn && console.log(2))}>
+        <img src={submit ? submitbtnHover : submitbtn} alt="submit btn" />
+      </div>
     </div>
   );
 }
 
 function Snackbar() {
   const [openSnackbar, setOpenSnackbar] = useState(false);
-  // 토핑이 너무 많을때 액션이 갑니다.
-  //  1초 뒤에 사라지게 합니다. 나타날때와 사라질때 액션 필요합니다.
   return (
     openSnackbar && (
       <SnackbarStyle onClick={() => setOpenSnackbar(false)}>
@@ -107,18 +102,15 @@ function Snackbar() {
   );
 }
 
+
 function SelectedTopping() {
-  // const [openSnackbar, setOpenSnackbar] = useState(true);
-  // 토핑이 너무 많을때 액션이 갑니다.
-  //  1초 뒤에 사라지게 합니다. 나타날때와 사라질때 액션 필요합니다.
   return (
     <SelectedToppingStyle>
       {/* 스크롤 업 하거나, 스크롤 다운하는 기능이 필요합니다. */}
-      {/* react-scroll 뭐시기 있었던거 같ㅇ느데 */}
       <div className="icon"><img src={toTop} alt="totop" draggable="false" /></div>
       <div className="selected-section">
         {[...Array(10)].map((val, index) => (
-          <div className="selected">
+          <div className="selected" key={index}>
             <img src={line} alt="line" className="delete" />
             <img src={steak} alt="test" className="selectedTopping" />
           </div>
@@ -263,23 +255,35 @@ const SelectToppingStyle = styled.div`
   .topping-title{
     font-weight: bold;
     cursor: pointer;
-    margin-bottom: 26px;
-    margin-top: 29px;
+    margin-bottom: 14px;
+    margin-top: 8px;
   }
   .topping-item{
     height: 97px;
-    display: inline-block;
+    width: 60px;
+    display: inline-flex;
+    flex-direction: column;
     margin-right: 16px;
+    text-align: center;
     .circle{
       border: 1px solid rgba(0,0,0,0.1);
       border-radius: 50%;
       width: 60px;
       height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.1s ease;
+      &:hover{
+        background-color: rgba(0,0,0,0.1);
+      }
     }
     span{
       color: white;
-      font-size: 12px;
-      margin-top: 4px;
+      font-size: 11px;
+      margin-top: 6px;
+      line-height: 1.1;
+      display: block;
     }
   }
   .closeBtn{
@@ -289,8 +293,7 @@ const SelectToppingStyle = styled.div`
   }
 `;
 
-// select section을 닫는 버튼 style
-const SelectToppingCloseBtn = styled.div`
+const SelectToppingCloseBtnStyle = styled.div`
   z-index: 10;
   position: absolute;
   width: 40px;
