@@ -31,7 +31,6 @@ export default function SelectPageContainer({ history }) {
         'http://13.209.50.101:3000/pizzas/toppings/image',
         { params: { topping: val } },
       );
-
       if (response.data.result) {
         setSubmitTopping(submitTopping.concat([response.data.result]), []);
       }
@@ -47,6 +46,7 @@ export default function SelectPageContainer({ history }) {
   // 드래그가 시작 되는 토핑 값을 가져간다.
   const handleDrag = (val) => { setSelected(val); };
   const handleSubmit = () => {
+    history.push('/result'); // ! 일단 강제로 보냅ㄴ디ㅏ
     // 데이터 없으면 로직 작동 안합니다.
     if (submitTopping.length) {
       // ['베이컨', '토마토', '치즈'] 형식으로 리듀서에 값을 넘겨준다.

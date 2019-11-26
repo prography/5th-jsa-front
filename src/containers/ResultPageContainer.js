@@ -7,7 +7,7 @@ import { update } from 'modules/topping';
 export default function ResultPageContainer() {
   const [openDetail, setOpenDetail] = useState(false);
   const [detail, setDetail] = useState();
-  const { initialResult, result, submitTopping } = useSelector((state) => (state.topping));
+  const { initialResult, result } = useSelector((state) => (state.topping));
   // 디스패치
   const dispatch = useDispatch();
   const Update = useCallback((list) => dispatch((update(list))), [dispatch]);
