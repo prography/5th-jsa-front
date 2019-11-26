@@ -71,6 +71,7 @@ export const update = createAction(UPDATE);
 
 // 초기값
 const initialState = {
+  initialResult: resultList, // immer 추가하기
   result: resultList,
   submitTopping: ['베이컨', '미트'],
   // submitTopping: [],

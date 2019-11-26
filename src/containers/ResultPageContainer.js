@@ -7,7 +7,7 @@ import { update } from 'modules/topping';
 export default function ResultPageContainer() {
   const [openDetail, setOpenDetail] = useState(false);
   const [detail, setDetail] = useState();
-  const { result, submitTopping } = useSelector((state) => (state.topping));
+  const { initialResult, result, submitTopping } = useSelector((state) => (state.topping));
   // 디스패치
   const dispatch = useDispatch();
   const Update = useCallback((list) => dispatch((update(list))), [dispatch]);
@@ -45,17 +45,17 @@ export default function ResultPageContainer() {
   // 필터기능 / sorting 기능
   function handleFilter(value, name) {
     if (value === 'filter') {
-      Update({ result: result.filter((val) => val.brand === name) });
+      Update({ result: initialResult.filter((val) => val.brand === name) });
     } else {
       // sorting 기능
       switch (name) {
-        case 'highKcal': Update({ result: result.sort((a, b) => b.m_cal - a.m_cal) });
+        case 'highKcal': Update({ result: initialResult.sort((a, b) => b.m_cal - a.m_cal) });
           break;
-        case 'lowKcal': Update({ result: result.sort((a, b) => a.m_cal - b.m_cal) });
+        case 'lowKcal': Update({ result: initialResult.sort((a, b) => a.m_cal - b.m_cal) });
           break;
-        case 'highPrice': Update({ result: result.sort((a, b) => b.m_price - a.m_price) });
+        case 'highPrice': Update({ result: initialResult.sort((a, b) => b.m_price - a.m_price) });
           break;
-        case 'lowPrice': Update({ result: result.sort((a, b) => a.m_price - b.m_price) });
+        case 'lowPrice': Update({ result: initialResult.sort((a, b) => a.m_price - b.m_price) });
           break;
         case 'highInterest': console.log('아직 구현안됐다');
           break;
