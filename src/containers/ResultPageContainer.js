@@ -1,67 +1,84 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { ResultPage } from 'components';
 import axios from 'axios';
-
-const resultList = {
-  num: 2,
-  pizzas: [
-    {
-      _id: '5dcbf8199d97fa33748dc9ed',
-      brand: '도미노피자',
-      name: '베스트 콰트로',
-      m_price: 29000,
-      m_cal: 1548,
-      image: 'https://jsa-img.s3.ap-northeast-2.amazonaws.com/pizza/domino_bestquattro.jpg',
-      __v: 0,
-    },
-    {
-      _id: '5dcbf8cd0ea656262c6be5e4',
-      brand: '미스터피자',
-      name: '하프앤하프',
-      m_price: 27900,
-      m_cal: 1684,
-      image: 'https://jsa-img.s3.ap-northeast-2.amazonaws.com/pizza/mr_half_and_half.jpg',
-      __v: 0,
-    },
-  ],
-};
+import { update } from 'modules/topping';
 
 export default function ResultPageContainer() {
-  const [ResultList, setResultList] = useState([]);
-  useEffect(() => {
-    const fetchToppings = async () => {
+  const [openDetail, setOpenDetail] = useState(false);
+  const [detail, setDetail] = useState();
+  const { result, submitTopping } = useSelector((state) => (state.topping));
+  // 디스패치
+  const dispatch = useDispatch();
+  const Update = useCallback((list) => dispatch((update(list))), [dispatch]);
+
+  const getDetail = (id) => {
+    setOpenDetail(true);
+    const loadDetail = async (val) => {
       try {
-        const data = ['베이컨'];
-        const response = await axios.post(
-          'http://13.209.50.101:3000/pizzas/recomandations', { items: data },
+        const response = await axios.get(
+          `http://13.209.50.101:3000/pizzas/details/${val}`,
         );
-        console.log(response.data);
-        setResultList(response.data);
+        setDetail(response.data);
       } catch (e) {}
     };
-    fetchToppings();
+    loadDetail(id);
+  };
+
+  useEffect(() => {
+    const postToppingResult = async () => {
+      // try {
+      //   const response = await axios.post(
+      //     'http://13.209.50.101:3000/pizzas/recomandations', {
+      //       body: {
+      //         items: submitTopping,
+      //       },
+      //     },
+      //   );
+      //   // console.log(response);
+      //   // Update({ result: response.data });
+      // } catch (e) {}
+    };
+    postToppingResult();
   }, []);
 
-  // 필터기능
+  // 필터기능 / sorting 기능
   function handleFilter(value, name) {
-    // 테스트하기
-    // console.log(value);
-    // console.log(name);
+    if (value === 'filter') {
+      Update({ result: result.filter((val) => val.brand === name) });
+    } else {
+      // sorting 기능
+      switch (name) {
+        case 'highKcal': Update({ result: result.sort((a, b) => b.m_cal - a.m_cal) });
+          break;
+        case 'lowKcal': Update({ result: result.sort((a, b) => a.m_cal - b.m_cal) });
+          break;
+        case 'highPrice': Update({ result: result.sort((a, b) => b.m_price - a.m_price) });
+          break;
+        case 'lowPrice': Update({ result: result.sort((a, b) => a.m_price - b.m_price) });
+          break;
+        case 'highInterest': console.log('아직 구현안됐다');
+          break;
+        case 'highComment': console.log('조금만 기다려 기능구현해서 빨리 배포할게');
+          break;
+        default: break;
+      }
+    }
   }
 
   // 좋아요기능
   function handleFavorite(name) {
-    // console.log(name);
+    console.log('좋아요 기능 아직 안나와쏘');
   }
 
   return (
-    <>
-      <ResultPage
-        handleFilter={handleFilter}
-        handleFavorite={handleFavorite}
-        resultList={resultList}
-      />
-      {console.log(resultList)}
-    </>
+    <ResultPage
+      handleFilter={handleFilter}
+      handleFavorite={handleFavorite}
+      resultList={result}
+      openDetail={openDetail}
+      getDetail={getDetail}
+      detail={detail}
+    />
   );
 }

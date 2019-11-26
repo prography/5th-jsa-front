@@ -13,23 +13,23 @@ import domino from 'img/detail/domino.png';
 import mrpizza from 'img/detail/mrpizza.png';
 
 const logo = [
-  { name: 'pizzahut', value: pizzahut },
-  { name: 'avolo', value: avolo },
-  { name: 'pizzaschool', value: pizzaschool },
-  { name: 'papajones', value: papajones },
-  { name: 'domino', value: domino },
-  { name: 'mrpizza', value: mrpizza },
+  { name: '피자헛', value: pizzahut },
+  { name: '알볼로', value: avolo },
+  { name: '피자스쿨', value: pizzaschool },
+  { name: '파파존스', value: papajones },
+  { name: '도미노피자', value: domino },
+  { name: '미스터피자', value: mrpizza },
 ];
 const sorting = [
-  { name: '높은칼로리순', value: '높은칼로리순' },
-  { name: '낮은칼로리순', value: '낮은칼로리순' },
-  { name: '높은가격순', value: '높은가격순' },
-  { name: '낮은가격순', value: '낮은가격순' },
-  { name: '좋아요순', value: '좋아요순' },
-  { name: '댓글수순', value: '댓글수순' },
+  { name: 'highKcal', value: '높은칼로리순' },
+  { name: 'lowKcal', value: '낮은칼로리순' },
+  { name: 'highPrice', value: '높은가격순' },
+  { name: 'lowPrice', value: '낮은가격순' },
+  { name: 'highInterest', value: '좋아요순' },
+  { name: 'highComment', value: '댓글수순' },
 ];
 
-export default function ResultsPageList({ handleFilter, OpenDetail, resultList }) {
+export default function ResultsPageList({ handleFilter, getDetail, resultList }) {
   return (
     <ResultsPageListStyle>
       <header>
@@ -38,12 +38,10 @@ export default function ResultsPageList({ handleFilter, OpenDetail, resultList }
           <Menu handleFilter={handleFilter} />
         </div>
       </header>
-      <body>
-        {/* 데이터 받아오면 index말고 val.id값으로 바꿔서 경고 없애주자 */}
-        {resultList.pizzas.map((val, i) => (
-          <div className="elementStyle" key={i} onClick={OpenDetail}>
+      <div className="bodyContainer">
+        {resultList.map((val, i) => (
+          <div className="elementStyle" key={i} onClick={() => getDetail(val._id)}>
             <div className="element">
-              {/* <div className="element-img" /> */}
               <img src={val.image} alt="pizza" className="element-img" />
               <div className="element-content">
                 <div className="title">
@@ -68,7 +66,7 @@ export default function ResultsPageList({ handleFilter, OpenDetail, resultList }
             <img src={listBg} alt="list background" className="listBg" />
           </div>
         ))}
-      </body>
+      </div>
     </ResultsPageListStyle>
   );
 }
@@ -102,8 +100,8 @@ function Menu({ handleFilter }) {
         )}
         {openSorting && (
           <div className="wrapper wrapper-sorting scale-up-tr pointer">
-            {sorting.map((val) => (
-              <div onClick={() => { handleFilter('sorting', val.name); setOpenSorting(false); }}>{val.name}</div>
+            {sorting.map((val, i) => (
+              <div onClick={() => { handleFilter('sorting', val.name); setOpenSorting(false); }} key={i}>{val.value}</div>
             ))}
           </div>
         )}
@@ -138,7 +136,7 @@ const ResultsPageListStyle = styled.div`
       }
     }
   }
-  body{
+  .bodyContainer{
     height: calc(100% - 32px);
     overflow: auto;
     .listBg{

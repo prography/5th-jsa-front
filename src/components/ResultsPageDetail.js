@@ -8,16 +8,16 @@ import heartIcon from 'img/detail/heart-icon.png';
 import shareIcon from 'img/detail/share-icon.png';
 import chatIcon from 'img/detail/chat-icon.png';
 
-export default function ResultsPageDetail({ handleFavorite }) {
+export default function ResultsPageDetail({ handleFavorite, detail }) {
   const [favorite, setFavorite] = useState(true);
   return (
     <DetailBackgroundStyle className="scale-up">
       <div className="layout">
         <DetailContentStyle>
           <div className="detail-header">
-            <div className="realImage" />
+            <img src={detail.image} className="realImage" alt="pizza" />
             <div className="explain">
-              <div className="typo-b3">존스페이버릿</div>
+              <div className="typo-b3">{detail.name}</div>
               <div className="iconWrapper">
                 {/* 클릭하면 붉은색 */}
                 <div onClick={() => { handleFavorite(favorite, '피자아이디'); setFavorite(!favorite); }} className="icon flex">
@@ -25,43 +25,42 @@ export default function ResultsPageDetail({ handleFavorite }) {
                     ? <img src={emptyHeartIcon} alt="hearticon" className="flip-vertical-right" />
                     : <img src={heartIcon} alt="hearticon" className="flip-vertical-left" />}
                 </div>
-                <span>312</span>
+                <span>00</span>
                 <div onClick={() => console.log(2)} className="icon flex">
                   <img src={shareIcon} alt="shareIcon" />
                 </div>
-                <span>312</span>
+                <span>00</span>
               </div>
               <table>
                 <tbody>
                   <tr>
                     <td>브랜드</td>
-                    {/* 브랜드 누르면 이동 시키나요? */}
-                    <td>파파존스</td>
+                    <td>{detail.brand}</td>
                   </tr>
                   <tr>
                     <td>칼로리</td>
-                    <td>13,000kcal</td>
+                    <td>{detail.m_cal} kcal</td>
                   </tr>
                   <tr>
                     <td>가격</td>
-                    <td>15,000원</td>
-                  </tr>
-                  <tr>
-                    <td>세부토핑</td>
-                    <td>어떤 세부 토핑들이 있겟지? 자세한건 잘 모루겟다 허허</td>
+                    <td>{detail.m_price} 원</td>
                   </tr>
                 </tbody>
               </table>
             </div>
           </div>
+          <div className="bold">세부토핑</div>
           <div className="typo-s1">
-            피자 설명입니다. 이 피자는 어떠하구 어떤 특징을 가지구 있고 블라블라 등등등으 피자 설명입니다.
-            이 피자는 어떠하구 어 떤 특징을 가지구 있고 블라블라 등등등으
+            {detail.toppings.join()}
+          </div>
+          <div className="bold mt-1">세부설명</div>
+          <div className="typo-s1">
+            {detail.details}
           </div>
           <div className="detail-chip">
-            <div className="chip">#조금매워</div>
-            <div className="chip">#토핑많음</div>
-            <div className="chip">#달콤</div>
+            <div className="chip">#아직</div>
+            <div className="chip">#데이터가</div>
+            <div className="chip">#없더요유유</div>
           </div>
           <div className="detail-chat">
             <div className="chat-header">
@@ -71,14 +70,14 @@ export default function ResultsPageDetail({ handleFavorite }) {
             {/* 댓글 작성하는 곳 */}
             <div className="chat-input">
               <div className="chat-input-wrapper">
-                <input placeholder=" 댓글을 달아주세요" type="text" onChange={() => console.log(2)} />
+                <input placeholder=" 아직 사용할수 없어요 헤헤" type="text" onChange={() => console.log(2)} />
               </div>
               <button type="button">작성하기</button>
             </div>
             {/* 댓글 리스트 */}
             <div className="chat-list">
               {[...Array(3)].map((val, index) => (
-                <div className="comment">
+                <div className="comment" key={index}>
                   <div className="comment-thumbnail" />
                   <div>
                     <div className="comment-id">
@@ -174,6 +173,7 @@ const DetailContentStyle = styled.div`
     }
     /* 댓글 작성 */
     .chat-input{
+      width: 95%;
       .chat-input-wrapper{
         height: 42px;
         width: calc(100% - 108px);
