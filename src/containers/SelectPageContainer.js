@@ -1,26 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect, useCallback } from 'react';
 import { SelectPage } from 'components';
+import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { updateTopping } from 'modules/topping';
 
-export default function SelectPageContainer() {
-  // 여기서 데이터를 전부 불러옵ㄴ디다.
-  const [smallToppings, setSmallToppings] = useState(
-    {
-      meat: [], sauce: [], cheese: [], seafood: [], vegetable: [], etc: [],
-    },
-  );
-
-  // 지금 당장 선택된 토핑 이름
-  const [selected, setSelected] = useState('');
-  // 선택 후 새로 불러온 토핑 배열 ([{name: 이름, resultImage: url} ])
-  const [submitTopping, setSubmitTopping] = useState([]);
-
-  // 드래그가 시작 되는 값을 가져간다.
-  // ! 드랍되는 시점에 값 보내느걸로 바꾸기
-  const handleDrag = (val) => {
-    setSelected(val);
-    console.log(val);
-  };
+export default function SelectPageContainer({ history }) {
+  const [smallToppings, setSmallToppings] = useState({
+    meat: [], sauce: [], cheese: [], seafood: [], vegetable: [], etc: [],
+  }); // small topping
+  const [selected, setSelected] = useState(''); // 지금 당장 선택된 토핑 이름
+  const [submitTopping, setSubmitTopping] = useState([]); // 선택된 토핑 raw 리스트
 
   // small topping load 합니다,
   useEffect(() => {
@@ -42,18 +31,41 @@ export default function SelectPageContainer() {
         'http://13.209.50.101:3000/pizzas/toppings/image',
         { params: { topping: val } },
       );
+
       if (response.data.result) {
-        setSubmitTopping(submitTopping.concat([response.data.result]));
+        setSubmitTopping(submitTopping.concat([response.data.result]), []);
       }
     };
     fetchToppings(selected);
   }, [selected]);
 
+
+  // 디스패치
+  const dispatch = useDispatch();
+  const UpdateTopping = useCallback((list) => dispatch((updateTopping(list))), [dispatch]);
+
+  // 드래그가 시작 되는 토핑 값을 가져간다.
+  const handleDrag = (val) => { setSelected(val); };
+  const handleSubmit = () => {
+    // 데이터 없으면 로직 작동 안합니다.
+    if (submitTopping.length) {
+      // ['베이컨', '토마토', '치즈'] 형식으로 리듀서에 값을 넘겨준다.
+      // ! 변수 이름을 submitTopping으로 하고 이미 선언되어있는 변수명은 selectedTopping으로 바꿉니다.
+      const SubmitTopping = [...new Set(submitTopping.map((val) => val.name))];
+      UpdateTopping({ submitTopping: SubmitTopping });
+      // 값 넘겨주고 페이지 이동합니다.
+      history.push('/result');
+    }
+  };
+
   return (
-    <SelectPage
-      smallToppings={smallToppings}
-      submitTopping={submitTopping}
-      handleDrag={handleDrag}
-    />
+    <>
+      <SelectPage
+        smallToppings={smallToppings}
+        submitTopping={submitTopping}
+        handleDrag={handleDrag}
+        handleSubmit={handleSubmit}
+      />
+    </>
   );
 }

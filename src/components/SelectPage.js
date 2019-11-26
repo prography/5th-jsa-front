@@ -20,7 +20,9 @@ const toppingGroup = [
   { title: '기타 (8)', name: 'etc' },
 ];
 
-export default function SelectPage({ smallToppings, handleDrag, submitTopping }) {
+export default function SelectPage({
+  smallToppings, handleDrag, submitTopping, handleSubmit,
+}) {
   return (
     <SelectPageStyle className="SelectPage">
       <SelectTopping smallToppings={smallToppings} handleDrag={handleDrag} />
@@ -30,7 +32,7 @@ export default function SelectPage({ smallToppings, handleDrag, submitTopping })
         ))}
       </div>
       <img src={dough} alt="doughImg" className="img-dough" />
-      <SubmitBtn /> {/* 제출하기 버튼 */}
+      <SubmitBtn handleSubmit={handleSubmit} /> {/* 제출하기 버튼 */}
       <SelectedTopping /> {/* 선택된 토핑 리스트 */}
       <Snackbar /> {/* 안내 멘트 */}
     </SelectPageStyle>
@@ -86,7 +88,7 @@ function SelectToppingMenu({ smallToppings, val, handleDrag }) {
   );
 }
 
-function SubmitBtn() {
+function SubmitBtn({ handleSubmit }) {
   const [submit, setSubmit] = useState(false);
   return (
     <div
@@ -96,7 +98,7 @@ function SubmitBtn() {
       onMouseLeave={() => setSubmit(false)}
     >
       {submit && <div className="SubmitBtnText ml-1">피자 굽기!!</div>}
-      <div className="pointer" onClick={() => (submitbtn && console.log(2))}>
+      <div className="pointer" onClick={submitbtn && handleSubmit}>
         <img src={submit ? submitbtnHover : submitbtn} alt="submit btn" />
       </div>
     </div>
@@ -150,7 +152,6 @@ const SelectPageStyle = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    /* background-color: rgba(0,0,0,0.1); */
     img{
       width: 100%;
       position: absolute;
