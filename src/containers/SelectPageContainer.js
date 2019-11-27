@@ -32,7 +32,7 @@ export default function SelectPageContainer({ history }) {
         { params: { topping: val } },
       );
       if (response.data.result) {
-        setSubmitTopping(submitTopping.concat([response.data.result]), []);
+        setSubmitTopping(submitTopping.concat([response.data.result]));
       }
     };
     fetchToppings(selected);
@@ -46,13 +46,11 @@ export default function SelectPageContainer({ history }) {
   // 드래그가 시작 되는 토핑 값을 가져간다.
   const handleDrag = (val) => { setSelected(val); };
   const handleSubmit = () => {
-    history.push('/result'); // ! 일단 강제로 보냅ㄴ디ㅏ
-    // 데이터 없으면 로직 작동 안합니다.
+    // 데이터 없으면 로직 작동 안합니다. 데이터 없으면, snackbar로 액션을 주어야 합니다.
     if (submitTopping.length) {
-      // ['베이컨', '토마토', '치즈'] 형식으로 리듀서에 값을 넘겨준다.
       // ! 변수 이름을 submitTopping으로 하고 이미 선언되어있는 변수명은 selectedTopping으로 바꿉니다.
       const SubmitTopping = [...new Set(submitTopping.map((val) => val.name))];
-      UpdateTopping({ submitTopping: SubmitTopping });
+      UpdateTopping({ submitTopping: SubmitTopping.join() });
       // 값 넘겨주고 페이지 이동합니다.
       history.push('/result');
     }

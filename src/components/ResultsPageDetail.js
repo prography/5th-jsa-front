@@ -10,6 +10,7 @@ import chatIcon from 'img/detail/chat-icon.png';
 
 export default function ResultsPageDetail({ handleFavorite, detail }) {
   const [favorite, setFavorite] = useState(true);
+  const comma = (val) => String(val).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   return (
     <DetailBackgroundStyle className="scale-up">
       <div className="layout">
@@ -26,7 +27,7 @@ export default function ResultsPageDetail({ handleFavorite, detail }) {
                     : <img src={heartIcon} alt="hearticon" className="flip-vertical-left" />}
                 </div>
                 <span>00</span>
-                <div onClick={() => console.log(2)} className="icon flex">
+                <div onClick={() => console.log('공유기능 아직안나와쏘요 헤헤')} className="icon flex">
                   <img src={shareIcon} alt="shareIcon" />
                 </div>
                 <span>00</span>
@@ -39,11 +40,11 @@ export default function ResultsPageDetail({ handleFavorite, detail }) {
                   </tr>
                   <tr>
                     <td>칼로리</td>
-                    <td>{detail.m_cal} kcal</td>
+                    <td>{comma(detail.m_cal)} kcal</td>
                   </tr>
                   <tr>
                     <td>가격</td>
-                    <td>{detail.m_price} 원</td>
+                    <td>{comma(detail.m_price)} 원</td>
                   </tr>
                 </tbody>
               </table>

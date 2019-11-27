@@ -13,6 +13,7 @@ import domino from 'img/detail/domino.png';
 import mrpizza from 'img/detail/mrpizza.png';
 
 const logo = [
+  { name: 'ALL', value: null },
   { name: '피자헛', value: pizzahut },
   { name: '알볼로', value: avolo },
   { name: '피자스쿨', value: pizzaschool },
@@ -30,6 +31,8 @@ const sorting = [
 ];
 
 export default function ResultsPageList({ handleFilter, getDetail, resultList }) {
+  const comma = (val) => String(val).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
   return (
     <ResultsPageListStyle>
       <header>
@@ -39,33 +42,35 @@ export default function ResultsPageList({ handleFilter, getDetail, resultList })
         </div>
       </header>
       <div className="bodyContainer">
-        {resultList.map((val, i) => (
-          <div className="elementStyle" key={i} onClick={() => getDetail(val._id)}>
-            <div className="element">
-              <img src={val.image} alt="pizza" className="element-img" />
-              <div className="element-content">
-                <div className="title">
-                  <span>No {i + 1}. </span>
-                  {val.name}
-                </div>
-                <div className="explain">
-                  <div><span>브랜드</span>{val.brand}</div>
-                  <div><span>칼로리</span>{val.m_cal} kcal</div>
-                  <div><span>가격</span>{val.m_price} 원</div>
-                </div>
-                <div className="iconWrapper">
-                  <img src={heartIcon} alt="heart" />
-                  <span className="typo-s2">00</span>
-                  <img src={shareIcon} alt="share" />
-                  <span className="typo-s2">00</span>
-                  <img src={chatIcon} alt="chat" />
-                  <span className="typo-s2">00</span>
+        {resultList.length !== 0
+          ? resultList.map((val, i) => (
+            <div className="elementStyle" key={i} onClick={() => getDetail(val._id)}>
+              <div className="element">
+                <img src={val.image} alt="pizza" className="element-img" />
+                <div className="element-content">
+                  <div className="title">
+                    <span>No {i + 1}. </span>
+                    {val.name}
+                  </div>
+                  <div className="explain">
+                    <div><span>브랜드</span>{val.brand}</div>
+                    <div><span>칼로리</span>{comma(val.m_cal)} kcal</div>
+                    <div><span>가격</span>{comma(val.m_price)} 원</div>
+                  </div>
+                  <div className="iconWrapper">
+                    <img src={heartIcon} alt="heart" />
+                    <span className="typo-s2">00</span>
+                    <img src={shareIcon} alt="share" />
+                    <span className="typo-s2">00</span>
+                    <img src={chatIcon} alt="chat" />
+                    <span className="typo-s2">00</span>
+                  </div>
                 </div>
               </div>
+              <img src={listBg} alt="list background" className="listBg" />
             </div>
-            <img src={listBg} alt="list background" className="listBg" />
-          </div>
-        ))}
+          ))
+          : <div className="elementStyle-empty">피자가 없다 혹시 너무 많이 선택하신게 아닌지</div>}
       </div>
     </ResultsPageListStyle>
   );
@@ -93,7 +98,7 @@ function Menu({ handleFilter }) {
           <div className="wrapper wrapper-filter scale-up-tr pointer">
             {logo.map((val, i) => (
               <div onClick={() => { handleFilter('filter', val.name); setOpenFilter(false); }} className="imgWrapper" key={i}>
-                <img src={val.value} alt={val.name} />
+                {val.value ? <img src={val.value} alt={val.name} /> : <div>all</div>}
               </div>
             ))}
           </div>
@@ -200,6 +205,17 @@ const ResultsPageListStyle = styled.div`
         }
       }
     }
+    .elementStyle-empty{
+      color: white;
+      font-weight: 100;
+      font-size: 40px;
+      height: 95%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 4px;
+      border: 1px dotted white;
+    }
   }
 `;
 
@@ -231,6 +247,9 @@ const MenuStyle = styled.div`
         border: 1px dashed #efefef;
         margin-right: 5px;
         transition: 0.2s;
+        color: #555;
+        font-weight: bold;
+        font-size: 15px;
         &:last-child{
           margin-right: 0;
         }

@@ -4,48 +4,56 @@ import { ResultPage } from 'components';
 import axios from 'axios';
 import { update } from 'modules/topping';
 
-export default function ResultPageContainer() {
+export default function ResultPageContainer({ history }) {
   const [openDetail, setOpenDetail] = useState(false);
   const [detail, setDetail] = useState();
-  const { initialResult, result } = useSelector((state) => (state.topping));
+  const { initialResult, result, submitTopping } = useSelector((state) => (state.topping));
   // 디스패치
   const dispatch = useDispatch();
   const Update = useCallback((list) => dispatch((update(list))), [dispatch]);
 
-  const getDetail = (id) => {
-    setOpenDetail(true);
-    const loadDetail = async (val) => {
-      try {
-        const response = await axios.get(
-          `http://13.209.50.101:3000/pizzas/details/${val}`,
-        );
-        setDetail(response.data);
-      } catch (e) {}
-    };
-    loadDetail(id);
-  };
-
   useEffect(() => {
+    // selected 된 토핑이 없으면 선택하는 페이지로 강제 이동
+    if (!submitTopping) { history.push('/selectTopping'); }
+    // selected된 토핑 값으로 결과 데이터 뽑습니다.
     const postToppingResult = async () => {
-      // try {
-      //   const response = await axios.post(
-      //     'http://13.209.50.101:3000/pizzas/recomandations', {
-      //       body: {
-      //         items: submitTopping,
-      //       },
-      //     },
-      //   );
-      //   // console.log(response);
-      //   // Update({ result: response.data });
-      // } catch (e) {}
+      try {
+        const response = await axios.post(
+          'http://13.209.50.101:3000/pizzas/recomandations', {
+            items: submitTopping,
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          },
+        );
+        console.log(response.data.pizzas);
+        Update({ result: response.data.pizzas });
+      } catch (e) {}
     };
     postToppingResult();
   }, []);
 
+
+  // 디테일 정보 로드 핸들러
+  function getDetail(id) {
+    setOpenDetail(true);
+    const loadDetail = async (val) => {
+      try {
+        const response = await axios.get(`http://13.209.50.101:3000/pizzas/details/${val}`);
+        setDetail(response.data);
+      } catch (e) {}
+    };
+    loadDetail(id);
+  }
+
   // 필터기능 / sorting 기능
   function handleFilter(value, name) {
     if (value === 'filter') {
-      Update({ result: initialResult.filter((val) => val.brand === name) });
+      switch (name) {
+        case 'ALL': Update({ result: initialResult });
+          break;
+        default:
+          Update({ result: initialResult.filter((val) => val.brand === name) });
+          break;
+      }
     } else {
       // sorting 기능
       switch (name) {
@@ -68,7 +76,7 @@ export default function ResultPageContainer() {
 
   // 좋아요기능
   function handleFavorite(name) {
-    console.log('좋아요 기능 아직 안나와쏘');
+    console.log(`좋아요 기능 아직 안나와쏘 ${name}`);
   }
 
   return (
