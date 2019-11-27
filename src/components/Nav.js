@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 export default function Nav() {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   return (
     <NavStyle open={open}>
       {/* styled-component로 props 값을 전달하려면 이렇게 넣어줘야해! styled-component에서 open 값을 못 읽구 있길래 추가해쏘 */}
@@ -19,6 +19,7 @@ export default function Nav() {
             <Link to="MyPage">마이페이지</Link>
             <Link to="EventList">이벤트페이지</Link>
             <Link to="EventList">팀원소개</Link>
+            <Link to="feedback">피드백</Link>
           </div>
         )}
       </div>
@@ -62,8 +63,8 @@ const NavStyle = styled.div`
     .menus a {
       text-decoration: none;
       color: #fff;
-      margin-right: 10px;
-      font-size: 13px;
+      margin-right: 13px;
+      font-size: 12px;
       transition: 0.2s;
       &:hover {
         font-weight: bold;
