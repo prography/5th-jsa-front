@@ -6,7 +6,7 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { Landing, EventList } from 'components';
 import {
-  ResultPageContainer, SelectPageContainer, MyPageContainer,
+  ResultPageContainer, SelectPageContainer, MyPageContainer, FeedbackContainer,
 } from 'containers';
 
 // const Result = lazy(() => import('container/ResultPageContainer'));
@@ -17,11 +17,11 @@ const Main = () => (
     <Route exact path="/" component={Landing} />
     <Route path="/selectTopping" component={SelectPageContainer} />
     <Switch>
-      {/* <Route path="/result/:pizzaname" component={ResultPageContainer} /> */}
       <Route path="/result" component={ResultPageContainer} />
     </Switch>
     <Route path="/mypage" component={MyPageContainer} />
     <Route path="/EventPage" component={EventList} />
+    <Route path="/feedback" component={FeedbackContainer} />
   </>
 );
 
