@@ -1,9 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Snackbar } from 'components';
 
-export default function Feedback({ handleUpdate, handleSubmit, feedback }) {
+export default function Feedback({
+  handleUpdate, handleSubmit, feedback, snackbar,
+}) {
   return (
     <FeedbackStyle className="ResultPage">
+      {snackbar && <Snackbar content="제출성공! 피드백 감사합니다!" />}
       <div className="title">서비스 피드백을 주세요</div>
       <div className="sub-title mt-1">
         서비스 이용 시 개선되었으면 하는 사항을 적어주세요. <br />

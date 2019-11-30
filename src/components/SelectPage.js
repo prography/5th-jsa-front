@@ -34,7 +34,8 @@ export default function SelectPage({
       <img src={dough} alt="doughImg" className="img-dough" />
       <SubmitBtn handleSubmit={handleSubmit} /> {/* 제출하기 버튼 */}
       <SelectedTopping /> {/* 선택된 토핑 리스트 */}
-      <Snackbar /> {/* 안내 멘트 */}
+      {/* <Snackbar /> */}
+      {/* 안내 멘트 */}
     </SelectPageStyle>
   );
 }
@@ -105,19 +106,6 @@ function SubmitBtn({ handleSubmit }) {
   );
 }
 
-function Snackbar() {
-  const [openSnackbar, setOpenSnackbar] = useState(false);
-  return (
-    openSnackbar && (
-      <SnackbarStyle onClick={() => setOpenSnackbar(false)}>
-        <i className="material-icons">report_problem</i>
-        피자가 무거워요!  토핑을 더이상 추가할 수 없습니다!
-        <i className="material-icons">report_problem</i>
-      </SnackbarStyle>
-    )
-  );
-}
-
 function SelectedTopping() {
   return (
     <SelectedToppingStyle>
@@ -185,22 +173,6 @@ const SelectPageStyle = styled.div`
       padding: 5px 24px;
       margin-right: 10px;
     }
-  }
-`;
-
-const SnackbarStyle = styled.div`
-  position: absolute;
-  top: 22px;
-  left: 50%;
-  transform: translateX(-50%);
-  color: white;
-  font-size: 14px;
-  background-color: rgba(0,0,0,0.5);
-  padding: 12px 35px;
-  z-index: 12;
-  i{
-    vertical-align: bottom;
-    margin: 0 10px;
   }
 `;
 
