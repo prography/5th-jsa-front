@@ -124,7 +124,7 @@ function SelectedTopping() {
       {/* 스크롤 업 하거나, 스크롤 다운하는 기능이 필요합니다. */}
       <div className="icon"><img src={toTop} alt="totop" draggable="false" /></div>
       <div className="selected-section">
-        {[...Array(10)].map((val, index) => (
+        {[...Array(1)].map((val, index) => (
           <div className="selected" key={index}>
             <img src={line} alt="line" className="delete" />
             <img src={steak} alt="test" className="selectedTopping" />
@@ -215,6 +215,7 @@ const SelectedToppingStyle = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
   .icon{
     margin: 10px 0;
     user-select: none;
@@ -223,7 +224,7 @@ const SelectedToppingStyle = styled.div`
     }
   }
   .selected-section{
-    height: 384px;
+    height: calc(100% + 88px);
     overflow: auto;
     .selected{
       border-radius: 100px;
@@ -234,7 +235,7 @@ const SelectedToppingStyle = styled.div`
       align-items: center;
       justify-content: center;
       margin-bottom: 8px;
-      margin-left: 9px;
+      /* margin-left: 9px; */
       user-select: none;
       .selectedTopping{
         width: 40px;
