@@ -17,8 +17,8 @@ export default function Nav() {
           <div className="menus scale-up-hor-right">
             <Link to="/">홈</Link>
             <Link to="MyPage">마이페이지</Link>
-            <Link to="EventList">이벤트페이지</Link>
-            <Link to="EventList">팀원소개</Link>
+            <Link to="EventPage">이벤트</Link>
+            <Link to="AboutUs">팀원소개</Link>
             <Link to="feedback">피드백</Link>
           </div>
         )}

@@ -9,3 +9,4 @@ export { default as EventList } from './EventList';
 export { default as Footer } from './Footer';
 export { default as Feedback } from './Feedback';
 export { default as Loading } from './Loading';
+export { default as AboutUs } from './AboutUs';

@@ -4,7 +4,7 @@
 // import React, { lazy, Suspense } from 'react';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { Landing, EventList } from 'components';
+import { Landing, EventList, AboutUs } from 'components';
 import {
   ResultPageContainer, SelectPageContainer, MyPageContainer, FeedbackContainer,
 } from 'containers';
@@ -22,6 +22,7 @@ const Main = () => (
     <Route path="/mypage" component={MyPageContainer} />
     <Route path="/EventPage" component={EventList} />
     <Route path="/feedback" component={FeedbackContainer} />
+    <Route path="/AboutUs" component={AboutUs} />
   </>
 );
 

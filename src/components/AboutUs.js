@@ -1,13 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 
-export default function EventList() {
+export default function AboutUs() {
   return (
-    <EventListStyle>아직 구현안됐다, 이벤트 페이지</EventListStyle>
+    <AboutUsStyle>아직 구현안됐다, 팀원소개</AboutUsStyle>
   );
 }
 
-const EventListStyle = styled.div`
+const AboutUsStyle = styled.div`
   background-color: #333;
   width: 100%;
   height: 100vh;
