@@ -36,7 +36,7 @@ export default function ResultsPageList({ handleFilter, getDetail, resultList })
   return (
     <ResultsPageListStyle>
       <header>
-        <div>총 00개</div>
+        <div>총 {resultList.length}개</div>
         <div className="sortingWrapper">
           <Menu handleFilter={handleFilter} />
         </div>
@@ -70,7 +70,7 @@ export default function ResultsPageList({ handleFilter, getDetail, resultList })
               <img src={listBg} alt="list background" className="listBg" />
             </div>
           ))
-          : <div className="elementStyle-empty">피자가 없다 혹시 너무 많이 선택하신게 아닌지</div>}
+          : <div className="elementStyle-empty">피자가 없다</div>}
       </div>
     </ResultsPageListStyle>
   );
@@ -215,6 +215,7 @@ const ResultsPageListStyle = styled.div`
       align-items: center;
       border-radius: 4px;
       border: 1px dotted white;
+      text-align: center;
     }
   }
 `;

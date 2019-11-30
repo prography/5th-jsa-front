@@ -7,28 +7,14 @@ import { update } from 'modules/topping';
 export default function ResultPageContainer({ history }) {
   const [openDetail, setOpenDetail] = useState(false);
   const [detail, setDetail] = useState();
-  const { initialResult, result, submitTopping } = useSelector((state) => (state.topping));
+  const { initialResult, result } = useSelector((state) => (state.topping));
   // 디스패치
   const dispatch = useDispatch();
   const Update = useCallback((list) => dispatch((update(list))), [dispatch]);
 
   useEffect(() => {
-    // selected 된 토핑이 없으면 선택하는 페이지로 강제 이동
-    if (!submitTopping) { history.push('/selectTopping'); }
-    // selected된 토핑 값으로 결과 데이터 뽑습니다.
-    const postToppingResult = async () => {
-      try {
-        const response = await axios.post(
-          'http://13.209.50.101:3000/pizzas/recomandations', {
-            items: submitTopping,
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          },
-        );
-        console.log(response.data.pizzas);
-        Update({ result: response.data.pizzas });
-      } catch (e) {}
-    };
-    postToppingResult();
+    // 결과값이 없으면 선택하는 페이지로 강제 이동
+    // if (!result.length) { history.push('/selectTopping'); }
   }, []);
 
 
@@ -48,7 +34,8 @@ export default function ResultPageContainer({ history }) {
   function handleFilter(value, name) {
     if (value === 'filter') {
       switch (name) {
-        case 'ALL': Update({ result: initialResult });
+        case 'ALL':
+          Update({ result: initialResult });
           break;
         default:
           Update({ result: initialResult.filter((val) => val.brand === name) });

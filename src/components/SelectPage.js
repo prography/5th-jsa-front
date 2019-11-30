@@ -21,13 +21,13 @@ const toppingGroup = [
 ];
 
 export default function SelectPage({
-  smallToppings, handleDrag, submitTopping, handleSubmit,
+  smallToppings, handleDrag, selectedTopping, handleSubmit,
 }) {
   return (
     <SelectPageStyle className="SelectPage">
       <SelectTopping smallToppings={smallToppings} handleDrag={handleDrag} />
       <div className="large_topping">
-        {submitTopping.map((val, i) => (
+        {selectedTopping.map((val, i) => (
           <img src={val.resultImage} alt="largeToping" key={i} />
         ))}
       </div>
