@@ -1,15 +1,16 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { SelectPage } from 'components';
+import { SelectPage, Loading } from 'components';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { updateTopping } from 'modules/topping';
+import { updateInitial, update } from 'modules/topping';
 
 export default function SelectPageContainer({ history }) {
   const [smallToppings, setSmallToppings] = useState({
     meat: [], sauce: [], cheese: [], seafood: [], vegetable: [], etc: [],
   }); // small topping
   const [selected, setSelected] = useState(''); // 지금 당장 선택된 토핑 이름
-  const [submitTopping, setSubmitTopping] = useState([]); // 선택된 토핑 raw 리스트
+  const [selectedTopping, setSelectedTopping] = useState([]); // 선택된 토핑 raw 리스트
+  const [loading, setLoading] = useState(false); // 선택된 토핑
 
   // small topping load 합니다,
   useEffect(() => {
@@ -32,7 +33,7 @@ export default function SelectPageContainer({ history }) {
         { params: { topping: val } },
       );
       if (response.data.result) {
-        setSubmitTopping(submitTopping.concat([response.data.result]));
+        setSelectedTopping(selectedTopping.concat([response.data.result]));
       }
     };
     fetchToppings(selected);
@@ -41,18 +42,36 @@ export default function SelectPageContainer({ history }) {
 
   // 디스패치
   const dispatch = useDispatch();
-  const UpdateTopping = useCallback((list) => dispatch((updateTopping(list))), [dispatch]);
+  const UpdateInitial = useCallback((list) => dispatch((updateInitial(list))), [dispatch]);
+  const Update = useCallback((list) => dispatch((update(list))), [dispatch]);
 
   // 드래그가 시작 되는 토핑 값을 가져간다.
   const handleDrag = (val) => { setSelected(val); };
   const handleSubmit = () => {
     // 데이터 없으면 로직 작동 안합니다. 데이터 없으면, snackbar로 액션을 주어야 합니다.
-    if (submitTopping.length) {
-      // ! 변수 이름을 submitTopping으로 하고 이미 선언되어있는 변수명은 selectedTopping으로 바꿉니다.
-      const SubmitTopping = [...new Set(submitTopping.map((val) => val.name))];
-      UpdateTopping({ submitTopping: SubmitTopping.join() });
+    if (selectedTopping.length) {
+      setLoading(true); // 로딩 뷰 시작
+      const submitTopping = [...new Set(selectedTopping.map((val) => val.name))];
+
+      // 결과 데이터까지 다 뽑고 보낸다.
+      const postToppingResult = async () => {
+        try {
+          const response = await axios.post(
+            'http://13.209.50.101:3000/pizzas/recomandations', {
+              items: submitTopping.join(),
+              headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            },
+          );
+          Update({ result: response.data.pizzas });
+          UpdateInitial({ initialResult: response.data.pizzas });
+        } catch (e) {}
+      };
+      postToppingResult();
+
       // 값 넘겨주고 페이지 이동합니다.
-      history.push('/result');
+      setTimeout(() => {
+        history.push('/result');
+      }, 1000);
     }
   };
 
@@ -60,10 +79,11 @@ export default function SelectPageContainer({ history }) {
     <>
       <SelectPage
         smallToppings={smallToppings}
-        submitTopping={submitTopping}
+        selectedTopping={selectedTopping}
         handleDrag={handleDrag}
         handleSubmit={handleSubmit}
       />
+      {loading && <Loading />}
     </>
   );
 }
