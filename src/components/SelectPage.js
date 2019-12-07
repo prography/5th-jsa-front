@@ -5,10 +5,8 @@ import contract from 'img/select/contract.png';
 import dough from 'img/select/dough.png';
 import submitbtn from 'img/select/submitbtn.png';
 import submitbtnHover from 'img/select/submitbtnHover.png';
-import steak from 'img/sample/steak.png';
 import toTop from 'img/select/toTop.png';
 import toBottom from 'img/select/toBottom.png';
-import line from 'img/select/line.png';
 
 const toppingGroup = [
   { title: '소스 (4)', name: 'sauce' },
@@ -32,8 +30,6 @@ export default function SelectPage({
         selectedSmallTopping={selectedSmallTopping}
         handleDelete={handleDelete}
       />
-      {/* <Snackbar /> */}
-      {/* 안내 멘트 */}
     </SelectPageStyle>
   );
 }
