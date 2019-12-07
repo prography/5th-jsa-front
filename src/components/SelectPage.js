@@ -20,14 +20,18 @@ const toppingGroup = [
 ];
 
 export default function SelectPage({
-  smallToppings, handleDrag, selectedTopping, handleSubmit,
+  smallToppings, handleDrag, selectedTopping, handleSubmit, selectedSmallTopping, handleDelete,
 }) {
   return (
     <SelectPageStyle className="SelectPage">
       <SelectTopping smallToppings={smallToppings} handleDrag={handleDrag} />
       <Dough selectedTopping={selectedTopping} /> {/* 도우와 토핑 */}
       <SubmitBtn handleSubmit={handleSubmit} /> {/* 제출하기 버튼 */}
-      <SelectedTopping /> {/* 선택된 토핑 리스트 */}
+      {/* 선택된 토핑 리스트 */}
+      <SelectedTopping
+        selectedSmallTopping={selectedSmallTopping}
+        handleDelete={handleDelete}
+      />
       {/* <Snackbar /> */}
       {/* 안내 멘트 */}
     </SelectPageStyle>
@@ -84,7 +88,7 @@ function SelectToppingMenu({ smallToppings, val, handleDrag }) {
           <div
             className={`circle ${topping.name}`}
             draggable
-            onDragStart={() => handleDrag(topping.name)}
+            onDragStart={() => handleDrag(topping)}
           >
             <img src={topping.image} alt="topping" width="40" />
           </div>
@@ -112,16 +116,17 @@ function SubmitBtn({ handleSubmit }) {
   );
 }
 
-function SelectedTopping() {
+function SelectedTopping({ selectedSmallTopping, handleDelete }) {
   return (
     <SelectedToppingStyle>
       {/* 스크롤 업 하거나, 스크롤 다운하는 기능이 필요합니다. */}
       <div className="icon"><img src={toTop} alt="totop" draggable="false" /></div>
       <div className="selected-section">
-        {[...Array(1)].map((val, index) => (
-          <div className="selected" key={index}>
-            <img src={line} alt="line" className="delete" />
-            <img src={steak} alt="test" className="selectedTopping" />
+        {selectedSmallTopping.map((val, index) => (
+          <div className="selected" key={index} onClick={() => handleDelete(val)}>
+            {/* <img src={line} alt="line" className="delete" width={18} /> */}
+            <div className="delete">빼기</div>
+            <img src={val.url} alt="smallTopping" className="selectedTopping" />
           </div>
         ))}
       </div>
@@ -187,7 +192,7 @@ const SelectedToppingStyle = styled.div`
   position: absolute;
   top: 100px;
   right: 23px;
-  width: 80px;
+  width: 70px;
   height: 60%;
   border-radius: 100px;
   background-color: rgba(0,0,0,0.4);
@@ -205,16 +210,21 @@ const SelectedToppingStyle = styled.div`
   .selected-section{
     height: calc(100% + 88px);
     overflow: auto;
+    ::-webkit-scrollbar {
+      width: 0px;  /* 세로축 스크롤바 길이 */
+      height: 0px;  /* 가로축 스크롤바 길이 */
+    }
     .selected{
+      animation: swing-in-top-fwd 0.5s cubic-bezier(0.175, 0.885, 0.320, 1.275) both;
       border-radius: 100px;
       background-color: rgba(0,0,0,0.2);
-      width: 60px;
-      height: 60px;
+      width: 50px;
+      height: 50px;
       display: flex;
       align-items: center;
       justify-content: center;
+      align-items: center;
       margin-bottom: 8px;
-      /* margin-left: 9px; */
       user-select: none;
       .selectedTopping{
         width: 40px;
@@ -229,6 +239,9 @@ const SelectedToppingStyle = styled.div`
         }
         .delete{
           display: block;
+          font-size: 13px;
+          color: white;
+          font-weight: bold;
         }
       }
     }
