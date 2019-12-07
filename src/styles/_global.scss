@@ -6,6 +6,7 @@ html{
 
 body {
   margin: 0;
+  user-select: none;
 }
 
 code {
@@ -109,22 +110,22 @@ $list-size: 0 1 2 3 4 5;
   }
   ::-webkit-scrollbar-thumb {
     border-radius: 10px;
-    background-color: rgba(0,0,0,0.3);
+    background-color: rgba(0,0,0,0.03);
   }
   ::-webkit-scrollbar-button {
-    background-color: darkblue;
+    background-color: rgba(0,0,0,0.1);
     width: 20px;
     height: 10px;
   }
   ::-webkit-scrollbar-button:start {
-    background-color: red; /* Top, Left 방향의 이동버튼 */
+    background-color: rgba(0,0,0,0.1); /* Top, Left 방향의 이동버튼 */
   }
   ::-webkit-scrollbar-button:end {
-    background-color: orange; /* Bottom, Right 방향의 이동버튼 */
+    background-color: rgba(0,0,0,0.1); /* Bottom, Right 방향의 이동버튼 */
   }
   ::-webkit-scrollbar-corner {
-    background-color: #f2f2f2; /* 우측 하단의 코너 부분 */
+    background-color: rgba(0,0,0,0.1); /* 우측 하단의 코너 부분 */
   }
   ::-webkit-resizer {
-    background-color: green;
+    background-color: rgba(0,0,0,0.1);
   }

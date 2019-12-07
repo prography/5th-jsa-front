@@ -1,217 +1,323 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 import expand from 'img/select/expand.png';
 import contract from 'img/select/contract.png';
-import bg from 'img/select/bg.png';
 import dough from 'img/select/dough.png';
+import submitbtn from 'img/select/submitbtn.png';
+import submitbtnHover from 'img/select/submitbtnHover.png';
+import toTop from 'img/select/toTop.png';
+import toBottom from 'img/select/toBottom.png';
 
-import SelectPageToppingList from './SelectPageToppingList';
+const toppingGroup = [
+  { title: '소스 (4)', name: 'sauce' },
+  { title: '고기 (11)', name: 'meat' },
+  { title: '해산물 (5)', name: 'seafood' },
+  { title: '야채 (18)', name: 'vegetable' },
+  { title: '치즈 (16)', name: 'cheese' },
+  { title: '기타 (8)', name: 'etc' },
+];
 
-import axios from 'axios';
-
-// 손 애니메이션 추가할 예정
-
-export default function SelectPage() {
-  const [open, setOpen] = useState(true);
-  const [toppingName, setToppingName] = useState('');
-  const [toppingImages, setToppingImages] = useState([]);
-  const dragOver_ = e => {
-    e.preventDefault();
-    console.log('dragOver');
-  };
-
-  useEffect(() => {
-    const fetchToppings = async toppingName => {
-      const response = await axios.get(
-        'http://13.209.50.101:3000/pizzas/toppings/image',
-        { params: { topping: toppingName } },
-      );
-      console.log(response);
-      if (response.data.result === null) {
-      } else {
-        setToppingImages(() => [
-          ...toppingImages,
-          response.data.result.resultImage,
-        ]);
-        console.log(toppingImages);
-      }
-    };
-    fetchToppings(toppingName);
-  }, [toppingName]);
-  //
-  const drop_ = e => {
-    console.log('drop');
-    e.preventDefault();
-    const targetClass = e.dataTransfer.getData('targetClass');
-    console.log(targetClass);
-    // 토핑 이름이 나온다
-    console.log(e.target);
-    // div 태그가 나온다!!
-    setToppingName(targetClass);
-  };
+export default function SelectPage({
+  smallToppings, handleDrag, selectedTopping, handleSubmit, selectedSmallTopping, handleDelete,
+}) {
   return (
-    <SelectStyle>
-      <>
-        <div className="topping-small-container">
-          {open && (
-            <div className="topping-box">
-              <SelectPageToppingList
-                toppingType="맛(4)"
-                visible={false}
-                j={4}
-              />
-              <SelectPageToppingList
-                toppingType="치즈(16)"
-                visible={false}
-                j={3}
-              />
-              <SelectPageToppingList toppingType="고기(11)" visible j={0} />
-              <SelectPageToppingList
-                toppingType="해산물(5)"
-                visible={false}
-                j={1}
-              />
-              <SelectPageToppingList
-                toppingType="야채(18)"
-                visible={false}
-                j={2}
-              />
-              <SelectPageToppingList
-                toppingType="기타(8)"
-                visible={false}
-                j={5}
-              />
-            </div>
-          )}
-          <div
-            className="expand-topping"
-            onClick={() => setOpen(!open)}
-            open={open}
-          >
-            {!open ? (
-              <img src={contract} className="arrow" alt="contract" />
-            ) : (
-              <img src={expand} className="arrow" alt="expand" />
-            )}
-          </div>
-        </div>
-        {/* 배경 */}
-        <div
-          className="backGround-container"
-          droppable="true"
-          onDragOver={dragOver_}
-          onDrop={drop_}
-        >
-          <img src={bg} className="bg" alt="bg" />
-          <img src={dough} className="dough" />
-          {toppingImages.map((images, idx) => (
-            <img key={idx} src={images} className="topping" />
-          ))}
-
-          <div className="goToOven">
-            <Link to="result">피자 굽기▶</Link>
-          </div>
-        </div>
-      </>
-    </SelectStyle>
+    <SelectPageStyle className="SelectPage">
+      <SelectTopping smallToppings={smallToppings} handleDrag={handleDrag} />
+      <Dough selectedTopping={selectedTopping} /> {/* 도우와 토핑 */}
+      <SubmitBtn handleSubmit={handleSubmit} /> {/* 제출하기 버튼 */}
+      {/* 선택된 토핑 리스트 */}
+      <SelectedTopping
+        selectedSmallTopping={selectedSmallTopping}
+        handleDelete={handleDelete}
+      />
+    </SelectPageStyle>
   );
 }
 
-const SelectStyle = styled.div`
-  width: 100%;
-  height: 100vh;
-  .topping-small-container {
-    display: flex;
-    align-items: center;
-    justify-contents: center;
-    width: 456px;
-    height: 100vh;
-    z-index: 1;
-  }
-  .topping-box {
-    width: 396px;
-    height: 100vh;
-    background: rgba(51, 34, 28, 0.9);
-    overflow: scroll;
-    color: #fff;
-    z-index: 1;
-  }
+// {/* ondrop="drop(event)" ondragover="allowDrop(event)" */}
+function Dough({ selectedTopping }) {
+  return (
+    <DoughStyle className="dodytest">
+      <div className="large_topping">
+        {selectedTopping.map((val, i) => (
+          <img src={val.resultImage} alt="largeToping" key={i} />
+        ))}
+      </div>
+      <img src={dough} alt="doughImg" className="img-dough" />
+    </DoughStyle>
+  );
+}
 
-  .expand-topping {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    overflow: hidden;
-    right: 30px;
-    position: relative;
-    background: rgba(51, 34, 28, 0.6);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    curser: pointer;
-    z-index: 1;
-  }
-  .arrow {
-    width: 20%;
-    height: 30%;
-    position: relative;
-    left: 10px;
-  }
-  .bg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-size: cover;
-    width: 100%;
-    height: 100vh;
-    z-index: 0;
-  }
+function SelectTopping({ smallToppings, handleDrag }) {
+  const [open, setOpen] = useState(true);
+  return (
+    <>
+      {/* select box */}
+      <SelectToppingStyle open={open}>
+        {toppingGroup.map((val, i) => (
+          <SelectToppingMenu
+            key={i}
+            smallToppings={smallToppings}
+            val={val}
+            handleDrag={handleDrag}
+          />
+        ))}
+      </SelectToppingStyle>
+      {/* select box를 열고 닫는 버튼 */}
+      <SelectToppingCloseBtnStyle open={open} onClick={() => setOpen(!open)}>
+        <img src={open ? expand : contract} alt="close" />
+      </SelectToppingCloseBtnStyle>
+    </>
+  );
+}
 
-  .background-container {
-    display: block;
-    position: absolute;
-    z-index: 0;
-    width: 75%;
-    height: 58%;
-  }
-  .dough {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    z-index: 0;
-    width: 67%;
-    height: 54%;
-  }
-  .topping {
-    position: absolute;
-    z-index: 0;
-    right: 186px;
-    bottom: 75px;
-    width: 49%;
-    height: 41%;
-  }
+function SelectToppingMenu({ smallToppings, val, handleDrag }) {
+  const [open, setOpen] = useState(true);
+  return (
+    <>
+      <div className="topping-title" onClick={() => setOpen(!open)}>
+        {val.title}
+        <i className="material-icons">arrow_drop_down</i>
+      </div>
+      {open && (smallToppings[val.name]).map((topping, idx) => (
+        <div className="topping-item" key={idx}>
+          <div
+            className={`circle ${topping.name}`}
+            draggable
+            onDragStart={() => handleDrag(topping)}
+          >
+            <img src={topping.image} alt="topping" width="40" />
+          </div>
+          <span>{topping.name}</span>
+        </div>
+      ))}
+    </>
+  );
+}
 
-  .goToOven {
-    background: rgba(51, 34, 28, 0.6);
-    display: flex-inline;
+function SubmitBtn({ handleSubmit }) {
+  const [submit, setSubmit] = useState(false);
+  return (
+    <div
+      className="SubmitBtn"
+      onMouseOver={() => setSubmit(true)}
+      onFocus={() => setSubmit(true)}
+      onMouseLeave={() => setSubmit(false)}
+    >
+      {submit && <div className="SubmitBtnText ml-1">피자 굽기!!</div>}
+      <div className="pointer" onClick={submitbtn && handleSubmit}>
+        <img src={submit ? submitbtnHover : submitbtn} alt="submit btn" />
+      </div>
+    </div>
+  );
+}
+
+function SelectedTopping({ selectedSmallTopping, handleDelete }) {
+  return (
+    <SelectedToppingStyle>
+      {/* 스크롤 업 하거나, 스크롤 다운하는 기능이 필요합니다. */}
+      <div className="icon"><img src={toTop} alt="totop" draggable="false" /></div>
+      <div className="selected-section">
+        {selectedSmallTopping.map((val, index) => (
+          <div className="selected" key={index} onClick={() => handleDelete(val)}>
+            {/* <img src={line} alt="line" className="delete" width={18} /> */}
+            <div className="delete">빼기</div>
+            <img src={val.url} alt="smallTopping" className="selectedTopping" />
+          </div>
+        ))}
+      </div>
+      <div className="icon"><img src={toBottom} alt="toBottom" /></div>
+    </SelectedToppingStyle>
+  );
+}
+
+// 2240×1105
+
+const SelectPageStyle = styled.div`
+  position: relative;
+  .SubmitBtn{
     position: absolute;
     bottom: 20px;
-    right: 20px;
-    width: 170px;
-    height: 51px;
-    text-align: center;
-    border-radius: 30px;
-    padding: 0;
-    z-index: 1;
+    right: 30px;
+    display: flex;
+    align-items: flex-end;
+    user-select: none;
+    img{
+      user-select: none;
+      width: 110px;
+    }
+    .SubmitBtnText{
+      user-select: none;
+      background-color: rgba(0,0,0,0.5);
+      border-radius: 100px;
+      color: white;
+      padding: 5px 24px;
+      margin-right: 10px;
+    }
   }
-  .goToOven a {
-    align-content: center;
-    font-size: 20px;
-    text-decoration: none;
-    color: #fff;
-    position: relative;
-    top: 14px;
-    z-index: 1;
+`;
+
+const DoughStyle = styled.div`
+  position: fixed;
+  width: 75%;
+  right: 0%;
+  bottom: 0;
+  @media (max-width: 1100px) {
+    width: 90%;
+  }
+  /* 도우 */
+  .img-dough{
+    width: 100%;
+  }
+  /* 큰 토핑 style */
+  .large_topping{
+    position: absolute;
+    border-radius: 100%;
+    width: 73%;
+    height: 69%;
+    margin-left: 5%;
+    margin-top: 1%;
+    img{
+      width: 100%;
+      position: absolute;
+    }
+  }
+`;
+
+const SelectedToppingStyle = styled.div`
+  position: absolute;
+  top: 100px;
+  right: 23px;
+  width: 70px;
+  height: 60%;
+  border-radius: 100px;
+  background-color: rgba(0,0,0,0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  .icon{
+    margin: 10px 0;
+    user-select: none;
+    &:hover{
+      opacity: 0.2;
+    }
+  }
+  .selected-section{
+    height: calc(100% + 88px);
+    overflow: auto;
+    ::-webkit-scrollbar {
+      width: 0px;  /* 세로축 스크롤바 길이 */
+      height: 0px;  /* 가로축 스크롤바 길이 */
+    }
+    .selected{
+      animation: swing-in-top-fwd 0.5s cubic-bezier(0.175, 0.885, 0.320, 1.275) both;
+      border-radius: 100px;
+      background-color: rgba(0,0,0,0.2);
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 8px;
+      user-select: none;
+      .selectedTopping{
+        width: 40px;
+      }
+      .delete{
+        display: none;
+      }
+      &:hover{
+        background-color: #b93030;
+        .selectedTopping{
+          display: none;
+        }
+        .delete{
+          display: block;
+          font-size: 13px;
+          color: white;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+`;
+
+const SelectToppingStyle = styled.div`
+  position: absolute;
+  top: 0;
+  left: ${(props) => (props.open ? '0px' : '-356px')};
+  width: 356px;
+  height: 100vh;
+  overflow: auto;
+  transition: 0.2s;
+  background-color: rgba(0,0,0,0.6);
+  color: #fff;
+  z-index: 10;
+  padding-left: 16px;
+  i{
+    vertical-align: bottom;
+  }
+  .topping-title{
+    /* font-weight: bold; */
+    font-size: 0.875rem;
+    cursor: pointer;
+    margin-bottom: 14px;
+    margin-top: 8px;
+  }
+  .topping-item{
+    height: 97px;
+    width: 50px;
+    display: inline-flex;
+    flex-direction: column;
+    margin-right: 16px;
+    text-align: center;
+    .circle{
+      border: 1px solid rgba(255,255,255,0.03);
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.1s ease;
+      &:hover{
+        background-color: rgba(0,0,0,0.1);
+      }
+    }
+    span{
+      color: white;
+      font-size: 11px;
+      margin-top: 6px;
+      line-height: 1.1;
+      display: block;
+    }
+  }
+  .closeBtn{
+    width: 50px;
+    height: 100px;
+    background-color: rgba(0,0,0,0.5);
+  }
+`;
+
+const SelectToppingCloseBtnStyle = styled.div`
+  z-index: 10;
+  position: absolute;
+  width: 40px;
+  height: 80px;
+  background-color: rgba(0,0,0,0.6);
+  top: 50%;
+  transition: 0.2s;
+  left: ${(props) => (props.open ? '356px' : '0px')};
+  transform: translateY(-50%);
+  border-radius: 0 100px 100px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  img{
+    width: 8px;
+    margin-left: -13px;
   }
 `;

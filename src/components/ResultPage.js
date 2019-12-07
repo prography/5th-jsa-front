@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { ResultsPageDetail, ResultsPageList } from 'components';
 import bgLogo from 'img/detail/bg-logo.png';
 
-export default function ResultPage({ handleFilter, handleFavorite, resultList }) {
-  const [openDetail, setOpenDetail] = useState(false);
+export default function ResultPage({
+  handleFilter, handleFavorite, resultList, getDetail, detail,
+}) {
   return (
     <div className="ResultPage">
       <a href="http://www.prography.org" target="_blank" rel="noopener noreferrer">
@@ -16,9 +17,13 @@ export default function ResultPage({ handleFilter, handleFavorite, resultList })
         다시 고르러 가기
       </Link>
       <ResultsWrapperStyle>
-        <ResultsPageList handleFilter={handleFilter} OpenDetail={() => setOpenDetail(true)} resultList={resultList} />
+        <ResultsPageList
+          handleFilter={handleFilter}
+          getDetail={getDetail}
+          resultList={resultList}
+        />
         {/* 리스트에서 하나를 클릭하면 */}
-        {openDetail && <ResultsPageDetail handleFavorite={handleFavorite} />}
+        {detail && <ResultsPageDetail handleFavorite={handleFavorite} detail={detail} />}
       </ResultsWrapperStyle>
     </div>
   );
