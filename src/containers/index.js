@@ -6,3 +6,4 @@ export { default as MyPageContainer } from './MyPageContainer';
 export { default as ResultPageContainer } from './ResultPageContainer';
 export { default as SelectPageContainer } from './SelectPageContainer';
 export { default as FeedbackContainer } from './FeedbackContainer';
+export { default as LoginContainer } from './LoginContainer';
