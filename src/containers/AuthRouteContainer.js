@@ -3,7 +3,7 @@ import { Route, Redirect } from 'react-router-dom';
 import { loginSuccess } from 'modules/user';
 import { useDispatch } from 'react-redux';
 
-function AuthRoute({
+export default function AuthRoute({
   ...props
 }) {
   const dispatch = useDispatch();
@@ -15,5 +15,3 @@ function AuthRoute({
       : (<Redirect to="/login" />)
   );
 }
-
-export default AuthRoute;
