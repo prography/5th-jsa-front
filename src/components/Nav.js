@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-export default function Nav() {
+export default function Nav({ isLogin }) {
   const [open, setOpen] = useState(true);
+  console.log(isLogin);
   return (
     <NavStyle open={open}>
       {/* styled-component로 props 값을 전달하려면 이렇게 넣어줘야해! styled-component에서 open 값을 못 읽구 있길래 추가해쏘 */}
@@ -16,7 +17,7 @@ export default function Nav() {
         {open && (
           <div className="menus scale-up-hor-right">
             <Link to="/">홈</Link>
-            <Link to="MyPage">마이페이지</Link>
+            <Link to="MyPage">{isLogin}</Link>
             <Link to="EventPage">이벤트</Link>
             <Link to="AboutUs">팀원소개</Link>
             <Link to="feedback">피드백</Link>
