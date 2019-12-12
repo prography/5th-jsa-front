@@ -3,6 +3,7 @@ import { SelectPage, Loading } from 'components';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { updateInitial, update } from 'modules/topping';
+import { show } from 'modules/snackbar';
 
 export default function SelectPageContainer({ history }) {
   const [smallToppings, setSmallToppings] = useState({
@@ -12,6 +13,12 @@ export default function SelectPageContainer({ history }) {
   // const [selectedLargeTopping, setselectedLargeTopping] = useState([]); // 선택된 큰 토핑 list
   const [selectedTopping, setSelectedTopping] = useState([]); // 선택된 최종 전송 될 토핑 raw 리스트 (삭제될 수 있음)
   const [loading, setLoading] = useState(false);
+
+  // 디스패치
+  const dispatch = useDispatch();
+  const UpdateInitial = useCallback((list) => dispatch((updateInitial(list))), [dispatch]);
+  const Update = useCallback((list) => dispatch((update(list))), [dispatch]);
+  const Show = useCallback((list) => dispatch((show(list))), [dispatch]);
 
   // small topping load 합니다,
   useEffect(() => {
@@ -37,11 +44,6 @@ export default function SelectPageContainer({ history }) {
     }
   };
 
-  // 디스패치
-  const dispatch = useDispatch();
-  const UpdateInitial = useCallback((list) => dispatch((updateInitial(list))), [dispatch]);
-  const Update = useCallback((list) => dispatch((update(list))), [dispatch]);
-
   // 드래그가 시작 되는 토핑 값을 가져간다.
   const handleDrag = (val) => {
     // 중복된 값이 있는지 확인하고 데이터 업데이트 합니다.
@@ -51,7 +53,7 @@ export default function SelectPageContainer({ history }) {
       // 선택된 데이터 large 토핑 이미지 불러오기
       fetchToppings(val.name);
     } else {
-      console.log('같은 값을 올렸습니다');
+      Show({ content: '같은 토핑을 올려버렸네요! 토핑 두번 추가는 곤란해요!' });
     }
   };
 

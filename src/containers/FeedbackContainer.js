@@ -1,25 +1,26 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Feedback } from 'components';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { update } from 'modules/feedback';
+import { show } from 'modules/snackbar';
 
 export default function FeedbackContainer() {
-  const [snackbar, openSnackbar] = useState(false);
   const { feedback } = useSelector((state) => (state.feedback));
   // 디스패치
   const dispatch = useDispatch();
   const Update = useCallback((list) => dispatch((update(list))), [dispatch]);
+  const Show = useCallback((list) => dispatch((show(list))), [dispatch]);
 
   useEffect(() => {
     Update({ feedback: '' });
   }, []);
-  // test setting master pr
 
   function handleUpdate(e) {
     Update({ feedback: e });
   }
   function handleSubmit() {
+    Show({ content: '제출성공! 피드백 감사합니다!' });
     if (feedback !== '') {
       axios.post(
         'http://13.209.50.101:3000/users/feedback', {
@@ -27,8 +28,7 @@ export default function FeedbackContainer() {
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         },
       ).then(() => {
-        openSnackbar(true);
-        setTimeout(() => { openSnackbar(false); }, 2000);
+        Show({ content: '제출성공! 피드백 감사합니다!' });
         Update({ feedback: '' });
       });
     }
@@ -39,7 +39,6 @@ export default function FeedbackContainer() {
       handleUpdate={handleUpdate}
       handleSubmit={handleSubmit}
       feedback={feedback}
-      snackbar={snackbar}
     />
   );
 }
