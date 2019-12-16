@@ -62,7 +62,7 @@ const NavStyle = styled.div`
       margin: 0 10px 0 34px;
       display: flex;
     }
-    .menus a {
+    .menus a,span {
       text-decoration: none;
       color: #fff;
       margin-right: 13px;
