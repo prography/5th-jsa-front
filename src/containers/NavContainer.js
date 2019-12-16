@@ -2,8 +2,9 @@ import React, { useCallback } from 'react';
 import { Nav } from 'components';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from 'modules/user';
+import { withRouter } from 'react-router-dom';
 
-export default function NavContainer() {
+const NavContainer = ({ history }) => {
   const { user } = useSelector((store) => store.user);
   const isLogin = user.access_token !== undefined ? '마이페이지' : '로그인';
   const dispatch = useDispatch();
@@ -11,6 +12,7 @@ export default function NavContainer() {
   function handleLogout() {
     Logout();
     localStorage.clear();
+    return history.push('/');
   }
   return (
     <Nav
@@ -18,4 +20,6 @@ export default function NavContainer() {
       handleLogout={handleLogout}
     />
   );
-}
+};
+
+export default withRouter(NavContainer);
