@@ -2,13 +2,10 @@ import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-export default function AuthRoute({
-  ...props
-}) {
-  const { user } = useSelector((store) => store.user);
-  const { path, component } = props;
+export default function AuthRoute({ path, component }) {
+  const { isLogin } = useSelector((store) => store.user);
   return (
-    user.access_token !== undefined ? (
+    isLogin ? (
       <Route path={path} component={component} />)
       : (<Redirect to="/login" />)
   );
