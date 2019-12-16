@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-export default function Nav({ isLogin }) {
+export default function Nav({ isLogin, handleLogout }) {
   const [open, setOpen] = useState(true);
   console.log(isLogin);
   return (
@@ -21,6 +21,7 @@ export default function Nav({ isLogin }) {
             <Link to="EventPage">이벤트</Link>
             <Link to="AboutUs">팀원소개</Link>
             <Link to="feedback">피드백</Link>
+            {isLogin === '마이페이지' ? <span onClick={handleLogout}>로그아웃</span> : '' }
           </div>
         )}
       </div>
