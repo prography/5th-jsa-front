@@ -15,8 +15,8 @@ const LoginContainer = ({ history }) => {
     Login({
       isLogin: true,
       userInfo: {
-        access_token: result.response.access_token,
-        kakao_id: result.profile.id,
+        accessToken: result.response.access_token,
+        kakaoId: result.profile.id,
         nickname: result.profile.kakao_account.profile.nickname,
         image: result.profile.kakao_account.profile.profile_image_url,
       },
@@ -24,7 +24,7 @@ const LoginContainer = ({ history }) => {
 
     localStorage.setItem('userInfo',
       JSON.stringify({
-        access_token: result.response.access_token,
+        accessToken: result.response.access_token,
       }));
 
     return history.push('/');

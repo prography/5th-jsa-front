@@ -21,7 +21,7 @@ function App() {
     Login({
       isLogin: true,
       userInfo: {
-        access_token: user.access_token,
+        accessToken: user.accessToken,
       },
     });
   }
