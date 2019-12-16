@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 
 export default function Nav({ isLogin, handleLogout }) {
   const [open, setOpen] = useState(true);
-  console.log(isLogin);
   return (
     <NavStyle open={open}>
       {/* styled-component로 props 값을 전달하려면 이렇게 넣어줘야해! styled-component에서 open 값을 못 읽구 있길래 추가해쏘 */}
@@ -17,11 +16,11 @@ export default function Nav({ isLogin, handleLogout }) {
         {open && (
           <div className="menus scale-up-hor-right">
             <Link to="/">홈</Link>
-            <Link to="MyPage">{isLogin}</Link>
+            <Link to="MyPage">{isLogin ? '마이페이지' : '로그인'}</Link>
             <Link to="EventPage">이벤트</Link>
             <Link to="AboutUs">팀원소개</Link>
             <Link to="feedback">피드백</Link>
-            {isLogin === '마이페이지' ? <span onClick={handleLogout}>로그아웃</span> : '' }
+            {isLogin && <span onClick={handleLogout}>로그아웃</span> }
           </div>
         )}
       </div>
