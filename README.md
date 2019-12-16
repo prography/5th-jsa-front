@@ -10,13 +10,15 @@ This project was bootstrapped with [Create React App](https://github.com/
 
 # 참고
 
-1. 코드스타일링을 위해 [ESLint](https://eslint.org/) ([Airbnb style guide](https://github.com/airbnb/javascript)) 와 [Prettier](https://prettier.io/docs/en/install.html)를 사용  
-(eslint, prettier [참고] https://velog.io/@velopert/eslint-and-prettier-in-react)
+- 코드스타일링을 위해 [ESLint](https://eslint.org/) ([Airbnb style guide](https://github.com/airbnb/javascript)) 와 [Prettier](https://prettier.io/docs/en/install.html)를 사용
 
-2. material design component icon 사용 (https://material.io/resources/icons/?icon=file_copy&style=baseline)
-3. git semantic commit message 사용
-   윈도우: windows key + ;
-   mac : ctrl + command + space
+  > (eslint, prettier [참고] https://velog.io/@velopert/eslint-and-prettier-in-react)
+
+- material design component icon 사용 (https://material.io/resources/icons/?icon=file_copy&style=baseline)
+
+- git semantic commit message 사용
+  > 윈도우: windows key + ;
+  > mac : ctrl + command + space
 
 | 언제?                              | 커밋메시지                              |
 | ---------------------------------- | --------------------------------------- |
