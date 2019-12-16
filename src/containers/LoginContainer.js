@@ -2,10 +2,12 @@ import React, { useCallback } from 'react';
 import { login } from 'modules/user';
 import { useDispatch } from 'react-redux';
 import KakaoLogin from 'react-kakao-login';
-import { Redirect } from 'react-router-dom';
+//higher order component
+import { withRouter } from 'react-router-dom';
 
 
-export default function LoginContainer() {
+const LoginContainer = ({ history }) => {
+  //history : 브라우저 api ( 새로고침 안함 )
   const dispatch = useDispatch();
   const Login = useCallback((user) => dispatch((login(user))), [dispatch]);
   function onSuccess(result) {
@@ -16,8 +18,7 @@ export default function LoginContainer() {
       nickname: result.profile.kakao_account.profile.nickname,
       image: result.profile.kakao_account.profile.profile_image_url,
     });
-    //need to get code review ( doesn't work )
-    return <Redirect to={{ pathname: '/' }} />;
+    return history.push('/');
   }
 
   function onFailure(result) {
@@ -34,4 +35,6 @@ export default function LoginContainer() {
       render={(props) => (<a href="#" onClick={props.onClick}>로그인</a>)}
     />
   );
-}
+};
+
+export default withRouter(LoginContainer);
