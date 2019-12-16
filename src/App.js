@@ -19,9 +19,10 @@ function App() {
   // userInfo를 localStorage에서 검사하고 없으면 store에도 없으므로, localStore에서 받아온 값을 store에 추가
   if (Object.entries(user).length !== 0) {
     Login({
-      access_token: user.access_token,
-      kakao_id: user.kakao_id,
-      nickname: user.nickname,
+      isLogin: true,
+      userInfo: {
+        access_token: user.access_token,
+      },
     });
   }
   return (

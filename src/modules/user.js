@@ -2,31 +2,28 @@ import { createAction, handleActions } from 'redux-actions';
 
 // 액션타입 정의
 const LOGIN = 'user/LOGIN';
-const LOGIN_SUCCESS = 'user/login_success';
 const LOGOUT = 'user/LOGOUT';
 
 // 액션생성함수 정의
-export const login = createAction(LOGIN, (user) => user);
-export const loginSuccess = createAction(LOGIN_SUCCESS);
+export const login = createAction(LOGIN, (userInfo) => userInfo);
 export const logout = createAction(LOGOUT);
 
 
 // 초기값
 const initialState = {
-  user: {},
+  isLogin: false,
+  userInfo: {},
 };
 
 export default handleActions({
   [LOGIN]: (state, action) => ({
     ...state,
-    user: action.payload,
+    isLogin: action.payload.isLogin,
+    userInfo: action.payload.userInfo,
   }),
-  [LOGIN_SUCCESS]: (state, action) => ({
+  [LOGOUT]: (state, action) => ({
     ...state,
-    user: action.payload,
-  }),
-  [LOGOUT]: (state) => ({
-    ...state,
-    user: {},
+    isLogin: action.payload,
+    userInfo: {},
   }),
 }, initialState);

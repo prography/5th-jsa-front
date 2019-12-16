@@ -5,12 +5,11 @@ import { logout } from 'modules/user';
 import { withRouter } from 'react-router-dom';
 
 const NavContainer = ({ history }) => {
-  const { user } = useSelector((store) => store.user);
-  const isLogin = user.access_token !== undefined ? '마이페이지' : '로그인';
+  const { isLogin } = useSelector((store) => store.user);
   const dispatch = useDispatch();
   const Logout = useCallback((() => dispatch((logout()))), [dispatch]);
   function handleLogout() {
-    Logout();
+    Logout({ isLogin: false });
     localStorage.clear();
     return history.push('/');
   }

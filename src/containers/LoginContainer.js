@@ -13,10 +13,13 @@ const LoginContainer = ({ history }) => {
   function onSuccess(result) {
     // 스토어에 저장
     Login({
-      access_token: result.response.access_token,
-      kakao_id: result.profile.id,
-      nickname: result.profile.kakao_account.profile.nickname,
-      image: result.profile.kakao_account.profile.profile_image_url,
+      isLogin: true,
+      userInfo: {
+        access_token: result.response.access_token,
+        kakao_id: result.profile.id,
+        nickname: result.profile.kakao_account.profile.nickname,
+        image: result.profile.kakao_account.profile.profile_image_url,
+      },
     });
 
     localStorage.setItem('userInfo',
@@ -29,7 +32,6 @@ const LoginContainer = ({ history }) => {
 
   function onFailure(result) {
     alert('로그인 에러');
-    console.log(result);
   }
   return (
     <KakaoLogin
