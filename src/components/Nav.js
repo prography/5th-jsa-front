@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-export default function Nav() {
+export default function Nav({ isLogin, handleLogout }) {
   const [open, setOpen] = useState(true);
   return (
     <NavStyle open={open}>
@@ -16,10 +16,11 @@ export default function Nav() {
         {open && (
           <div className="menus scale-up-hor-right">
             <Link to="/">홈</Link>
-            <Link to="MyPage">마이페이지</Link>
+            <Link to="MyPage">{isLogin ? '마이페이지' : '로그인'}</Link>
             <Link to="EventPage">이벤트</Link>
             <Link to="AboutUs">팀원소개</Link>
             <Link to="feedback">피드백</Link>
+            {isLogin && <span onClick={handleLogout}>로그아웃</span> }
           </div>
         )}
       </div>
@@ -60,7 +61,7 @@ const NavStyle = styled.div`
       margin: 0 10px 0 34px;
       display: flex;
     }
-    .menus a {
+    .menus a,span {
       text-decoration: none;
       color: #fff;
       margin-right: 13px;
