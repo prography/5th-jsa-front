@@ -7,10 +7,12 @@ import { Route, Switch } from 'react-router-dom';
 const Landing = lazy(() => import('components/Landing'));
 const EventList = lazy(() => import('components/EventList'));
 const AboutUs = lazy(() => import('components/AboutUs'));
+const AuthRoute = lazy(() => import('containers/AuthRouteContainer'));
 const ResultPageContainer = lazy(() => import('containers/ResultPageContainer'));
 const SelectPageContainer = lazy(() => import('containers/SelectPageContainer'));
 const MyPageContainer = lazy(() => import('containers/MyPageContainer'));
 const FeedbackContainer = lazy(() => import('containers/FeedbackContainer'));
+const LoginContainer = lazy(() => import('containers/LoginContainer'));
 
 const Main = () => (
   <Suspense fallback={<Dody />}>
@@ -19,7 +21,13 @@ const Main = () => (
     <Switch>
       <Route path="/result" component={ResultPageContainer} />
     </Switch>
-    <Route path="/mypage" component={MyPageContainer} />
+    <Switch>
+      <AuthRoute
+        path="/mypage"
+        component={MyPageContainer}
+      />
+    </Switch>
+    <Route path="/login" component={LoginContainer} />
     <Route path="/EventPage" component={EventList} />
     <Route path="/feedback" component={FeedbackContainer} />
     <Route path="/AboutUs" component={AboutUs} />
