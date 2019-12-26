@@ -12,6 +12,7 @@ const LoginContainer = ({ history }) => {
   const Login = useCallback((user) => dispatch((login(user))), [dispatch]);
   function onSuccess(result) {
     // 스토어에 저장
+    console.log(result);
     Login({
       isLogin: true,
       userInfo: {
