@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ResultPage } from 'components';
-import axios from 'axios';
+import * as api from 'lib/api';
 import { update } from 'modules/topping';
 
 export default function ResultPageContainer({ history }) {
@@ -23,7 +23,7 @@ export default function ResultPageContainer({ history }) {
     setOpenDetail(true);
     const loadDetail = async (val) => {
       try {
-        const response = await axios.get(`http://13.209.50.101:3000/pizzas/details/${val}`);
+        const response = await api.postPizzaDetail(val);
         setDetail(response.data);
       } catch (e) {}
     };

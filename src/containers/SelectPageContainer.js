@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { SelectPage, Loading } from 'components';
-import axios from 'axios';
+import * as api from 'lib/api';
 import { useDispatch } from 'react-redux';
 import { updateInitial, update } from 'modules/topping';
 import { show } from 'modules/snackbar';
@@ -24,10 +24,8 @@ export default function SelectPageContainer({ history }) {
   useEffect(() => {
     const fetchToppings = async () => {
       try {
-        const response = await axios.get(
-          'http://13.209.50.101:3000/pizzas/toppings',
-        );
-        setSmallToppings(response.data);
+        api.getPizzaToppings()
+          .then((res) => setSmallToppings(res.data));
       } catch (e) {}
     };
     fetchToppings();
@@ -35,13 +33,11 @@ export default function SelectPageContainer({ history }) {
 
   // large 토핑 이미지 가져오는 로직
   const fetchToppings = async (val) => {
-    const response = await axios.get(
-      'http://13.209.50.101:3000/pizzas/toppings/image',
-      { params: { topping: val } },
-    );
-    if (response.data.result) {
-      setSelectedTopping(selectedTopping.concat([response.data.result]));
-    }
+    api.getPizzaToppingsImage(val)
+      .then((res) => {
+        const data = res.data.result;
+        if (data) setSelectedTopping(selectedTopping.concat([data]));
+      });
   };
 
   // 드래그가 시작 되는 토핑 값을 가져간다.
@@ -67,14 +63,12 @@ export default function SelectPageContainer({ history }) {
       // 결과 데이터까지 다 뽑고 보낸다.
       const postToppingResult = async () => {
         try {
-          const response = await axios.post(
-            'http://13.209.50.101:3000/pizzas/recomandations', {
-              items: submitTopping.join(),
-              headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            },
-          );
-          Update({ result: response.data.pizzas });
-          UpdateInitial({ initialResult: response.data.pizzas });
+          api.postPizzaRecommendation(submitTopping.join())
+            .then((res) => {
+              const data = res.data.pizzas;
+              Update({ result: data });
+              UpdateInitial({ initialResult: data });
+            });
         } catch (e) {}
       };
       postToppingResult();
@@ -87,11 +81,13 @@ export default function SelectPageContainer({ history }) {
   };
 
   const handleDelete = (val) => {
-    console.log(val);
     const index = selectedSmallTopping.findIndex((el) => el.name === val.name);
-
-    const SelectedSmallTopping = selectedSmallTopping.slice(0, index).concat(selectedSmallTopping.slice(index + 1, selectedSmallTopping.length));
-    const SelectedTopping = selectedTopping.slice(0, index).concat(selectedTopping.slice(index + 1, selectedTopping.length));
+    const SelectedSmallTopping = selectedSmallTopping.slice(0, index).concat(
+      selectedSmallTopping.slice(index + 1, selectedSmallTopping.length),
+    );
+    const SelectedTopping = selectedTopping.slice(0, index).concat(
+      selectedTopping.slice(index + 1, selectedTopping.length),
+    );
 
     setSelectedSmallTopping(SelectedSmallTopping);
     setSelectedTopping(SelectedTopping);
@@ -99,7 +95,6 @@ export default function SelectPageContainer({ history }) {
 
   return (
     <>
-      {/* {console.log(selected)} */}
       <SelectPage
         smallToppings={smallToppings}
         selectedTopping={selectedTopping}

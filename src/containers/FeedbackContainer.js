@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import { Feedback } from 'components';
-import axios from 'axios';
+import * as api from 'lib/api';
 import { useDispatch, useSelector } from 'react-redux';
 import { update } from 'modules/feedback';
 import { show } from 'modules/snackbar';
@@ -22,15 +22,11 @@ export default function FeedbackContainer() {
   function handleSubmit() {
     Show({ content: '제출성공! 피드백 감사합니다!' });
     if (feedback !== '') {
-      axios.post(
-        'http://13.209.50.101:3000/users/feedback', {
-          content: feedback,
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        },
-      ).then(() => {
-        Show({ content: '제출성공! 피드백 감사합니다!' });
-        Update({ feedback: '' });
-      });
+      api.postFeedback(feedback)
+        .then(() => {
+          Show({ content: '제출성공! 피드백 감사합니다!' });
+          Update({ feedback: '' });
+        });
     }
   }
 
