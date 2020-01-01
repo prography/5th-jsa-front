@@ -15,6 +15,7 @@ export default function ResultPageContainer({ history }) {
   useEffect(() => {
     // 결과값이 없으면 선택하는 페이지로 강제 이동
     // if (!result.length) { history.push('/selectTopping'); }
+
   }, []);
 
 

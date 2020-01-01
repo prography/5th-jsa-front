@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { hide } from 'modules/snackbar';
+import { hideSnackbar } from 'modules/snackbar';
 
 export default function Snackbar({ content, showSnackbar }) {
   const dispatch = useDispatch();
-  const Hide = useCallback((list) => dispatch((hide(list))), [dispatch]);
+  const HideSnackbar = useCallback((list) => dispatch((hideSnackbar(list))), [dispatch]);
   useEffect(() => {
-    if (showSnackbar) setTimeout(() => { Hide(); }, 2000);
+    if (showSnackbar) setTimeout(() => { HideSnackbar(); }, 2000);
   }, [showSnackbar]);
 
   return (

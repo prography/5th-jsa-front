@@ -3,14 +3,14 @@ import { Feedback } from 'components';
 import * as api from 'lib/api';
 import { useDispatch, useSelector } from 'react-redux';
 import { update } from 'modules/feedback';
-import { show } from 'modules/snackbar';
+import { showSnackbar } from 'modules/snackbar';
 
 export default function FeedbackContainer() {
   const { feedback } = useSelector((state) => (state.feedback));
   // 디스패치
   const dispatch = useDispatch();
   const Update = useCallback((list) => dispatch((update(list))), [dispatch]);
-  const Show = useCallback((list) => dispatch((show(list))), [dispatch]);
+  const ShowSnackbar = useCallback((list) => dispatch((showSnackbar(list))), [dispatch]);
 
   useEffect(() => {
     Update({ feedback: '' });
@@ -20,11 +20,10 @@ export default function FeedbackContainer() {
     Update({ feedback: e });
   }
   function handleSubmit() {
-    Show({ content: '제출성공! 피드백 감사합니다!' });
     if (feedback !== '') {
       api.postFeedback(feedback)
         .then(() => {
-          Show({ content: '제출성공! 피드백 감사합니다!' });
+          ShowSnackbar({ content: '제출성공! 피드백 감사합니다!' });
           Update({ feedback: '' });
         });
     }

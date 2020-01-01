@@ -33,14 +33,9 @@ const NavContainer = ({ history }) => {
       JSON.stringify({
         accessToken: result.response.access_token,
       }));
-
-    return (
-      history.push('/'));
   }
 
-  function onFailure() {
-    console.log('로그인 에러');
-  }
+  function onFailure() {}
 
   return (
     <Nav

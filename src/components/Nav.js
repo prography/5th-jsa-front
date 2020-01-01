@@ -15,10 +15,6 @@ export default function Nav({
 }) {
   const [open, setOpen] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
-  function submitLogin(res) {
-    setDialogOpen(false);
-    onSuccess(res);
-  }
 
   return (
     <div>
@@ -38,15 +34,19 @@ export default function Nav({
             <KakaoLogin
               jsKey={process.env.REACT_APP_JS_KEY}
               getProfile
-              onSuccess={(res) => submitLogin(res)}
+              onSuccess={(res) => onSuccess(res)}
               onFailure={(res) => onFailure(res)}
               throughTalk
-            >
-              <div className="kakaoWrapper">
-                <img src={kakao} alt="kakaologo" width="30" />
-                <div className="typo-s1 ml-1">카카오톡 계정으로 로그인</div>
-              </div>
-            </KakaoLogin>
+              render={(props) => (
+                <div
+                  className="kakaoWrapper"
+                  onClick={() => { props.onClick(); setDialogOpen(false); }}
+                >
+                  <img src={kakao} alt="kakaologo" width="30" />
+                  <div className="typo-s1 ml-1">카카오톡 계정으로 로그인</div>
+                </div>
+              )}
+            />
           </div>
         </LoginDialogStyle>
         )}
@@ -88,7 +88,6 @@ const LoginDialogStyle = styled.div`
     width: 300px;
     height: auto;
     background-color: white;
-    border-radius: 4px;
     padding: 1rem;
     box-shadow: 10px 20px 30px 0 rgba(0,0,0,0.3);
   }
@@ -104,7 +103,6 @@ const LoginDialogStyle = styled.div`
     background-color: #f3e027;
     box-shadow: 0px 5px 10px 0 rgba(0,0,0,0.1);
     padding: 10px;
-    border-radius: 4px;
     display: flex;
     align-items: center;
     justify-content: center;

@@ -3,7 +3,8 @@ import { SelectPage, Loading } from 'components';
 import * as api from 'lib/api';
 import { useDispatch } from 'react-redux';
 import { updateInitial, update } from 'modules/topping';
-import { show } from 'modules/snackbar';
+import { showSnackbar } from 'modules/snackbar';
+
 
 export default function SelectPageContainer({ history }) {
   const [smallToppings, setSmallToppings] = useState({
@@ -18,7 +19,7 @@ export default function SelectPageContainer({ history }) {
   const dispatch = useDispatch();
   const UpdateInitial = useCallback((list) => dispatch((updateInitial(list))), [dispatch]);
   const Update = useCallback((list) => dispatch((update(list))), [dispatch]);
-  const Show = useCallback((list) => dispatch((show(list))), [dispatch]);
+  const ShowSnackbar = useCallback((list) => dispatch((showSnackbar(list))), [dispatch]);
 
   // small topping load 합니다,
   useEffect(() => {
@@ -48,9 +49,7 @@ export default function SelectPageContainer({ history }) {
       setSelectedSmallTopping(selectedSmallTopping.concat({ name: val.name, url: val.image }));
       // 선택된 데이터 large 토핑 이미지 불러오기
       fetchToppings(val.name);
-    } else {
-      Show({ content: '같은 토핑을 올려버렸네요! 토핑 두번 추가는 곤란해요!' });
-    }
+    } else ShowSnackbar({ content: '같은 토핑을 올려버렸네요! 토핑 두번 추가는 곤란해요!' });
   };
 
 
@@ -58,8 +57,9 @@ export default function SelectPageContainer({ history }) {
     // 데이터 없으면 로직 작동 안합니다. 데이터 없으면, snackbar로 액션을 주어야 합니다.
     if (selectedTopping.length) {
       setLoading(true); // 로딩 뷰 시작
-      const submitTopping = [...new Set(selectedTopping.map((val) => val.name))];
-
+      const submitTopping = [...new Set(selectedTopping.map((val) => val.name))]; // ['dody' ...]
+      console.log(submitTopping);
+      // 리듀서에 넣어놓고, location에도 넣어놓느다
       // 결과 데이터까지 다 뽑고 보낸다.
       const postToppingResult = async () => {
         try {

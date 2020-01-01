@@ -2,12 +2,12 @@ import { createAction, handleActions } from 'redux-actions';
 // import { Map } from 'immutable';
 
 // 액션타입 정의
-const SHOW = 'snackbar/SHOW';
-const HIDE = 'snackbar/HIDE';
+const SHOW_SNACKBAR = 'snackbar/SHOW_SNACKBAR';
+const HIDE_SNACKBAR = 'snackbar/HIDE_SNACKBAR';
 
 // 액션생성함수 정의
-export const show = createAction(SHOW);
-export const hide = createAction(HIDE);
+export const showSnackbar = createAction(SHOW_SNACKBAR);
+export const hideSnackbar = createAction(HIDE_SNACKBAR);
 
 // 초기값
 const initialState = {
@@ -16,12 +16,12 @@ const initialState = {
 };
 
 export default handleActions({
-  [SHOW]: (state, action) => ({
+  [SHOW_SNACKBAR]: (state, action) => ({
     ...state,
     content: action.payload.content,
     showSnackbar: true,
   }),
-  [HIDE]: (state) => ({
+  [HIDE_SNACKBAR]: (state) => ({
     ...state,
     showSnackbar: false,
   }),
