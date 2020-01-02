@@ -38,8 +38,8 @@ const postPizzaRecommendation = (items) => (
 );
 
 // 결과 페이지에서 디테일 데이터 로드
-const postPizzaDetail = (pk) => (
-  axios.post(`${apiServer}/pizzas/details/${pk}`)
+const getPizzaDetail = (pk) => (
+  axios.get(`${apiServer}/pizzas/details/${pk}`)
 );
 
 // 랜덤 피자 조회
@@ -115,7 +115,7 @@ export {
   getPizzaToppings,
   getPizzaToppingsImage,
   postPizzaRecommendation,
-  postPizzaDetail,
+  getPizzaDetail,
   getPizzaRandom,
   postPizzaComments,
   postFeedback,
