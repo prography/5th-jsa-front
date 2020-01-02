@@ -18,6 +18,16 @@ div{
   box-sizing: border-box;
 }
 
+button{
+  background-color: inherit;
+  border: none;
+  padding: 0;
+  font-size: 16px;
+  font-family: 'Spoqa Han Sans', '나눔고딕', NanumGothic, '맑은 고딕', Malgun Gothic, '애플 SD 산돌고딕 Neo', Apple SD Gothic Neo, '돋움', Dotum, '굴림';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 // padding & margin
 .no-padding {
   padding: 0 !important;
@@ -94,7 +104,9 @@ $list-size: 0 1 2 3 4 5;
 .typo-b3{
   font-size: 24px;
 }
-
+.center{
+  text-align: center;
+}
 
 
 // scroll css
