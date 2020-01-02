@@ -15,20 +15,13 @@ export default function ResultPageContainer({ history }) {
   useEffect(() => {
     // 결과값이 없으면 선택하는 페이지로 강제 이동
     // if (!result.length) { history.push('/selectTopping'); }
-
   }, []);
-
 
   // 디테일 정보 로드 핸들러
   function getDetail(id) {
     setOpenDetail(true);
-    const loadDetail = async (val) => {
-      try {
-        const response = await api.postPizzaDetail(val);
-        setDetail(response.data);
-      } catch (e) {}
-    };
-    loadDetail(id);
+    api.getPizzaDetail(id)
+      .then((res) => setDetail(res.data));
   }
 
   // 필터기능 / sorting 기능
