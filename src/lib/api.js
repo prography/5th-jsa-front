@@ -93,7 +93,7 @@ const postSignin = (email, password) => (
 // 카카오 로그인
 // 프론트에서 카카오 로그인 이후에 access_token을 서버에 던져주면 DB에 아이디 값이 없을 경우 저장 후 토큰 전달, 있으면 토큰 전달
 const getKakaoSignin = (accessToken) => (
-  axios.get(`${apiServer}/users/login`, {
+  axios.get(`${apiServer}/users`, {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
       kakao: `${accessToken}`,
