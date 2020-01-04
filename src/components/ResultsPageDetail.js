@@ -113,6 +113,7 @@ const DetailContentStyle = styled.div`
   padding: 30px;
   height: 100%;
   overflow: auto;
+  width: 100%;
   .detail-header{
     display: flex;
     margin-bottom: 24px;

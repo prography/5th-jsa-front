@@ -15,20 +15,15 @@ const FeedbackContainer = lazy(() => import('containers/FeedbackContainer'));
 
 const Main = () => (
   <Suspense fallback={<Dody />}>
-    <Route exact path="/" component={Landing} />
-    <Route path="/selectTopping" component={SelectPageContainer} />
     <Switch>
-      <Route path="/result" component={ResultPageContainer} />
+      <Route exact path="/" component={Landing} />
+      <Route path="/selectTopping" component={SelectPageContainer} />
+      <Route path="/result/:name" component={ResultPageContainer} />
+      <AuthRoute path="/mypage" component={MyPageContainer} />
+      <Route path="/EventPage" component={EventList} />
+      <Route path="/feedback" component={FeedbackContainer} />
+      <Route path="/AboutUs" component={AboutUs} />
     </Switch>
-    <Switch>
-      <AuthRoute
-        path="/mypage"
-        component={MyPageContainer}
-      />
-    </Switch>
-    <Route path="/EventPage" component={EventList} />
-    <Route path="/feedback" component={FeedbackContainer} />
-    <Route path="/AboutUs" component={AboutUs} />
   </Suspense>
 );
 

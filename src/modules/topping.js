@@ -1,5 +1,5 @@
 import { createAction, handleActions } from 'redux-actions';
-// import { Map } from 'immutable';
+import { Map } from 'immutable';
 
 // 액션타입 정의
 const UPDATE_TOPPING = 'topping/UPDATE_TOPPING';
@@ -17,17 +17,14 @@ export const updateInitial = createAction(UPDATE_INITIAL);
 const initialState = {
   initialResult: [], // immer 추가하기
   result: [],
-  submitTopping: undefined,
+  submitTopping: [],
 };
 
 export default handleActions({
-  [UPDATE_TOPPING]: (state, action) => {
-    const { submitTopping } = action.payload;
-    return {
-      ...state,
-      submitTopping,
-    };
-  },
+  [UPDATE_TOPPING]: (state, action) => ({
+    ...state,
+    submitTopping: action.payload,
+  }),
   [UPDATE]: (state, action) => ({
     ...state,
     result: action.payload.result,

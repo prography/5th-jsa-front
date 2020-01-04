@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { SelectPage, Loading } from 'components';
 import * as api from 'lib/api';
 import { useDispatch } from 'react-redux';
-import { updateInitial, update } from 'modules/topping';
+import { updateTopping } from 'modules/topping';
 import { showSnackbar } from 'modules/snackbar';
 
 
@@ -17,8 +17,7 @@ export default function SelectPageContainer({ history }) {
 
   // 디스패치
   const dispatch = useDispatch();
-  const UpdateInitial = useCallback((list) => dispatch((updateInitial(list))), [dispatch]);
-  const Update = useCallback((list) => dispatch((update(list))), [dispatch]);
+  const UpdateTopping = useCallback((list) => dispatch((updateTopping(list))), [dispatch]);
   const ShowSnackbar = useCallback((list) => dispatch((showSnackbar(list))), [dispatch]);
 
   // small topping load 합니다,
@@ -57,25 +56,11 @@ export default function SelectPageContainer({ history }) {
     // 데이터 없으면 로직 작동 안합니다. 데이터 없으면, snackbar로 액션을 주어야 합니다.
     if (selectedTopping.length) {
       setLoading(true); // 로딩 뷰 시작
-      const submitTopping = [...new Set(selectedTopping.map((val) => val.name))]; // ['dody' ...]
-      console.log(submitTopping);
-      // 리듀서에 넣어놓고, location에도 넣어놓느다
-      // 결과 데이터까지 다 뽑고 보낸다.
-      const postToppingResult = async () => {
-        try {
-          api.postPizzaRecommendation(submitTopping.join())
-            .then((res) => {
-              const data = res.data.pizzas;
-              Update({ result: data });
-              UpdateInitial({ initialResult: data });
-            });
-        } catch (e) {}
-      };
-      postToppingResult();
-
+      const submitTopping = [...new Set(selectedTopping.map((val) => val.name))]; // ['베이컨' ...]
+      UpdateTopping(submitTopping);
       // 값 넘겨주고 페이지 이동합니다.
       setTimeout(() => {
-        history.push('/result');
+        history.push(`/result/${submitTopping.join()}`);
       }, 1000);
     }
   };

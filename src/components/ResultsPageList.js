@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import InfiniteScroll from 'react-infinite-scroller';
 
 import listBg from 'img/detail/list-bg.png';
 import heartIcon from 'img/detail/heart-icon.png';
@@ -11,6 +12,7 @@ import pizzaschool from 'img/detail/pizzaschool.png';
 import papajones from 'img/detail/papajones.png';
 import domino from 'img/detail/domino.png';
 import mrpizza from 'img/detail/mrpizza.png';
+
 
 const logo = [
   { name: 'ALL', value: null },
@@ -30,46 +32,53 @@ const sorting = [
   { name: 'highComment', value: '댓글수순' },
 ];
 
-export default function ResultsPageList({ handleFilter, getDetail, resultList }) {
+export default function ResultsPageList({
+  handleFilter, getDetail, resultList, loadMore, hasMore, result,
+}) {
   const comma = (val) => String(val).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
   return (
     <ResultsPageListStyle>
       <header>
-        <div>총 {resultList.length}개</div>
+        <div>총 {result && result.num}개</div>
         <div className="sortingWrapper">
           <Menu handleFilter={handleFilter} />
         </div>
       </header>
       <div className="bodyContainer">
-        {resultList.length !== 0
-          ? resultList.map((val, i) => (
-            <div className="elementStyle" key={i} onClick={() => getDetail(val._id)}>
-              <div className="element">
-                <img src={val.image} alt="pizza" className="element-img" />
-                <div className="element-content">
-                  <div className="title">
-                    <span>No {i + 1}. </span>
-                    {val.name}
+        {/* {console.log(resultList)} */}
+        {resultList.length
+          ? (
+            <InfiniteScroll pageStart={0} loadMore={loadMore} hasMore={hasMore}>
+              {resultList.map((val, i) => (
+                <div className="elementStyle" key={i} onClick={() => getDetail(val._id)}>
+                  <div className="element">
+                    <img src={val.image} alt="pizza" className="element-img" />
+                    <div className="element-content">
+                      <div className="title">
+                        <span>No {i + 1}. </span>
+                        {val.name}
+                      </div>
+                      <div className="explain">
+                        <div><span>브랜드</span>{val.brand}</div>
+                        <div><span>칼로리</span>{comma(val.m_cal)} kcal</div>
+                        <div><span>가격</span>{comma(val.m_price)} 원</div>
+                      </div>
+                      <div className="iconWrapper">
+                        <img src={heartIcon} alt="heart" />
+                        <span className="typo-s2">00</span>
+                        <img src={shareIcon} alt="share" />
+                        <span className="typo-s2">00</span>
+                        <img src={chatIcon} alt="chat" />
+                        <span className="typo-s2">00</span>
+                      </div>
+                    </div>
                   </div>
-                  <div className="explain">
-                    <div><span>브랜드</span>{val.brand}</div>
-                    <div><span>칼로리</span>{comma(val.m_cal)} kcal</div>
-                    <div><span>가격</span>{comma(val.m_price)} 원</div>
-                  </div>
-                  <div className="iconWrapper">
-                    <img src={heartIcon} alt="heart" />
-                    <span className="typo-s2">00</span>
-                    <img src={shareIcon} alt="share" />
-                    <span className="typo-s2">00</span>
-                    <img src={chatIcon} alt="chat" />
-                    <span className="typo-s2">00</span>
-                  </div>
+                  <img src={listBg} alt="list background" className="listBg" />
                 </div>
-              </div>
-              <img src={listBg} alt="list background" className="listBg" />
-            </div>
-          ))
+              ))}
+            </InfiniteScroll>
+          )
           : <div className="elementStyle-empty">피자가 없다</div>}
       </div>
     </ResultsPageListStyle>

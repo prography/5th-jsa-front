@@ -8,6 +8,7 @@
     "eslint": "^6.6.0",
     "eslint-config-airbnb": "^18.0.1",
     "immer": "^5.0.0",
+    "immutable": "^4.0.0-rc.12",
     "node-sass": "^4.13.0",
     "react": "^16.11.0",
     "react-dnd": "^9.4.0",

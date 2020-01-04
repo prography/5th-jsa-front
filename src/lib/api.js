@@ -30,9 +30,10 @@ const getPizzaToppingsImage = (topping) => (
 // ------------------------------------------
 // 토핑 선택 후 피자 매칭
 // 사용자가 토핑을 선택한 이후 맞는 피자 찾기 버튼을 누르면 결과값을 반환해준다.
-const postPizzaRecommendation = (items) => (
+const postPizzaRecommendation = (items, page) => (
   axios.post(`${apiServer}/pizzas/recomandations`, {
     items,
+    page,
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
   })
 );

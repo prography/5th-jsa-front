@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import { Nav } from 'components';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout, login } from 'modules/user';
+import { showSnackbar } from 'modules/snackbar';
 import { withRouter } from 'react-router-dom';
 import * as api from 'lib/api';
 
@@ -9,6 +10,7 @@ const NavContainer = ({ history }) => {
   const { isLogin } = useSelector((store) => store.user);
   const dispatch = useDispatch();
   const Logout = useCallback((() => dispatch((logout()))), [dispatch]);
+  const ShowSnackbar = useCallback((list) => dispatch((showSnackbar(list))), [dispatch]);
 
   function handleLogout() {
     Logout({ isLogin: false });
@@ -31,15 +33,14 @@ const NavContainer = ({ history }) => {
     });
     api.getKakaoSignin(result.response.access_token)
       .then((res) => {
-        console.log(res.data);
         // 카카오 로그인하고, 토큰을 받는데 DB에 아이디 값이 없을 경우 저장 후 토큰 전달, 있으면 토큰 전달
-        // ! 그러면 로컬스토리지에는 이 response의 토큰 값이 들어가게 되는게 맞나요?
+        // 그러면 로컬스토리지에는 이 response의 토큰 값이 들어가게 되는게 맞나요?
+        localStorage.setItem('userInfo',
+          JSON.stringify({
+            accessToken: res.data.token,
+          }));
       });
-
-    localStorage.setItem('userInfo',
-      JSON.stringify({
-        accessToken: result.response.access_token,
-      }));
+    ShowSnackbar({ content: '로그인 성공!' });
   }
 
   function onFailure() {}
