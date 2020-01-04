@@ -1,5 +1,4 @@
 import { createAction, handleActions } from 'redux-actions';
-import { Map } from 'immutable';
 
 // 액션타입 정의
 const UPDATE_TOPPING = 'topping/UPDATE_TOPPING';

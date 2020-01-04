@@ -2,7 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ResultPage } from 'components';
 import * as api from 'lib/api';
-import { updateInitial, update } from 'modules/topping';
+import { update } from 'modules/topping';
+// import { updateInitial, update } from 'modules/topping';
 
 export default function ResultPageContainer({ match }) {
   const [openDetail, setOpenDetail] = useState(false);
@@ -10,8 +11,8 @@ export default function ResultPageContainer({ match }) {
   const [resultList, setResultList] = useState([]);
   const [result, setResult] = useState(undefined);
   const [hasMore, setHasMore] = useState(false);
-  const [pendingLoadMore, setPendingLoadMore] = useState(false);
-  const [page, setPage] = useState(1);
+  // const [pendingLoadMore, setPendingLoadMore] = useState(false);
+  // const [page, setPage] = useState(1);
   const { initialResult } = useSelector((state) => (state.topping));
   // 디스패치
   const dispatch = useDispatch();

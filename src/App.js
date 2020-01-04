@@ -3,7 +3,7 @@ import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from 'modules/user';
 import { BrowserRouter } from 'react-router-dom';
-import { Footer, Nav, Snackbar } from 'components';
+import { Footer, Snackbar } from 'components';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 
