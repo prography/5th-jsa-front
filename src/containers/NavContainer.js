@@ -22,6 +22,7 @@ const NavContainer = ({ history }) => {
 
   function onSuccess(result) {
     // 스토어에 저장
+    console.log(result);
     Login({
       isLogin: true,
       userInfo: {
@@ -43,7 +44,9 @@ const NavContainer = ({ history }) => {
     ShowSnackbar({ content: '로그인 성공!' });
   }
 
-  function onFailure() {}
+  function onFailure(result) {
+    console.log(result);
+  }
 
   return (
     <Nav
