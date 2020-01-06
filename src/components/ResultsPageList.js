@@ -45,41 +45,36 @@ export default function ResultsPageList({
           <Menu handleFilter={handleFilter} />
         </div>
       </header>
-      <div className="bodyContainer">
-        {/* {console.log(resultList)} */}
-        {resultList.length
-          ? (
-            <InfiniteScroll pageStart={0} loadMore={loadMore} hasMore={hasMore}>
-              {resultList.map((val, i) => (
-                <div className="elementStyle" key={i} onClick={() => getDetail(val._id)}>
-                  <div className="element">
-                    <img src={val.image} alt="pizza" className="element-img" />
-                    <div className="element-content">
-                      <div className="title">
-                        <span>No {i + 1}. </span>
-                        {val.name}
-                      </div>
-                      <div className="explain">
-                        <div><span>브랜드</span>{val.brand}</div>
-                        <div><span>칼로리</span>{comma(val.m_cal)} kcal</div>
-                        <div><span>가격</span>{comma(val.m_price)} 원</div>
-                      </div>
-                      <div className="iconWrapper">
-                        <img src={heartIcon} alt="heart" />
-                        <span className="typo-s2">00</span>
-                        <img src={shareIcon} alt="share" />
-                        <span className="typo-s2">00</span>
-                        <img src={chatIcon} alt="chat" />
-                        <span className="typo-s2">00</span>
-                      </div>
-                    </div>
+      <div style={{ height: 'calc(100% - 32px)', overflow: 'auto' }}>
+        <InfiniteScroll pageStart={0} loadMore={loadMore} hasMore={hasMore} useWindow={false}>
+          {resultList.map((val, i) => (
+            <div className="elementStyle" key={i} onClick={() => getDetail(val._id)}>
+              <div className="element">
+                <img src={val.image} alt="pizza" className="element-img" />
+                <div className="element-content">
+                  <div className="title">
+                    <span>No {i + 1}. </span>
+                    {val.name}
                   </div>
-                  <img src={listBg} alt="list background" className="listBg" />
+                  <div className="explain">
+                    <div><span>브랜드</span>{val.brand}</div>
+                    <div><span>칼로리</span>{comma(val.m_cal)} kcal</div>
+                    <div><span>가격</span>{comma(val.m_price)} 원</div>
+                  </div>
+                  <div className="iconWrapper">
+                    <img src={heartIcon} alt="heart" />
+                    <span className="typo-s2">00</span>
+                    <img src={shareIcon} alt="share" />
+                    <span className="typo-s2">00</span>
+                    <img src={chatIcon} alt="chat" />
+                    <span className="typo-s2">00</span>
+                  </div>
                 </div>
-              ))}
-            </InfiniteScroll>
-          )
-          : <div className="elementStyle-empty">피자가 없다</div>}
+              </div>
+              <img src={listBg} alt="list background" className="listBg" />
+            </div>
+          ))}
+        </InfiniteScroll>
       </div>
     </ResultsPageListStyle>
   );
@@ -150,82 +145,78 @@ const ResultsPageListStyle = styled.div`
       }
     }
   }
-  .bodyContainer{
-    height: calc(100% - 32px);
-    overflow: auto;
-    .listBg{
+  .listBg{
+    width: 484px;
+    margin-bottom: 16px;
+  }
+  .elementStyle{
+    position: relative;
+    color: black;
+    cursor: pointer;
+    .element{
+      position: absolute;
       width: 484px;
-      margin-bottom: 16px;
-    }
-    .elementStyle{
-      position: relative;
-      color: black;
-      cursor: pointer;
-      .element{
-        position: absolute;
-        width: 484px;
-        height: calc(100% - 20px);
-        padding: 16px;
-        display: flex;
-        &-img{
-          width: 180px;
-          height: 160px;
-          background-color: #f9f9f9;
-          flex-shrink: 0;
+      height: calc(100% - 20px);
+      padding: 16px;
+      display: flex;
+      &-img{
+        width: 180px;
+        height: 160px;
+        background-color: #f9f9f9;
+        flex-shrink: 0;
+      }
+      &-content{
+        margin-left: 18px;
+        .title{
+          margin-bottom: 20px;
+          font-size: 18px;
+          width: 235px;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+          span{
+            font-size: 10px;
+          }
         }
-        &-content{
-          margin-left: 18px;
-          .title{
-            margin-bottom: 20px;
-            font-size: 18px;
-            width: 235px;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            white-space: nowrap;
-            span{
-              font-size: 10px;
-            }
+        .explain{
+          font-size: 13px;
+          margin-bottom: 16px;
+          div{
+            margin-bottom: 6px;
           }
-          .explain{
-            font-size: 13px;
-            margin-bottom: 16px;
-            div{
-              margin-bottom: 6px;
-            }
-            span{
-              font-weight: bold;
-              width: 60px;
-              display: inline-block;
-            }
+          span{
+            font-weight: bold;
+            width: 60px;
+            display: inline-block;
           }
-          .iconWrapper{
-            color: #777;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            img{
-              width: 18px;
-              margin-right: 8px;
-            }
-            span{
-              margin-right: 16px;
-            }
+        }
+        .iconWrapper{
+          color: #777;
+          font-size: 14px;
+          display: flex;
+          align-items: center;
+          img{
+            width: 18px;
+            margin-right: 8px;
+          }
+          span{
+            margin-right: 16px;
           }
         }
       }
     }
-    .elementStyle-empty{
-      color: white;
-      font-weight: 100;
-      font-size: 40px;
-      height: 95%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border-radius: 4px;
-      border: 1px dotted white;
-      text-align: center;
-    }
+  }
+  .elementStyle-empty{
+    color: white;
+    font-weight: 100;
+    font-size: 40px;
+    height: 95%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    border: 1px dotted white;
+    text-align: center;
   }
 `;
 
