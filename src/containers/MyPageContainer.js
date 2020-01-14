@@ -10,7 +10,7 @@ export default function MyPageContainer() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        api.myPageMain(getToken).then(res => {
+        api.myPageMain(getToken).then((res) => {
           console.log(res);
           setUser(res.data);
         });

@@ -13,16 +13,13 @@ import { NavContainer } from './containers';
 function App() {
   const dispatch = useDispatch();
   const Login = useCallback((user) => dispatch((login(user))), [dispatch]);
-
   const userInfo = localStorage.getItem('userInfo');
-  const user = userInfo !== null ? JSON.parse(userInfo) : ({});
-  // console.log('user', user);
   // userInfo를 localStorage에서 검사하고 없으면 store에도 없으므로, localStore에서 받아온 값을 store에 추가
-  if (Object.entries(user).length !== 0) {
+  if (userInfo) {
     Login({
       isLogin: true,
       userInfo: {
-        accessToken: user.accessToken,
+        accessToken: userInfo,
       },
     });
   }
