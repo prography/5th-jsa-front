@@ -1,10 +1,14 @@
 import axios from 'axios';
 
-const apiServer = 'http://13.209.50.101:3000';
+const apiServer = (process.env.NODE_ENV === 'development')
+  ? 'http://34.84.201.69:3000' // 개발환경
+  : 'http://13.209.50.101:3000'; // 실서버
+
 // 1. select page api
 // 2. result page api
 // 3. feedback page api
 // 4. signin, signup api
+// 5. etc (좋아요, 댓글)
 
 // ------------------------------------------
 // 1. select page api
@@ -34,7 +38,10 @@ const postPizzaRecommendation = (items, page) => (
   axios.post(`${apiServer}/pizzas/recomandations`, {
     items,
     page,
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      // ! pizza: pizzaId,
+    },
   })
 );
 
@@ -47,18 +54,6 @@ const getPizzaDetail = (pk) => (
 // 사용자가 랜덤 피자를 요청하면 랜덤으로 피자 데이터를 JSON형식으로 반환합니다.
 const getPizzaRandom = () => (
   axios.get(`${apiServer}/pizzas/random`)
-);
-
-// 댓글 달기 (pizza: 피자id, comment: 댓글 내용)
-const postPizzaComments = (pizza, comment, token) => (
-  axios.post(`${apiServer}/pizzas/comments`, {
-    pizza,
-    comment,
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      Authorization: `${token}`,
-    },
-  })
 );
 
 // ------------------------------------------
@@ -97,20 +92,45 @@ const getKakaoSignin = (accessToken) => (
   axios.get(`${apiServer}/users`, {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
-      kakao: `${accessToken}`,
+      kakao: accessToken,
     },
   })
 );
 
 // 로그인 제대로 되어 있는지 체크
 const getSigninCheck = (token) => (
-  axios.post(`${apiServer}/users/check`, {
+  axios.get(`${apiServer}/users/check`, {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
-      Authorization: `${token}`,
+      Authorization: token,
     },
   })
 );
+
+// ------------------------------------------
+// 5. etc (좋아요, 댓글)
+// ------------------------------------------
+const getPizzaLike = (token, pizzaId) => (
+  axios.get(`${apiServer}/pizzas/like`, {
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      Authorization: token,
+      pizza: pizzaId,
+    },
+  })
+);
+
+const postPizzaComments = (token, data) => (
+  axios.post(`${apiServer}/pizzas/comments`,
+    data,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
+    })
+);
+
 
 export {
   getPizzaToppings,
@@ -118,10 +138,11 @@ export {
   postPizzaRecommendation,
   getPizzaDetail,
   getPizzaRandom,
-  postPizzaComments,
   postFeedback,
   postSignup,
   postSignin,
   getKakaoSignin,
   getSigninCheck,
+  getPizzaLike,
+  postPizzaComments,
 };
