@@ -11,19 +11,27 @@ import toBottom from 'img/select/toBottom.png';
 const toppingGroup = [
   { title: '소스 (4)', name: 'sauce' },
   { title: '고기 (11)', name: 'meat' },
-  { title: '해산물 (5)', name: 'seafood' },
-  { title: '야채 (18)', name: 'vegetable' },
-  { title: '치즈 (16)', name: 'cheese' },
-  { title: '기타 (8)', name: 'etc' },
+  { title: '해산물 (4)', name: 'seafood' },
+  { title: '야채 (12)', name: 'vegetable' },
+  { title: '치즈 (7)', name: 'cheese' },
+  { title: '기타 (6)', name: 'etc' },
 ];
 
 export default function SelectPage({
   smallToppings, handleDrag, selectedTopping, handleSubmit, selectedSmallTopping, handleDelete,
 }) {
+  // handleDrag를 하면 드래그 되고 있는 값을 여기서 저장해 놓다가, 올바른 곳에 drop 하면 그때 전송해야된다 .
+  const [draggedTopping, setDraggedTopping] = useState('');
+
   return (
     <SelectPageStyle className="SelectPage">
-      <SelectTopping smallToppings={smallToppings} handleDrag={handleDrag} />
-      <Dough selectedTopping={selectedTopping} /> {/* 도우와 토핑 */}
+      <SelectTopping smallToppings={smallToppings} setDraggedTopping={setDraggedTopping} />
+      {/* 도우와 토핑 */}
+      <Dough
+        selectedTopping={selectedTopping}
+        draggedTopping={draggedTopping}
+        handleDrag={handleDrag}
+      />
       <SubmitBtn handleSubmit={handleSubmit} /> {/* 제출하기 버튼 */}
       {/* 선택된 토핑 리스트 */}
       <SelectedTopping
@@ -34,11 +42,18 @@ export default function SelectPage({
   );
 }
 
-// {/* ondrop="drop(event)" ondragover="allowDrop(event)" */}
-function Dough({ selectedTopping }) {
+function Dough({ selectedTopping, draggedTopping, handleDrag }) {
+  function handleDragOver(evt) {
+    evt.preventDefault();
+  }
+
   return (
     <DoughStyle className="dodytest">
-      <div className="large_topping">
+      <div
+        className="large_topping"
+        onDrop={() => handleDrag(draggedTopping)}
+        onDragOver={handleDragOver}
+      >
         {selectedTopping.map((val, i) => (
           <img src={val.resultImage} alt="largeToping" key={i} />
         ))}
@@ -48,7 +63,7 @@ function Dough({ selectedTopping }) {
   );
 }
 
-function SelectTopping({ smallToppings, handleDrag }) {
+function SelectTopping({ smallToppings, setDraggedTopping }) {
   const [open, setOpen] = useState(true);
   return (
     <>
@@ -59,7 +74,7 @@ function SelectTopping({ smallToppings, handleDrag }) {
             key={i}
             smallToppings={smallToppings}
             val={val}
-            handleDrag={handleDrag}
+            setDraggedTopping={setDraggedTopping}
           />
         ))}
       </SelectToppingStyle>
@@ -71,7 +86,9 @@ function SelectTopping({ smallToppings, handleDrag }) {
   );
 }
 
-function SelectToppingMenu({ smallToppings, val, handleDrag }) {
+function SelectToppingMenu({
+  smallToppings, val, setDraggedTopping,
+}) {
   const [open, setOpen] = useState(true);
   return (
     <>
@@ -84,7 +101,7 @@ function SelectToppingMenu({ smallToppings, val, handleDrag }) {
           <div
             className={`circle ${topping.name}`}
             draggable
-            onDragStart={() => handleDrag(topping)}
+            onDragStart={() => setDraggedTopping(topping)}
           >
             <img src={topping.image} alt="topping" width="40" />
           </div>
@@ -131,8 +148,6 @@ function SelectedTopping({ selectedSmallTopping, handleDelete }) {
   );
 }
 
-// 2240×1105
-
 const SelectPageStyle = styled.div`
   position: relative;
   .SubmitBtn{
@@ -164,6 +179,9 @@ const DoughStyle = styled.div`
   bottom: 0;
   @media (max-width: 1100px) {
     width: 90%;
+  }
+  @media (min-width: 1400px) {
+    width: 60%;
   }
   /* 도우 */
   .img-dough{

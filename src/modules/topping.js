@@ -30,6 +30,6 @@ export default handleActions({
   }),
   [UPDATE_INITIAL]: (state, action) => ({
     ...state,
-    initialResult: action.payload.initialResult,
+    initialResult: action.payload,
   }),
 }, initialState);
