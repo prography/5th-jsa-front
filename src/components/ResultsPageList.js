@@ -6,6 +6,7 @@ import listBg from 'img/detail/list-bg.png';
 import heartIcon from 'img/detail/heart-icon.png';
 import shareIcon from 'img/detail/share-icon.png';
 import chatIcon from 'img/detail/chat-icon.png';
+
 import pizzahut from 'img/detail/pizzahut.png';
 import avolo from 'img/detail/avolo.png';
 import pizzaschool from 'img/detail/pizzaschool.png';
@@ -17,7 +18,7 @@ import mrpizza from 'img/detail/mrpizza.png';
 const logo = [
   { name: 'ALL', value: null },
   { name: '피자헛', value: pizzahut },
-  { name: '알볼로', value: avolo },
+  { name: '피자알볼로', value: avolo },
   { name: '피자스쿨', value: pizzaschool },
   { name: '파파존스', value: papajones },
   { name: '도미노피자', value: domino },
@@ -40,7 +41,8 @@ export default function ResultsPageList({
   return (
     <ResultsPageListStyle>
       <header>
-        <div>총 {result && result.num}개</div>
+        {console.log(result)}
+        <div>총 {result && result.pizzaNum}개</div>
         <div className="sortingWrapper">
           <Menu handleFilter={handleFilter} />
         </div>
@@ -50,24 +52,25 @@ export default function ResultsPageList({
           {resultList.map((val, i) => (
             <div className="elementStyle" key={i} onClick={() => getDetail(val._id)}>
               <div className="element">
-                <img src={val.image} alt="pizza" className="element-img" />
+                <div className="element-img-wrapper">
+                  <img src={logo.find((el) => el.name === val.brand).value} alt="brand logo" className="element-brand-img" />
+                  <img src={val.image} alt="pizza" className="element-img" />
+                </div>
+
                 <div className="element-content">
                   <div className="title">
                     <span>No {i + 1}. </span>
                     {val.name}
                   </div>
                   <div className="explain">
-                    <div><span>브랜드</span>{val.brand}</div>
-                    <div><span>칼로리</span>{comma(val.m_cal)} kcal</div>
+                    <div className="mr-1"><span>칼로리</span>{comma(val.m_cal)} kcal</div>
                     <div><span>가격</span>{comma(val.m_price)} 원</div>
                   </div>
                   <div className="iconWrapper">
                     <img src={heartIcon} alt="heart" />
-                    <span className="typo-s2">00</span>
-                    <img src={shareIcon} alt="share" />
-                    <span className="typo-s2">00</span>
+                    <span className="typo-s2">{val.likeNum}</span>
                     <img src={chatIcon} alt="chat" />
-                    <span className="typo-s2">00</span>
+                    <span className="typo-s2">{val.comments}</span>
                   </div>
                 </div>
               </div>
@@ -159,11 +162,34 @@ const ResultsPageListStyle = styled.div`
       height: calc(100% - 20px);
       padding: 16px;
       display: flex;
-      &-img{
+      &-img-wrapper{
+        position: relative;
         width: 180px;
         height: 160px;
         background-color: #f9f9f9;
         flex-shrink: 0;
+        .element-img{
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: #f9f9f9;
+          flex-shrink: 0;
+        }
+        .element-brand-img{
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 30px;
+          height: auto;
+          z-index: 10;
+          background-color: rgba(255,255,255,0.9);
+          padding: 4px;
+          border-radius: 100px;
+          margin: 4px;
+          box-shadow: 0 2px 6px 2px rgba(0,0,0,0.1);
+        }
       }
       &-content{
         margin-left: 18px;
@@ -181,12 +207,13 @@ const ResultsPageListStyle = styled.div`
         .explain{
           font-size: 13px;
           margin-bottom: 16px;
+          display: flex;
           div{
             margin-bottom: 6px;
           }
           span{
             font-weight: bold;
-            width: 60px;
+            margin-right: 5px;
             display: inline-block;
           }
         }
@@ -200,7 +227,7 @@ const ResultsPageListStyle = styled.div`
             margin-right: 8px;
           }
           span{
-            margin-right: 16px;
+            margin-right: 12px;
           }
         }
       }
