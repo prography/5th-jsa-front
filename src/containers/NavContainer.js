@@ -30,16 +30,7 @@ const NavContainer = ({ history }) => {
       },
     });
     api.getKakaoSignin(result.response.access_token)
-      .then((res) => {
-        console.log(res.data);
-        // 카카오 로그인하고, 토큰을 받는데 DB에 아이디 값이 없을 경우 저장 후 토큰 전달, 있으면 토큰 전달
-        // ! 그러면 로컬스토리지에는 이 response의 토큰 값이 들어가게 되는게 맞나요?
-      });
-
-    localStorage.setItem('userInfo',
-      JSON.stringify({
-        accessToken: result.response.access_token,
-      }));
+      .then((res) => localStorage.setItem('userInfo', res.data.token));
   }
 
   function onFailure() {}
