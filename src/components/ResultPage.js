@@ -5,14 +5,14 @@ import { ResultsPageDetail, ResultsPageList } from 'components';
 import bgLogo from 'img/detail/bg-logo.png';
 
 export default function ResultPage({
-  handleFilter, handleFavorite, resultList, getDetail, detail,
+  handleFilter, handleFavorite, resultList, getDetail, detail, loadMore, hasMore, result,
 }) {
   return (
     <div className="ResultPage">
       <a href="http://www.prography.org" target="_blank" rel="noopener noreferrer">
         <img src={bgLogo} alt="prography logo" className="prographyLogo" />
       </a>
-      <Link to="selectTopping" className="ResultsPageHeaderStyle">
+      <Link to="/selectTopping" className="ResultsPageHeaderStyle">
         <i className="material-icons">chevron_left</i>
         다시 고르러 가기
       </Link>
@@ -21,6 +21,9 @@ export default function ResultPage({
           handleFilter={handleFilter}
           getDetail={getDetail}
           resultList={resultList}
+          result={result}
+          loadMore={loadMore}
+          hasMore={hasMore}
         />
         {/* 리스트에서 하나를 클릭하면 */}
         {detail && <ResultsPageDetail handleFavorite={handleFavorite} detail={detail} />}

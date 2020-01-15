@@ -11,7 +11,7 @@ export const hideSnackbar = createAction(HIDE_SNACKBAR);
 
 // 초기값
 const initialState = {
-  showSnackbar: false,
+  snackbarShow: false,
   content: '',
 };
 
@@ -19,10 +19,10 @@ export default handleActions({
   [SHOW_SNACKBAR]: (state, action) => ({
     ...state,
     content: action.payload.content,
-    showSnackbar: true,
+    snackbarShow: true,
   }),
   [HIDE_SNACKBAR]: (state) => ({
     ...state,
-    showSnackbar: false,
+    snackbarShow: false,
   }),
 }, initialState);

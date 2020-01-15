@@ -4,31 +4,38 @@ import { ResultPage } from 'components';
 import * as api from 'lib/api';
 import { update } from 'modules/topping';
 
-export default function ResultPageContainer({ history }) {
+export default function ResultPageContainer({ match }) {
   const [openDetail, setOpenDetail] = useState(false);
   const [detail, setDetail] = useState();
-  const { initialResult, result } = useSelector((state) => (state.topping));
+  const [resultList, setResultList] = useState([]);
+  const [result, setResult] = useState(undefined);
+  const [hasMore, setHasMore] = useState(false);
+  const [page, setPage] = useState(1);
+  const [pending, setPending] = useState(false);
+  const { initialResult } = useSelector((state) => (state.topping));
   // 디스패치
   const dispatch = useDispatch();
   const Update = useCallback((list) => dispatch((update(list))), [dispatch]);
+  // const UpdateInitial = useCallback((list) => dispatch((updateInitial(list))), [dispatch]);
 
+  // 몇개가 매칭된 피자 입니다. 리스트랑 디테일에서 둘다 보여주기 (리덕스에서 불러와서 하기)
+  // ! 근데 로딩은 할데로 하고 여기서 딜레이가 보인담말이야. ( 페이지 이동 후에 로딩 화면을 보여주게 하는 방법이 있지)
   useEffect(() => {
-    // 결과값이 없으면 선택하는 페이지로 강제 이동
-    // if (!result.length) { history.push('/selectTopping'); }
-
+    api.postPizzaRecommendation(match.params.name)
+      .then((res) => {
+        if (res.data.num > res.data.pizzas.length) {
+          setHasMore(true);
+        }
+        setResultList(res.data.pizzas);
+        setResult(res.data);
+      });
   }, []);
-
 
   // 디테일 정보 로드 핸들러
   function getDetail(id) {
     setOpenDetail(true);
-    const loadDetail = async (val) => {
-      try {
-        const response = await api.postPizzaDetail(val);
-        setDetail(response.data);
-      } catch (e) {}
-    };
-    loadDetail(id);
+    api.getPizzaDetail(id)
+      .then((res) => setDetail(res.data));
   }
 
   // 필터기능 / sorting 기능
@@ -67,14 +74,33 @@ export default function ResultPageContainer({ history }) {
     console.log(`좋아요 기능 아직 안나와쏘 ${name}`);
   }
 
+  // 인피니트 스크롤
+  function loadMore() {
+    if (!pending && resultList.length) {
+      setPending(true);
+      api.postPizzaRecommendation(match.params.name, page + 1)
+        .then((res) => {
+          if (res.data.num > (resultList.concat(res.data.pizzas)).length) setHasMore(true);
+          else setHasMore(false);
+          setPage(page + 1);
+          setResultList(resultList.concat(res.data.pizzas));
+          setPending(false);
+        });
+    }
+  }
   return (
-    <ResultPage
-      handleFilter={handleFilter}
-      handleFavorite={handleFavorite}
-      resultList={result}
-      openDetail={openDetail}
-      getDetail={getDetail}
-      detail={detail}
-    />
+    <div>
+      <ResultPage
+        handleFilter={handleFilter}
+        handleFavorite={handleFavorite}
+        resultList={resultList}
+        result={result}
+        openDetail={openDetail}
+        getDetail={getDetail}
+        detail={detail}
+        loadMore={loadMore}
+        hasMore={hasMore}
+      />
+    </div>
   );
 }

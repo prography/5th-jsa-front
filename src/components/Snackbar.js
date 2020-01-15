@@ -3,15 +3,16 @@ import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { hideSnackbar } from 'modules/snackbar';
 
-export default function Snackbar({ content, showSnackbar }) {
+export default function Snackbar({ content, snackbarShow }) {
   const dispatch = useDispatch();
   const HideSnackbar = useCallback((list) => dispatch((hideSnackbar(list))), [dispatch]);
+
   useEffect(() => {
-    if (showSnackbar) setTimeout(() => { HideSnackbar(); }, 2000);
-  }, [showSnackbar]);
+    if (snackbarShow) { setTimeout(() => { HideSnackbar(); }, 2000); }
+  }, [snackbarShow]);
 
   return (
-    showSnackbar && (
+    snackbarShow && (
       <SnackbarStyle>
         <div className="snackbarWrapper">
           <i className="material-icons">report_problem</i>

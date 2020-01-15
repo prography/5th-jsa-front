@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import InfiniteScroll from 'react-infinite-scroller';
 
 import listBg from 'img/detail/list-bg.png';
 import heartIcon from 'img/detail/heart-icon.png';
@@ -11,6 +12,7 @@ import pizzaschool from 'img/detail/pizzaschool.png';
 import papajones from 'img/detail/papajones.png';
 import domino from 'img/detail/domino.png';
 import mrpizza from 'img/detail/mrpizza.png';
+
 
 const logo = [
   { name: 'ALL', value: null },
@@ -30,20 +32,22 @@ const sorting = [
   { name: 'highComment', value: '댓글수순' },
 ];
 
-export default function ResultsPageList({ handleFilter, getDetail, resultList }) {
+export default function ResultsPageList({
+  handleFilter, getDetail, resultList, loadMore, hasMore, result,
+}) {
   const comma = (val) => String(val).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
   return (
     <ResultsPageListStyle>
       <header>
-        <div>총 {resultList.length}개</div>
+        <div>총 {result && result.num}개</div>
         <div className="sortingWrapper">
           <Menu handleFilter={handleFilter} />
         </div>
       </header>
-      <div className="bodyContainer">
-        {resultList.length !== 0
-          ? resultList.map((val, i) => (
+      <div style={{ height: 'calc(100% - 32px)', overflow: 'auto' }}>
+        <InfiniteScroll pageStart={0} loadMore={loadMore} hasMore={hasMore} useWindow={false}>
+          {resultList.map((val, i) => (
             <div className="elementStyle" key={i} onClick={() => getDetail(val._id)}>
               <div className="element">
                 <img src={val.image} alt="pizza" className="element-img" />
@@ -69,8 +73,8 @@ export default function ResultsPageList({ handleFilter, getDetail, resultList })
               </div>
               <img src={listBg} alt="list background" className="listBg" />
             </div>
-          ))
-          : <div className="elementStyle-empty">피자가 없다</div>}
+          ))}
+        </InfiniteScroll>
       </div>
     </ResultsPageListStyle>
   );
@@ -141,82 +145,78 @@ const ResultsPageListStyle = styled.div`
       }
     }
   }
-  .bodyContainer{
-    height: calc(100% - 32px);
-    overflow: auto;
-    .listBg{
+  .listBg{
+    width: 484px;
+    margin-bottom: 16px;
+  }
+  .elementStyle{
+    position: relative;
+    color: black;
+    cursor: pointer;
+    .element{
+      position: absolute;
       width: 484px;
-      margin-bottom: 16px;
-    }
-    .elementStyle{
-      position: relative;
-      color: black;
-      cursor: pointer;
-      .element{
-        position: absolute;
-        width: 484px;
-        height: calc(100% - 20px);
-        padding: 16px;
-        display: flex;
-        &-img{
-          width: 180px;
-          height: 160px;
-          background-color: #f9f9f9;
-          flex-shrink: 0;
+      height: calc(100% - 20px);
+      padding: 16px;
+      display: flex;
+      &-img{
+        width: 180px;
+        height: 160px;
+        background-color: #f9f9f9;
+        flex-shrink: 0;
+      }
+      &-content{
+        margin-left: 18px;
+        .title{
+          margin-bottom: 20px;
+          font-size: 18px;
+          width: 235px;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+          span{
+            font-size: 10px;
+          }
         }
-        &-content{
-          margin-left: 18px;
-          .title{
-            margin-bottom: 20px;
-            font-size: 18px;
-            width: 235px;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            white-space: nowrap;
-            span{
-              font-size: 10px;
-            }
+        .explain{
+          font-size: 13px;
+          margin-bottom: 16px;
+          div{
+            margin-bottom: 6px;
           }
-          .explain{
-            font-size: 13px;
-            margin-bottom: 16px;
-            div{
-              margin-bottom: 6px;
-            }
-            span{
-              font-weight: bold;
-              width: 60px;
-              display: inline-block;
-            }
+          span{
+            font-weight: bold;
+            width: 60px;
+            display: inline-block;
           }
-          .iconWrapper{
-            color: #777;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            img{
-              width: 18px;
-              margin-right: 8px;
-            }
-            span{
-              margin-right: 16px;
-            }
+        }
+        .iconWrapper{
+          color: #777;
+          font-size: 14px;
+          display: flex;
+          align-items: center;
+          img{
+            width: 18px;
+            margin-right: 8px;
+          }
+          span{
+            margin-right: 16px;
           }
         }
       }
     }
-    .elementStyle-empty{
-      color: white;
-      font-weight: 100;
-      font-size: 40px;
-      height: 95%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border-radius: 4px;
-      border: 1px dotted white;
-      text-align: center;
-    }
+  }
+  .elementStyle-empty{
+    color: white;
+    font-weight: 100;
+    font-size: 40px;
+    height: 95%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    border: 1px dotted white;
+    text-align: center;
   }
 `;
 

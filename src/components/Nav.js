@@ -61,11 +61,11 @@ export default function Nav({
             <div className="menus scale-up-hor-right">
               <Link to="/">홈</Link>
               {isLogin
-                ? <Link to="MyPage">마이페이지</Link>
+                ? <Link to="/MyPage">마이페이지</Link>
                 : <button type="button" onClick={() => setDialogOpen(!dialogOpen)}>로그인</button>}
-              <Link to="EventPage">이벤트</Link>
-              <Link to="AboutUs">팀원소개</Link>
-              <Link to="feedback">피드백</Link>
+              <Link to="/EventPage">이벤트</Link>
+              <Link to="/AboutUs">팀원소개</Link>
+              <Link to="/feedback">피드백</Link>
               {isLogin && <span onClick={handleLogout}>로그아웃</span> }
             </div>
           )}

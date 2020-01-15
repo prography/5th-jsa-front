@@ -15,7 +15,7 @@ export default function Landing({ history }) {
         <div className="relative" style={{ zIndex: 1 }}>
           <div className="main">토핑만<br />고르세요</div>
           <div className="sub">좋아하는 토핑을 골라 도우에 올려놓으세요.<br />선택한 토핑에 맞는 피자를 보여드립니다 </div>
-          <Link to="selectTopping">
+          <Link to="/selectTopping">
             <div className="btnWrapper" onMouseOver={() => setHover(true)} onFocus={() => setHover(true)} onMouseLeave={() => setHover(false)}>
               {hover ? <img src={buttonPush} alt="start button" />
                 : <img src={button} alt="start button" />}
