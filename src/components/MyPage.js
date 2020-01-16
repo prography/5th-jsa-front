@@ -5,11 +5,15 @@ import emptyHeartIcon from 'img/detail/empty-heart-icon.png';
 import heartIcon from 'img/detail/heart-icon.png';
 import recent from 'img/mypage/recent.png';
 import go from 'img/mypage/go.png';
-import axios from 'axios';
 
 import { Link } from 'react-router-dom';
 
-export default function MyPage({ user, val }) {
+export default function MyPage({
+  user,
+  recentTopping,
+  likePizza,
+  handleSubmit,
+}) {
   const [favorite, setFavorite] = useState(true);
 
   return (
@@ -17,11 +21,9 @@ export default function MyPage({ user, val }) {
       <div className="mypage">
         <div className="mypage-user">
           <div className="user-img">
-            {/* {user.map((val, i) => (
-              <img src={val.profileImage} alt="profileImage" key={i} />
-            ))} */}
+            <img src={user.profileImage}></img>
           </div>
-          <div className="user-name">username님</div>
+          <div className="user-name">{user.name}님</div>
         </div>
         <div className="mypage-wrapper">
           <div className="mypage-title">
@@ -35,35 +37,41 @@ export default function MyPage({ user, val }) {
               <img src={heartIcon} className="heart"></img>
               <div className="like-title">좋아한 피자</div>
               <div className="like-content">
-                {[...Array(4)].map((val, index) => (
-                  <div className="like-content-1" key={index}>
-                    <div
-                      onClick={() => {
-                        // handleFavorite(favorite, '피자아이디');
-                        setFavorite(!favorite);
-                      }}
-                    >
-                      {favorite ? (
-                        <img
-                          src={emptyHeartIcon}
-                          alt="hearticon"
-                          className="emptyHeart"
-                        />
-                      ) : (
-                        <img
-                          src={heartIcon}
-                          alt="hearticon"
-                          className="emptyHeart"
-                        />
-                      )}
+                {likePizza.length != 0 ? (
+                  likePizza.map((val, index) => (
+                    <div className="like-content-1" key={index}>
+                      <div
+                        onClick={() => {
+                          // handleFavorite(favorite, '피자아이디');
+                          setFavorite(!favorite);
+                        }}
+                      >
+                        {favorite ? (
+                          <img
+                            src={emptyHeartIcon}
+                            alt="hearticon"
+                            className="emptyHeart"
+                          />
+                        ) : (
+                          <img
+                            src={heartIcon}
+                            alt="hearticon"
+                            className="emptyHeart"
+                          />
+                        )}
+                      </div>
+                      <div className="like-content-wrapper">
+                        <div className="like-brand">{val.brand}</div>
+                        <div className="like-pizza">{val.name}</div>
+                      </div>
                     </div>
-                    {/* <img src={emptyHeartIcon} className="emptyHeart"></img> */}
-                    <div className="like-content-wrapper">
-                      <div className="like-brand">도미노피자</div>
-                      <div className="like-pizza">피자이름은아홉글자</div>
-                    </div>
+                  ))
+                ) : (
+                  <div className="none">
+                    <div className="none-title">피자를 좋아해주세요</div>
+                    <Link to="selectTopping">고르러 가기</Link>
                   </div>
-                ))}
+                )}
               </div>
               <div className="like-footer">
                 <Link to="/result">> 자세히</Link>
@@ -73,21 +81,30 @@ export default function MyPage({ user, val }) {
               <img src={recent} className="recent"></img>
               <div className="recent-title">최근 고른 토핑</div>
               <div className="recent-content">
-                {[...Array(4)].map((val, index) => (
-                  <Link to="MyPageResult">
-                    <div className="recent-content-1" key={index}>
+                {recentTopping.length !== 0 ? (
+                  recentTopping.map((val, index) => (
+                    <div
+                      className="recent-content-1"
+                      key={index}
+                      onClick={handleSubmit}
+                    >
                       <div className="recent-toppings">
-                        {[...Array(1)].map((val, index) => (
+                        {val.map((v, index) => (
                           <div className="recent-topping" key={index}>
-                            <img src={heartIcon}></img>
+                            <img src={v.image}></img>
                             <span className="topping-hover">스테이크치즈</span>
                           </div>
                         ))}
                       </div>
                       <img src={go} className="go"></img>
                     </div>
-                  </Link>
-                ))}
+                  ))
+                ) : (
+                  <div className="none">
+                    <div className="none-title">토핑을 고른 적이 없군요!</div>
+                    <Link to="selectTopping">고르러 가기</Link>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -131,9 +148,19 @@ const MyPageStyle = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: auto;
+    ::-webkit-scrollbar {
+      width: 0px; /* 세로축 스크롤바 길이 */
+      height: 0px; /* 가로축 스크롤바 길이 */
+    }
+  }
+  .user-img img {
+    width: 49px;
+    height: 49px;
+    border-radius: 50%;
   }
   .user-name {
-    margin-left: 5px;
+    margin-left: 10px;
     font-weight: 600;
   }
   .pizzas {
@@ -198,11 +225,9 @@ const MyPageStyle = styled.div`
     width: 700px;
   }
   .mypage-like {
-    // flex-wrap: wrap;
     text-align: center;
   }
   .mypage-recent {
-    // margin-left: 100px;
     flex-wrap: wrap;
     text-align: center;
   }
@@ -212,6 +237,7 @@ const MyPageStyle = styled.div`
     font-weight: 600;
     bottom: 7px;
     position: relative;
+    margin-top: 5px;
   }
   .recent,
   .heart,
@@ -224,6 +250,7 @@ const MyPageStyle = styled.div`
     width: 285px;
     height: 260px;
     overflow: auto;
+    margin-top: 10px;
   }
   .like-content {
     text-align: right;
@@ -339,5 +366,36 @@ const MyPageStyle = styled.div`
   }
   .recent-content-1 a {
     text-align: right;
+  }
+  .none {
+    background-color: rgba(0, 0, 0, 0.2);
+    width: 285px;
+    height: 260px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    border-radius: 5%;
+  }
+  .none-title {
+    display: block;
+    color: #fff;
+    font-weight: bold;
+  }
+  .none a {
+    text-align: CENTER;
+    width: 100px;
+    padding: 5px 15px;
+    margin-top: 1rem;
+    border-radius: 4px;
+    transition: 0.2s;
+    background-color: rgba(255, 201, 13, 0.7);
+    box-shadow: 0 3px 6px 4px rgba(0, 0, 0, 0.2);
+    font-weight: bold;
+    color: #fff
+    &:hover {
+      background-color: rgba(255, 201, 13, 1);
+      box-shadow: 0 3px 6px 6px rgba(0, 0, 0, 0.2);
+    }
   }
 `;
