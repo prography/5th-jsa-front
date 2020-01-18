@@ -40,6 +40,7 @@ export default function ResultsPageList({
 
   return (
     <ResultsPageListStyle>
+      {/* <SelectedToppingList /> */}
       <header>
         {console.log(result)}
         <div>총 {result && result.pizzaNum}개</div>
@@ -119,6 +120,12 @@ function Menu({ handleFilter }) {
         )}
       </MenuStyle>
     </>
+  );
+}
+
+function SelectedToppingList() {
+  return (
+    <SelectedToppingListStyle>당신이 선택한 토핑은?</SelectedToppingListStyle>
   );
 }
 
@@ -321,4 +328,9 @@ const MenuBack = styled.div`
   width: 100%;
   height: 100vh;
   z-index: 10;
+`;
+
+const SelectedToppingListStyle = styled.div`
+  border: 1px solid red;
+  margin-bottom: 10px;
 `;

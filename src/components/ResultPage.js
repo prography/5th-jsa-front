@@ -26,7 +26,15 @@ export default function ResultPage({
           hasMore={hasMore}
         />
         {/* 리스트에서 하나를 클릭하면 */}
-        {detail && <ResultsPageDetail handleFavorite={handleFavorite} detail={detail} handleUpdate={handleUpdate} handleSubmit={handleSubmit} userInfo={userInfo} />}
+        {detail && (
+          <ResultsPageDetail
+            handleFavorite={handleFavorite}
+            detail={detail}
+            handleUpdate={handleUpdate}
+            handleSubmit={handleSubmit}
+            userInfo={userInfo}
+          />
+        )}
       </ResultsWrapperStyle>
     </div>
   );
