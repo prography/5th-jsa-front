@@ -5,7 +5,7 @@ import { ResultsPageDetail, ResultsPageList } from 'components';
 import bgLogo from 'img/detail/bg-logo.png';
 
 export default function ResultPage({
-  handleFilter, handleFavorite, resultList, getDetail, detail, loadMore, hasMore, result, handleUpdate, handleSubmit, userInfo,
+  handleFilter, handleFavorite, resultList, getDetail, detail, loadMore, hasMore, result, handleUpdate, handleSubmit, userInfo, handleKeyPress, comment,
 }) {
   return (
     <div className="ResultPage">
@@ -33,6 +33,8 @@ export default function ResultPage({
             handleUpdate={handleUpdate}
             handleSubmit={handleSubmit}
             userInfo={userInfo}
+            handleKeyPress={handleKeyPress}
+            comment={comment}
           />
         )}
       </ResultsWrapperStyle>

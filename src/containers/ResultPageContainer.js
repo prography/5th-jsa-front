@@ -37,7 +37,7 @@ export default function ResultPageContainer({ match }) {
     setOpenDetail(true);
     api.getPizzaDetail(id)
       .then((res) => {
-        console.log(res.data.comments);
+        console.log(res.data);
         setDetail(res.data);
       });
   }
@@ -96,9 +96,8 @@ export default function ResultPageContainer({ match }) {
 
   // 좋아요기능
   function handleFavorite(val) {
-    const token = localStorage.getItem('userInfo');
     if (isLogin) {
-      api.getPizzaLike(token, val)
+      api.getPizzaLike(val)
         .then(() => {
           setHasMore(false);
           setPage(1);
@@ -131,19 +130,22 @@ export default function ResultPageContainer({ match }) {
   }
 
   function handleSubmit(val) {
-    const token = localStorage.getItem('userInfo');
-    console.log(userInfo);
-    console.log(token); // 로컬 스토리지 토큰
-    console.log(val); // 로컬 스토리지 토큰
-    // const data = new FormData(); //
-    // data.append('pizza', val);
-    // data.append('comment', comment);
-    const data = { pizza: val, comment };
+    // 댓글 제출 후!!1 데이터가 업데이트 되어야 합니다
+    if (isLogin) {
+      const data = { pizza: val, comment };
+      if (comment !== '') {
+        api.postPizzaComments(data)
+          .then((res) => {
+            setComment('');
+          })
+          .catch((err) => console.log(err));
+      }
+    } else OpenLoginDialog();
+  }
 
-    if (comment !== '') {
-      api.postPizzaComments(token, data)
-        .then((res) => console.log(res))
-        .catch((err) => console.log(err));
+  function handleKeyPress(e, val) {
+    if (e.key === 'Enter') {
+      handleSubmit(val);
     }
   }
 
@@ -162,6 +164,8 @@ export default function ResultPageContainer({ match }) {
         handleUpdate={handleUpdate}
         handleSubmit={handleSubmit}
         userInfo={userInfo}
+        handleKeyPress={handleKeyPress}
+        comment={comment}
       />
       {resultList.length === 0 && <Loading />}
     </div>
