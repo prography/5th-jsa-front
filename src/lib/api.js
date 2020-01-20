@@ -4,6 +4,8 @@ const apiServer = (process.env.NODE_ENV === 'development')
   ? 'http://34.84.201.69:3000' // 개발환경
   : 'http://13.209.50.101:3000'; // 실서버
 
+const token = localStorage.getItem('userInfo');
+
 // 1. select page api
 // 2. result page api
 // 3. feedback page api
@@ -35,7 +37,10 @@ const postPizzaRecommendation = (items, page) => (
   axios.post(`${apiServer}/pizzas/recomandations`, {
     items,
     page,
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      Authorization: token,
+    },
   })
 );
 
@@ -80,7 +85,7 @@ const getKakaoSignin = (accessToken) => axios.get(`${apiServer}/users`, {
 });
 
 // 로그인 제대로 되어 있는지 체크
-const getSigninCheck = (token) => (
+const getSigninCheck = () => (
   axios.get(`${apiServer}/users/check`, {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -92,17 +97,17 @@ const getSigninCheck = (token) => (
 // ------------------------------------------
 // 5. my page api
 // ------------------------------------------
-const myPageMain = (token) => axios.get('http://34.84.201.69:3000/users/mypage', {
+const myPageMain = () => axios.get('http://34.84.201.69:3000/users/mypage', {
   headers: {
     'Content-Type': 'application/x-www-form-urlencoded',
-    Authorization: `${token}`,
+    Authorization: token,
   },
 });
 
 // ------------------------------------------
 // 6. etc (좋아요, 댓글)
 // ------------------------------------------
-const getPizzaLike = (token, pizzaId) => (
+const getPizzaLike = (pizzaId) => (
   axios.get(`${apiServer}/pizzas/like`, {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -112,7 +117,7 @@ const getPizzaLike = (token, pizzaId) => (
   })
 );
 
-const postPizzaComments = (token, data) => (
+const postPizzaComments = (data) => (
   axios.post(`${apiServer}/pizzas/comments`,
     data,
     {
