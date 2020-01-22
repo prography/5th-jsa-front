@@ -64,7 +64,7 @@ export default function ResultPageContainer({ match }) {
           console.log(initialResult);
           setResult(initialResult);
           setResultList(initialResult);
-          // Update({ result: initialResult });
+          // Update({ result: initialResult });s
           break;
         default:
           console.log(2);
