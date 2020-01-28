@@ -492,6 +492,8 @@ const LikeDetail = styled.div`
   //   img{
   //     width: 100%;
   //     position: absolute;
+
+  
   //   }
   // }
 `;
