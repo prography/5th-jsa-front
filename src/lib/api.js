@@ -1,8 +1,6 @@
 import axios from 'axios';
 
-const apiServer = (process.env.NODE_ENV === 'development')
-  ? 'http://34.84.201.69:3000' // 개발환경
-  : 'http://13.209.50.101:3000'; // 실서버
+const apiServer = 'http://34.84.201.69:3000';
 
 // 1. select page api
 // 2. result page api
