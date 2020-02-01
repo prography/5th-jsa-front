@@ -29,7 +29,8 @@ export default function ResultPageContainer({ match }) {
   const token = localStorage.getItem('userInfo');
 
   function loadResult() {
-    api.postPizzaRecommendation(match.params.name, token)
+    const data = { items: match.params.name };
+    api.postPizzaRecommendation(data, token)
       .then((res) => {
         setPending(false);
         //  ! 데이터가 없으면 없다고 뜨게?
