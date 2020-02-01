@@ -33,14 +33,15 @@ const getPizzaToppingsImage = (topping) => (
 // ------------------------------------------
 // 토핑 선택 후 피자 매칭
 // 사용자가 토핑을 선택한 이후 맞는 피자 찾기 버튼을 누르면 결과값을 반환해준다.
-const postPizzaRecommendation = (items, Token) => (
-  axios.post(`${apiServer}/pizzas/recomandations`, {
-    items,
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: Token,
-    },
-  })
+const postPizzaRecommendation = (data, Token) => (
+  axios.post(`${apiServer}/pizzas/recomandations`,
+    data,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: Token,
+      },
+    })
 );
 
 // 결과 페이지에서 디테일 데이터 로드
