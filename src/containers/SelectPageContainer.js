@@ -6,6 +6,7 @@ import { updateTopping } from 'modules/topping';
 import { showSnackbar } from 'modules/snackbar';
 
 export default function SelectPageContainer({ history }) {
+  // small topping을 리듀서에 넣어놓아야 한다.
   const [smallToppings, setSmallToppings] = useState({
     meat: [], sauce: [], cheese: [], seafood: [], vegetable: [], etc: [],
   }); // small topping
@@ -42,6 +43,7 @@ export default function SelectPageContainer({ history }) {
   const handleSubmit = () => {
     if (selectedTopping.length) {
       const submitTopping = [...new Set(selectedTopping.map((val) => val.name))]; // ['베이컨' ...]
+      // ! 리듀서로 smallTopping 값을 보내주어야 합니다.
       UpdateTopping(submitTopping); // result 페이지에서 결과 데이터 로드 하기 위해 리듀서로 보내줍니다.
       // 값 넘겨주고 페이지 이동합니다.
       history.push(`/result/${submitTopping.join()}`);

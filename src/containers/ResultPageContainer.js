@@ -9,11 +9,14 @@ export default function ResultPageContainer({ match }) {
   const [openDetail, setOpenDetail] = useState(false);
   const [detail, setDetail] = useState();
   const [resultList, setResultList] = useState([]);
-  const [result, setResult] = useState(undefined);
-  const [hasMore, setHasMore] = useState(false);
-  const [page, setPage] = useState(1);
-  const [pending, setPending] = useState(false);
   const [comment, setComment] = useState('');
+  const [selectedTopping, setSelectedTopping] = useState([]);
+  const [smallToppings, setSmallToppings] = useState([]); // small topping
+
+  const [pending, setPending] = useState(true); // pending
+  // const [smallToppings, setSmallToppings] = useState({
+  //   meat: [], sauce: [], cheese: [], seafood: [], vegetable: [], etc: [],
+  // }); // small topping
 
   const { initialResult } = useSelector((state) => (state.topping));
   // 디스패치
@@ -23,29 +26,35 @@ export default function ResultPageContainer({ match }) {
   const OpenLoginDialog = useCallback((user) => dispatch((openLoginDialog(user))), [dispatch]);
   const { userInfo, isLogin } = useSelector((store) => store.user);
 
+  const token = localStorage.getItem('userInfo');
+
   function loadResult() {
-    api.postPizzaRecommendation(match.params.name)
+    api.postPizzaRecommendation(match.params.name, token)
       .then((res) => {
+        setPending(false);
+        //  ! 데이터가 없으면 없다고 뜨게?
         UpdateInitial(res.data.pizzas);
         setResultList(res.data.pizzas);
-        setResult(res.data);
-        if (res.data.num > res.data.pizzas.length) setHasMore(true);
       });
   }
 
   function loadDetail(id) {
     setOpenDetail(true);
     api.getPizzaDetail(id)
-      .then((res) => {
-        console.log(res.data);
-        setDetail(res.data);
-      });
+      .then((res) => setDetail(res.data));
   }
 
   // 몇개가 매칭된 피자 입니다. 리스트랑 디테일에서 둘다 보여주기 (리덕스에서 불러와서 하기)
   useEffect(() => {
     loadResult();
+    // smallTopping 가져오는 로직! (리듀서로 공유하기 서로)
+    api.getPizzaToppings()
+      .then((res) => {
+        setSmallToppings(Object.values(res.data).flat());
+      });
+    setSelectedTopping(match.params.name.split(','));
   }, []);
+
 
   // 디테일 정보 로드 핸들러
   function getDetail(id) {
@@ -62,14 +71,10 @@ export default function ResultPageContainer({ match }) {
       switch (name) {
         case 'ALL':
           console.log(initialResult);
-          setResult(initialResult);
           setResultList(initialResult);
-          // Update({ result: initialResult });
+          // Update({ result: initialResult });s
           break;
         default:
-          console.log(2);
-          console.log(initialResult.filter((val) => val.brand === name));
-          setResult(initialResult.filter((val) => val.brand === name));
           setResultList(initialResult);
           // Update({ result: initialResult.filter((val) => val.brand === name) });
           break;
@@ -97,32 +102,14 @@ export default function ResultPageContainer({ match }) {
   // 좋아요기능
   function handleFavorite(val) {
     if (isLogin) {
-      api.getPizzaLike(val)
+      api.getPizzaLike(val, token)
         .then(() => {
-          setHasMore(false);
-          setPage(1);
           loadDetail(val);
           loadResult();
         });
     } else OpenLoginDialog();
   }
 
-  // 인피니트 스크롤
-  function loadMore() {
-    console.log(2);
-    // console.log(hasMore);
-    // if (!pending && resultList.length) {
-    //   setPending(true);
-    //   api.postPizzaRecommendation(match.params.name, page + 1)
-    //     .then((res) => {
-    //       if (res.data.num > (resultList.concat(res.data.pizzas)).length) setHasMore(true);
-    //       else setHasMore(false);
-    //       setPage(page + 1);
-    //       setResultList(resultList.concat(res.data.pizzas));
-    //       setPending(false);
-    //     });
-    // }
-  }
 
   // 여기서 엔터 누르면 바로 제출 되게 해야됩니다.
   function handleUpdate(evt) {
@@ -134,7 +121,7 @@ export default function ResultPageContainer({ match }) {
     if (isLogin) {
       const data = { pizza: val, comment };
       if (comment !== '') {
-        api.postPizzaComments(data)
+        api.postPizzaComments(data, token)
           .then((res) => {
             setComment('');
           })
@@ -155,19 +142,18 @@ export default function ResultPageContainer({ match }) {
         handleFilter={handleFilter}
         handleFavorite={handleFavorite}
         resultList={resultList}
-        result={result}
         openDetail={openDetail}
         getDetail={getDetail}
         detail={detail}
-        loadMore={loadMore}
-        hasMore={hasMore}
         handleUpdate={handleUpdate}
         handleSubmit={handleSubmit}
         userInfo={userInfo}
         handleKeyPress={handleKeyPress}
         comment={comment}
+        smallToppings={smallToppings}
+        selectedTopping={selectedTopping}
       />
-      {resultList.length === 0 && <Loading />}
+      {pending && <Loading />}
     </div>
   );
 }

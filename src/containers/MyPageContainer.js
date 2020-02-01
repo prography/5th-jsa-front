@@ -26,7 +26,7 @@ export default function MyPageContainer({ match }) {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        api.myPageMain(getToken).then(res => {
+        api.myPageMain(getToken).then((res) => {
           console.log(res);
           setUser(res.data);
           setLikePizza(res.data.likes);

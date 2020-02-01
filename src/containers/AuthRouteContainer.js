@@ -5,8 +5,8 @@ import { useSelector } from 'react-redux';
 export default function AuthRoute({ path, component }) {
   const { isLogin } = useSelector((store) => store.user);
   return (
-    isLogin ? (
-      <Route path={path} component={component} />)
-      : (<Redirect to="/login" />)
+    // isLogin ?
+    <Route path={path} component={component} />
+  // : (<Redirect to="/login" />)
   );
 }

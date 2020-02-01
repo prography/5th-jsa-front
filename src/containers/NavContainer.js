@@ -19,9 +19,9 @@ const NavContainer = ({ history }) => {
   const ShowSnackbar = useCallback((list) => dispatch((showSnackbar(list))), [dispatch]);
 
   useEffect(() => {
-    const checkToken = localStorage.getItem('userInfo');
-    if (checkToken) {
-      api.getSigninCheck(checkToken)
+    const token = localStorage.getItem('userInfo');
+    if (token) {
+      api.getSigninCheck(token)
         .then((res) => {
           if (res.data.login === 'true') {
             Login({
