@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import InfiniteScroll from 'react-infinite-scroller';
 
 import listBg from 'img/detail/list-bg.png';
 import heartIcon from 'img/detail/heart-icon.png';
-import shareIcon from 'img/detail/share-icon.png';
 import chatIcon from 'img/detail/chat-icon.png';
 
 import pizzahut from 'img/detail/pizzahut.png';
@@ -13,7 +11,6 @@ import pizzaschool from 'img/detail/pizzaschool.png';
 import papajones from 'img/detail/papajones.png';
 import domino from 'img/detail/domino.png';
 import mrpizza from 'img/detail/mrpizza.png';
-
 
 const logo = [
   { name: 'ALL', value: null },
@@ -34,23 +31,23 @@ const sorting = [
 ];
 
 export default function ResultsPageList({
-  handleFilter, getDetail, resultList, loadMore, hasMore, result,
+  handleFilter, getDetail, resultList, smallToppings, selectedTopping,
 }) {
   const comma = (val) => String(val).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
   return (
     <ResultsPageListStyle>
-      <SelectedToppingList />
+      <SelectedToppingList smallToppings={smallToppings} selectedTopping={selectedTopping} />
       <header>
-        {console.log(result)}
-        <div>총 {result && result.pizzaNum}개</div>
+        <div>총 {resultList.length}개</div>
         <div className="sortingWrapper">
           <Menu handleFilter={handleFilter} />
         </div>
       </header>
-      <div style={{ height: 'calc(100% - 32px)', overflow: 'auto' }}>
-        <InfiniteScroll pageStart={0} loadMore={loadMore} hasMore={hasMore} useWindow={false}>
-          {resultList.map((val, i) => (
+      <div style={{ height: 'calc(100% - 114px)', overflow: 'auto' }}>
+        {resultList.length === 0
+          ? <div className="emptyResultList">결과가 없습니다</div>
+          : resultList.map((val, i) => (
             <div className="elementStyle" key={i} onClick={() => getDetail(val._id)}>
               <div className="element">
                 <div className="element-img-wrapper">
@@ -67,6 +64,16 @@ export default function ResultsPageList({
                     <div className="mr-1"><span>칼로리</span>{comma(val.m_cal)} kcal</div>
                     <div><span>가격</span>{comma(val.m_price)} 원</div>
                   </div>
+                  <div>
+                    {val.matchItem.map((value, idx) => (
+                      <SelectedToppingImgStyle key={idx} w={30}>
+                        <img
+                          src={smallToppings.find((el) => el.name === value).image}
+                          alt="topping"
+                        />
+                      </SelectedToppingImgStyle>
+                    ))}
+                  </div>
                   <div className="iconWrapper">
                     <img src={heartIcon} alt="heart" />
                     <span className="typo-s2">{val.likeNum}</span>
@@ -78,7 +85,6 @@ export default function ResultsPageList({
               <img src={listBg} alt="list background" className="listBg" />
             </div>
           ))}
-        </InfiniteScroll>
       </div>
     </ResultsPageListStyle>
   );
@@ -123,11 +129,21 @@ function Menu({ handleFilter }) {
   );
 }
 
-function SelectedToppingList() {
+function SelectedToppingList({ smallToppings, selectedTopping }) {
   return (
     <SelectedToppingListStyle>
-      당신이 선택한 토핑은
-      <div>토핑</div>
+      {/* tooltip으로 이름을 알려줄 수 있어 */}
+      {/* <span className="typo-s1">내가 선택한 토핑</span> */}
+      <div style={{ marginTop: '0.5rem' }}>
+        {smallToppings.length && selectedTopping.map((val, idx) => (
+          <SelectedToppingImgStyle key={idx} w={40}>
+            <img
+              src={smallToppings.find((el) => el.name === val).image}
+              alt="topping"
+            />
+          </SelectedToppingImgStyle>
+        ))}
+      </div>
     </SelectedToppingListStyle>
   );
 }
@@ -216,10 +232,9 @@ const ResultsPageListStyle = styled.div`
         }
         .explain{
           font-size: 13px;
-          margin-bottom: 16px;
           display: flex;
           div{
-            margin-bottom: 6px;
+            margin-bottom: 16px;
           }
           span{
             font-weight: bold;
@@ -232,6 +247,7 @@ const ResultsPageListStyle = styled.div`
           font-size: 14px;
           display: flex;
           align-items: center;
+          margin-top: 6px;
           img{
             width: 18px;
             margin-right: 8px;
@@ -255,6 +271,16 @@ const ResultsPageListStyle = styled.div`
     border: 1px dotted white;
     text-align: center;
   }
+  .emptyResultList{
+    border: 1px solid rgba(255,255,255,0.5);
+    height: 95%;
+    color: white;
+    font-size: 40px;
+    font-weight: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 `;
 
 
@@ -268,7 +294,7 @@ const MenuStyle = styled.div`
     top: 20px;
     right: 0;
     background-color: white;
-    box-shadow: 10px 20px 30px 0 rgba(0,0,0,0.2);
+    box-shadow: 10px 20px 30px 0 rgba(0,0,0,0.1);
     color: red;
     &.wrapper-filter{
       display: flex;
@@ -325,7 +351,6 @@ const MenuStyle = styled.div`
 
 const MenuBack = styled.div`
   position: fixed;
-  /* background-color: rgba(0,0,0,0.2); */
   top: 0;
   left: 0;
   width: 100%;
@@ -334,6 +359,22 @@ const MenuBack = styled.div`
 `;
 
 const SelectedToppingListStyle = styled.div`
-  border: 1px solid red;
+  color: white;
   margin-bottom: 10px;
+  overflow: auto;
+`;
+
+const SelectedToppingImgStyle = styled.div`
+  /* border: 1px solid rgba(255,255,255,0.2); */
+  background-color: rgba(0,0,0,0.2);
+  display: inline-flex;
+  border-radius: 100px;
+  width: ${(props) => `${props.w}px`};
+  height: ${(props) => `${props.w}px`};
+  justify-content: center;
+  align-items: center;
+  margin-right: 5px;
+  img{
+    width: 80%;
+  }
 `;

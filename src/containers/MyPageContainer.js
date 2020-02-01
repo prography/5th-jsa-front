@@ -13,15 +13,15 @@ export default function MyPageContainer(history) {
   console.log(getToken);
 
   const dispatch = useDispatch();
-  const UpdateInitial = useCallback(list => dispatch(updateInitial(list)), [
+  const UpdateInitial = useCallback((list) => dispatch(updateInitial(list)), [
     dispatch,
   ]);
-  const Update = useCallback(list => dispatch(update(list)), [dispatch]);
+  const Update = useCallback((list) => dispatch(update(list)), [dispatch]);
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        api.myPageMain(getToken).then(res => {
+        api.myPageMain(getToken).then((res) => {
           console.log(res);
           setUser(res.data);
         });
@@ -31,16 +31,16 @@ export default function MyPageContainer(history) {
   }, []);
   console.log(user.recent);
 
-  const recentToppings = async val => {
-    api.myPageMain(val).then(res => {
+  const recentToppings = async (val) => {
+    api.myPageMain(val).then((res) => {
       const data = res.data.recent;
       if (data) setRecentTopping(recentTopping.concat([data]));
     });
   };
   recentToppings();
 
-  const likePizzas = async val => {
-    api.myPageMain(val).then(res => {
+  const likePizzas = async (val) => {
+    api.myPageMain(val).then((res) => {
       const data = res.data.likes;
       if (data) setLikePizza(recentTopping.concat([data]));
     });
@@ -49,12 +49,12 @@ export default function MyPageContainer(history) {
 
   const handleSubmit = () => {
     if (recentTopping.length) {
-      const submitTopping = [...new Set(recentTopping.map(val => val.name))];
+      const submitTopping = [...new Set(recentTopping.map((val) => val.name))];
       console.log(submitTopping);
 
       const postToppingResult = async () => {
         try {
-          api.postPizzaRecommendation(submitTopping.join()).then(res => {
+          api.postPizzaRecommendation(submitTopping.join()).then((res) => {
             const data = res.data.pizzas;
             Update({ result: data });
             UpdateInitial({ initialResult: data });

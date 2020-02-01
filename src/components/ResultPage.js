@@ -5,7 +5,7 @@ import { ResultsPageDetail, ResultsPageList } from 'components';
 import bgLogo from 'img/detail/bg-logo.png';
 
 export default function ResultPage({
-  handleFilter, handleFavorite, resultList, getDetail, detail, loadMore, hasMore, result, handleUpdate, handleSubmit, userInfo, handleKeyPress, comment,
+  handleFilter, handleFavorite, resultList, getDetail, detail, handleUpdate, handleSubmit, userInfo, handleKeyPress, comment, smallToppings, selectedTopping,
 }) {
   return (
     <div className="ResultPage">
@@ -21,9 +21,8 @@ export default function ResultPage({
           handleFilter={handleFilter}
           getDetail={getDetail}
           resultList={resultList}
-          result={result}
-          loadMore={loadMore}
-          hasMore={hasMore}
+          smallToppings={smallToppings}
+          selectedTopping={selectedTopping}
         />
         {/* 리스트에서 하나를 클릭하면 */}
         {detail && (
