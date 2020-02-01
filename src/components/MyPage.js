@@ -7,7 +7,7 @@ import recent from 'img/mypage/recent.png';
 import go from 'img/mypage/go.png';
 
 import { Link } from 'react-router-dom';
-import { ResultsPageDetail, MyPagePizzaDetail } from 'components';
+import { ResultsPageDetail } from 'components';
 
 export default function MyPage({
   user,
@@ -26,19 +26,7 @@ export default function MyPage({
   const [open, setOpen] = useState(true);
 
   return (
-    <>
-    <MyPageStyle>
-    {detail && (
-          <ResultsPageDetail
-            handleFavorite={handleFavorite}
-            detail={detail}
-            handleUpdate={handleUpdate}
-            handleSubmit={handleSubmit}
-            userInfo={userInfo}
-            handleKeyPress={handleKeyPress}
-            comment={comment}
-          />
-        )}
+    <MyPageStyle open={open}>
       <div className="mypage">
         <div className="mypage-user">
           <div className="user-img">
@@ -60,24 +48,20 @@ export default function MyPage({
               <div className="like-content">
                 {likePizza.length !== 0 ? (
                   likePizza.map(val => (
-                    <div
-                      className="like-content-1"
-                      onClick={() => {getDetail(val._id); setOpen(!open);}}
-                    >
+                    <div className="like-content-1">
                       <div key={val._id}>
                         {favorite ? (
                           <>
-                            {/* <span>좋아요취소</span> */}
                             <img
                               src={heartIcon}
                               alt="hearticon"
                               className="emptyHeart"
                               onClick={() => {
-                                {setFavorite(!favorite); handleFavorite(val._id);}
+                                setFavorite(!favorite);
                               }}
-                              // onClick={() => {
-                              //   handleFavorite(val._id);
-                              // }}
+                              onClick={() => {
+                                handleFavorite(val._id);
+                              }}
                             />
                           </>
                         ) : (
@@ -98,6 +82,15 @@ export default function MyPage({
                         <div className="like-brand">{val.brand}</div>
                         <div className="like-pizza">{val.name}</div>
                       </div>
+                      <button
+                        className="like-detail"
+                        onClick={() => {
+                          getDetail(val._id);
+                          setOpen(!open);
+                        }}
+                      >
+                        자세히
+                      </button>
                     </div>
                   ))
                 ) : (
@@ -107,11 +100,6 @@ export default function MyPage({
                   </div>
                 )}
               </div>
-
-              {/* <div className="like-footer">
-                <Link to="/result/베이컨">> 자세히</Link>
-              </div> */}
-              
             </div>
             <div className="mypage-recent">
               <img src={recent} className="recent"></img>
@@ -144,6 +132,36 @@ export default function MyPage({
               </div>
             </div>
           </div>
+
+          {detail && (
+            <>
+              <div
+                className="back-background"
+                onClick={() => {
+                  getDetail();
+                  setOpen(!open);
+                }}
+              ></div>
+              <button
+                className="back"
+                onClick={() => {
+                  getDetail();
+                  setOpen(!open);
+                }}
+              >
+                돌아가기
+              </button>
+              <ResultsPageDetail
+                handleFavorite={handleFavorite}
+                detail={detail}
+                handleUpdate={handleUpdate}
+                handleSubmit={handleSubmit}
+                userInfo={userInfo}
+                handleKeyPress={handleKeyPress}
+                comment={comment}
+              />
+            </>
+          )}
         </div>
       </div>
 
@@ -156,35 +174,17 @@ export default function MyPage({
         <img src={pizza} className="pizza5"></img>
       </div>
     </MyPageStyle>
-    <LikeDetail open={open}>
-    {detail && (
-          <ResultsPageDetail
-            handleFavorite={handleFavorite}
-            detail={detail}
-            handleUpdate={handleUpdate}
-            handleSubmit={handleSubmit}
-            userInfo={userInfo}
-            handleKeyPress={handleKeyPress}
-            comment={comment}
-          />
-        )}
-      </LikeDetail></>
   );
 }
 
 const MyPageStyle = styled.div`
-display: ${(props) => (props.open ? 'flex' : 'none')};
-
   background-color: #ededed;
   justify-content: center;
   width: 100%;
   height: 100vh;
   display: flex;
   overflow: hidden;
-  .like-result {
-    width: 800px;
-    height: 800px;
-  }
+
   .mypage-user {
     color: black;
     display: flex;
@@ -219,6 +219,7 @@ display: ${(props) => (props.open ? 'flex' : 'none')};
     font-weight: 600;
   }
   .pizzas {
+    z-index: ${props => (props.open ? '0' : '-1')};
     display: flex;
     width: 100%;
     position: fixed;
@@ -239,16 +240,15 @@ display: ${(props) => (props.open ? 'flex' : 'none')};
     justify-content: center;
   }
   .mypage-wrapper {
-    // display: ${props => (props.open ? 'flex' : 'none')};
-
     display: flex;
     width: 100%;
-    height: 500px;
+    height: 600px;
     justify-content: center;
     top: 8%;
     position: relative;
   }
   .mypage-title {
+    z-index: ${props => (props.open ? '0' : '-1')};
     font-weight: 700;
     font-size: 54px;
     text-align: center;
@@ -275,7 +275,8 @@ display: ${(props) => (props.open ? 'flex' : 'none')};
     top: 10px;
   }
   .mypage-content {
-    display: flex;
+    display: ${props => (props.open ? 'flex' : 'none')};
+    // display: flex;
     top: 17%;
     position: absolute;
     justify-content: space-between;
@@ -340,6 +341,47 @@ display: ${(props) => (props.open ? 'flex' : 'none')};
     img {
       cursor: pointer;
     }
+    .like-detail {
+      text-align: center;
+      position: absolute;
+      left: 215px;
+      width: 40px;
+      padding: 5px 5px;
+      font-size: 5px;
+      border-radius: 10px;
+      transition: 0.2s;
+      background-color: rgba(0, 0, 0, 0.3);
+      box-shadow: 0 3px 18px 4px rgba(0, 0, 0, 0.2);
+      color: #fff;
+      &:hover {
+        background-color: rgba(255, 201, 13, 1);
+        box-shadow: 0 3px 6px 6px rgba(0, 0, 0, 0.2);
+      }
+    }
+  }
+  .back {
+    text-align: center;
+    position: absolute;
+    z-index: 1;
+    top: -20px;
+    left: 400px
+    width: 70px;
+    height: 70px
+    padding: 5px 5px;
+    border-radius: 50%;
+    transition: 0.2s;
+    background-color: rgba(255, 201, 13, 0.7);
+    box-shadow: 0 3px 18px 4px rgba(0, 0, 0, 0.2);
+    color: #fff;
+    &:hover {
+      background-color: rgba(255, 201, 13, 1);
+      box-shadow: 0 3px 6px 6px rgba(0, 0, 0, 0.2);
+    }
+  }
+  .back-background{
+    width: 1440px;
+    height: 800px;
+    position: absolute;
   }
   .recent-content-1 {
     &:hover {
@@ -364,11 +406,7 @@ display: ${(props) => (props.open ? 'flex' : 'none')};
     font-size: 20px;
     font-weight: 600;
   }
-  // .like-footer {
-  //   text-align: right;
-  //   position: relative;
-  //   top: 3px;
-  // }
+
   a {
     text-decoration: none;
   }
@@ -465,33 +503,4 @@ display: ${(props) => (props.open ? 'flex' : 'none')};
     float: left;
     display: absolute;
   }
-`;
-const LikeDetail = styled.div`
-  // position: fixed;
-  // width: 75%;
-  // right: 0%;
-  // bottom: 0;
-  // @media (max-width: 1100px) {
-  //   width: 90%;
-  // }
-  // @media (min-width: 1400px) {
-  //   width: 60%;
-  // }
-  // /* 도우 */
-  // .img-dough{
-  //   width: 100%;
-  // }
-  // /* 큰 토핑 style */
-  // .large_topping{
-  //   position: absolute;
-  //   border-radius: 100%;
-  //   width: 73%;
-  //   height: 69%;
-  //   margin-left: 5%;
-  //   margin-top: 1%;
-  //   img{
-  //     width: 100%;
-  //     position: absolute;
-  //   }
-  // }
 `;
