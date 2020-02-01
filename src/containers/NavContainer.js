@@ -62,9 +62,13 @@ const NavContainer = ({ history }) => {
       });
   }
 
-  function onFailure(result) {
-    console.log(result);
+    localStorage.setItem('userInfo',
+      JSON.stringify({
+        accessToken: result.response.access_token,
+      }));
   }
+
+  function onFailure() {}
 
   return (
     <Nav
