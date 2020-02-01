@@ -5,8 +5,6 @@ import contract from 'img/select/contract.png';
 import dough from 'img/select/dough.png';
 import submitbtn from 'img/select/submitbtn.png';
 import submitbtnHover from 'img/select/submitbtnHover.png';
-import toTop from 'img/select/toTop.png';
-import toBottom from 'img/select/toBottom.png';
 
 const toppingGroup = [
   { title: '소스 (4)', name: 'sauce' },
@@ -31,6 +29,7 @@ export default function SelectPage({
         setDraggedTopping={setDraggedTopping}
         handleDrag={handleDrag}
         selectedTopping={selectedTopping}
+        handleDelete={handleDelete}
       />
       {/* 도우와 토핑 */}
       <Dough
@@ -40,11 +39,6 @@ export default function SelectPage({
       />
       <SubmitBtn
         handleSubmit={handleSubmit}
-      /> {/* 제출하기 버튼 */}
-      {/* 선택된 토핑 리스트 */}
-      <SelectedTopping
-        selectedSmallTopping={selectedSmallTopping}
-        handleDelete={handleDelete}
       />
     </SelectPageStyle>
   );
@@ -72,7 +66,7 @@ function Dough({ selectedTopping, draggedTopping, handleDrag }) {
 }
 
 function SelectTopping({
-  smallToppings, setDraggedTopping, handleDrag, selectedTopping,
+  smallToppings, setDraggedTopping, handleDrag, selectedTopping, handleDelete,
 }) {
   const [open, setOpen] = useState(true);
   return (
@@ -88,6 +82,7 @@ function SelectTopping({
               setDraggedTopping={setDraggedTopping}
               handleDrag={handleDrag}
               selectedTopping={selectedTopping}
+              handleDelete={handleDelete}
             />
           </>
         ))}
@@ -101,7 +96,7 @@ function SelectTopping({
 }
 
 function SelectToppingMenu({
-  smallToppings, val, setDraggedTopping, handleDrag, selectedTopping,
+  smallToppings, val, setDraggedTopping, handleDrag, selectedTopping, handleDelete,
 }) {
   const [open, setOpen] = useState(true);
   return (
@@ -113,7 +108,7 @@ function SelectToppingMenu({
       {open && (smallToppings[val.name]).map((topping, idx) => (
         <div className="topping-item" key={idx}>
           {selectedTopping.findIndex((el) => el.name === topping.name) >= 0
-          && <div className="topping-Wrapper">픽!!</div>}
+          && <div className="topping-Wrapper" onClick={() => handleDelete(topping)}>픽!!</div>}
           <div
             className={`circle ${topping.name}`}
             draggable
@@ -143,12 +138,6 @@ function SubmitBtn({ handleSubmit }) {
         <img src={submit ? submitbtnHover : submitbtn} alt="submit btn" />
       </div>
     </div>
-  );
-}
-
-function SelectedTopping({ selectedSmallTopping, handleDelete }) {
-  return (
-    <></>
   );
 }
 
@@ -290,6 +279,7 @@ const SelectToppingStyle = styled.div`
     position: relative;
   }
   .topping-Wrapper{
+    cursor: pointer;
     position: absolute;
     /* background-color: rgba(0,0,0,0.8); */
     background-color: rgba(206, 61, 61, 0.8);
@@ -313,6 +303,7 @@ const SelectToppingStyle = styled.div`
     margin-right: 16px;
     text-align: center;
     .circle{
+      cursor: pointer;
       border: 1px solid rgba(255,255,255,0.03);
       border-radius: 50%;
       width: 50px;
