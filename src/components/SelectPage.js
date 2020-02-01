@@ -11,20 +11,36 @@ import toBottom from 'img/select/toBottom.png';
 const toppingGroup = [
   { title: '소스 (4)', name: 'sauce' },
   { title: '고기 (11)', name: 'meat' },
-  { title: '해산물 (5)', name: 'seafood' },
-  { title: '야채 (18)', name: 'vegetable' },
-  { title: '치즈 (16)', name: 'cheese' },
-  { title: '기타 (8)', name: 'etc' },
+  { title: '해산물 (4)', name: 'seafood' },
+  { title: '야채 (12)', name: 'vegetable' },
+  { title: '치즈 (7)', name: 'cheese' },
+  { title: '기타 (6)', name: 'etc' },
 ];
 
 export default function SelectPage({
   smallToppings, handleDrag, selectedTopping, handleSubmit, selectedSmallTopping, handleDelete,
 }) {
+  // handleDrag를 하면 드래그 되고 있는 값을 여기서 저장해 놓다가, 올바른 곳에 drop 하면 그때 전송해야된다 .
+  const [draggedTopping, setDraggedTopping] = useState('');
+  console.log(selectedTopping);
+
   return (
     <SelectPageStyle className="SelectPage">
-      <SelectTopping smallToppings={smallToppings} handleDrag={handleDrag} />
-      <Dough selectedTopping={selectedTopping} /> {/* 도우와 토핑 */}
-      <SubmitBtn handleSubmit={handleSubmit} /> {/* 제출하기 버튼 */}
+      <SelectTopping
+        smallToppings={smallToppings}
+        setDraggedTopping={setDraggedTopping}
+        handleDrag={handleDrag}
+        selectedTopping={selectedTopping}
+      />
+      {/* 도우와 토핑 */}
+      <Dough
+        selectedTopping={selectedTopping}
+        draggedTopping={draggedTopping}
+        handleDrag={handleDrag}
+      />
+      <SubmitBtn
+        handleSubmit={handleSubmit}
+      /> {/* 제출하기 버튼 */}
       {/* 선택된 토핑 리스트 */}
       <SelectedTopping
         selectedSmallTopping={selectedSmallTopping}
@@ -34,11 +50,18 @@ export default function SelectPage({
   );
 }
 
-// {/* ondrop="drop(event)" ondragover="allowDrop(event)" */}
-function Dough({ selectedTopping }) {
+function Dough({ selectedTopping, draggedTopping, handleDrag }) {
+  function handleDragOver(evt) {
+    evt.preventDefault();
+  }
+
   return (
     <DoughStyle className="dodytest">
-      <div className="large_topping">
+      <div
+        className="large_topping"
+        onDrop={() => handleDrag(draggedTopping)}
+        onDragOver={handleDragOver}
+      >
         {selectedTopping.map((val, i) => (
           <img src={val.resultImage} alt="largeToping" key={i} />
         ))}
@@ -48,19 +71,25 @@ function Dough({ selectedTopping }) {
   );
 }
 
-function SelectTopping({ smallToppings, handleDrag }) {
+function SelectTopping({
+  smallToppings, setDraggedTopping, handleDrag, selectedTopping,
+}) {
   const [open, setOpen] = useState(true);
   return (
     <>
       {/* select box */}
       <SelectToppingStyle open={open}>
         {toppingGroup.map((val, i) => (
-          <SelectToppingMenu
-            key={i}
-            smallToppings={smallToppings}
-            val={val}
-            handleDrag={handleDrag}
-          />
+          <>
+            <SelectToppingMenu
+              key={i}
+              smallToppings={smallToppings}
+              val={val}
+              setDraggedTopping={setDraggedTopping}
+              handleDrag={handleDrag}
+              selectedTopping={selectedTopping}
+            />
+          </>
         ))}
       </SelectToppingStyle>
       {/* select box를 열고 닫는 버튼 */}
@@ -71,7 +100,9 @@ function SelectTopping({ smallToppings, handleDrag }) {
   );
 }
 
-function SelectToppingMenu({ smallToppings, val, handleDrag }) {
+function SelectToppingMenu({
+  smallToppings, val, setDraggedTopping, handleDrag, selectedTopping,
+}) {
   const [open, setOpen] = useState(true);
   return (
     <>
@@ -81,10 +112,13 @@ function SelectToppingMenu({ smallToppings, val, handleDrag }) {
       </div>
       {open && (smallToppings[val.name]).map((topping, idx) => (
         <div className="topping-item" key={idx}>
+          {selectedTopping.findIndex((el) => el.name === topping.name) >= 0
+          && <div className="topping-Wrapper">픽!!</div>}
           <div
             className={`circle ${topping.name}`}
             draggable
-            onDragStart={() => handleDrag(topping)}
+            onClick={() => handleDrag(topping)}
+            onDragStart={() => setDraggedTopping(topping)}
           >
             <img src={topping.image} alt="topping" width="40" />
           </div>
@@ -114,24 +148,9 @@ function SubmitBtn({ handleSubmit }) {
 
 function SelectedTopping({ selectedSmallTopping, handleDelete }) {
   return (
-    <SelectedToppingStyle>
-      {/* 스크롤 업 하거나, 스크롤 다운하는 기능이 필요합니다. */}
-      <div className="icon"><img src={toTop} alt="totop" draggable="false" /></div>
-      <div className="selected-section">
-        {selectedSmallTopping.map((val, index) => (
-          <div className="selected" key={index} onClick={() => handleDelete(val)}>
-            {/* <img src={line} alt="line" className="delete" width={18} /> */}
-            <div className="delete">빼기</div>
-            <img src={val.url} alt="smallTopping" className="selectedTopping" />
-          </div>
-        ))}
-      </div>
-      <div className="icon"><img src={toBottom} alt="toBottom" /></div>
-    </SelectedToppingStyle>
+    <></>
   );
 }
-
-// 2240×1105
 
 const SelectPageStyle = styled.div`
   position: relative;
@@ -164,6 +183,9 @@ const DoughStyle = styled.div`
   bottom: 0;
   @media (max-width: 1100px) {
     width: 90%;
+  }
+  @media (min-width: 1400px) {
+    width: 70%;
   }
   /* 도우 */
   .img-dough{
@@ -265,6 +287,23 @@ const SelectToppingStyle = styled.div`
     cursor: pointer;
     margin-bottom: 14px;
     margin-top: 8px;
+    position: relative;
+  }
+  .topping-Wrapper{
+    position: absolute;
+    /* background-color: rgba(0,0,0,0.8); */
+    background-color: rgba(206, 61, 61, 0.8);
+    border: 3px solid #8a2a2a;
+    width: inherit;
+    height: 50px;
+    border-radius: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    font-weight: bold;
+    transform: rotate( -20deg );
+    box-shadow: 4px 4px 0 rgba(0,0,0,1);
   }
   .topping-item{
     height: 97px;

@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-// import detailBg from 'img/detail/detail-bg.png';
 import detailBg from 'img/detail/detail-bg-el.png';
 import emptyHeartIcon from 'img/detail/empty-heart-icon.png';
 import heartIcon from 'img/detail/heart-icon.png';
-import shareIcon from 'img/detail/share-icon.png';
 import chatIcon from 'img/detail/chat-icon.png';
 
-export default function ResultsPageDetail({ handleFavorite, detail }) {
+export default function ResultsPageDetail({
+  handleFavorite, detail, handleUpdate, handleSubmit, userInfo, handleKeyPress, comment,
+}) {
   const [favorite, setFavorite] = useState(true);
   const comma = (val) => String(val).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  const typeCheckKakaoId = (typeof (userInfo.kakaoId) === 'number') ? String(userInfo.kakaoId) : userInfo.kakaoId;
   return (
     <DetailBackgroundStyle className="scale-up">
       <div className="layout">
@@ -21,16 +22,12 @@ export default function ResultsPageDetail({ handleFavorite, detail }) {
               <div className="typo-b3">{detail.name}</div>
               <div className="iconWrapper">
                 {/* 클릭하면 붉은색 */}
-                <div onClick={() => { handleFavorite(favorite, '피자아이디'); setFavorite(!favorite); }} className="icon flex">
-                  {favorite
-                    ? <img src={emptyHeartIcon} alt="hearticon" className="flip-vertical-right" />
-                    : <img src={heartIcon} alt="hearticon" className="flip-vertical-left" />}
+                <div onClick={() => { handleFavorite(detail._id); setFavorite(!favorite); }} className="icon flex">
+                  {(detail.like.findIndex((val) => val === typeCheckKakaoId) > -1)
+                    ? <img src={heartIcon} alt="hearticon" className="flip-vertical-left" />
+                    : <img src={emptyHeartIcon} alt="hearticon" className="flip-vertical-right" />}
                 </div>
-                <span>00</span>
-                <div onClick={() => console.log('공유기능 아직안나와쏘요 헤헤')} className="icon flex">
-                  <img src={shareIcon} alt="shareIcon" />
-                </div>
-                <span>00</span>
+                <span>{detail.like.length}</span>
               </div>
               <table>
                 <tbody>
@@ -66,34 +63,32 @@ export default function ResultsPageDetail({ handleFavorite, detail }) {
           <div className="detail-chat">
             <div className="chat-header">
               <div className="flex"><img src={chatIcon} alt="chaticon" width="24px" /></div>
-              <span className="typo-s1">312</span>
+              <span className="typo-s1">{detail.comments.length}</span>
             </div>
             {/* 댓글 작성하는 곳 */}
             <div className="chat-input">
               <div className="chat-input-wrapper">
-                <input placeholder=" 아직 사용할수 없어요 헤헤" type="text" onChange={() => console.log(2)} />
+                <input
+                  placeholder=" 피자에 대한 비방은 삼가해주세요."
+                  type="text"
+                  value={comment}
+                  onChange={handleUpdate}
+                  onKeyPress={(evt) => handleKeyPress(evt, detail._id)}
+                />
               </div>
-              <button type="button">작성하기</button>
+              <button type="button" onClick={() => handleSubmit(detail._id)}>작성하기</button>
             </div>
             {/* 댓글 리스트 */}
             <div className="chat-list">
-              {[...Array(3)].map((val, index) => (
+              {detail.comments.map((val, index) => (
                 <div className="comment" key={index}>
                   <div className="comment-thumbnail" />
                   <div>
                     <div className="comment-id">
-                      <span className="bold typo-s1">도디의 아이디</span>
-                      <span className="typo-s2">2019년 11월11일</span>
+                      <span className="bold typo-s1">{val.user}</span>
+                      <span className="typo-s2">{val.date}</span>
                     </div>
-                    <div className="comment-text">
-                      이거 나만아는 피자 하고시펏는데 ㅠㅜㅠㅜㅠㅜ<br />
-                      이거 나만아는 피자 하고시펏는데 ㅠㅜㅠㅜㅠㅜ<br />
-                      이거 나만아는 피자 하고시펏는데 ㅠㅜㅠㅜㅠㅜ<br />
-                      이거 나만아는 피자 하고시펏는데 ㅠㅜㅠㅜㅠㅜ<br />
-                      이거 나만아는 피자 하고시펏는데 ㅠㅜㅠㅜㅠㅜ<br />
-                      이거 나만아는 피자 하고시펏는데 ㅠㅜㅠㅜㅠㅜ<br />
-                      이거 나만아는 피자 하고시펏는데 ㅠㅜㅠㅜㅠㅜ<br />
-                    </div>
+                    <div className="comment-text">{val.text}</div>
                   </div>
                 </div>
               ))}

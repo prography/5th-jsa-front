@@ -4,6 +4,7 @@ import topping from './topping';
 import feedback from './feedback';
 import user from './user';
 import snackbar from './snackbar';
+import dialog from './dialog';
 
 
 export default combineReducers({
@@ -11,4 +12,5 @@ export default combineReducers({
   feedback,
   user,
   snackbar,
+  dialog,
 });

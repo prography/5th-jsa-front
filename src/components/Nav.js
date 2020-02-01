@@ -11,17 +11,17 @@ import i from 'img/loading/i.png';
 import n from 'img/loading/n.png';
 
 export default function Nav({
-  isLogin, handleLogout, onSuccess, onFailure,
+  isLogin, handleLogout, onSuccess, onFailure, OpenLoginDialog, CloseLoginDialog, loginDialogOpen,
+  // dialogOpen, setDialogOpen,
 }) {
   const [open, setOpen] = useState(true);
-  const [dialogOpen, setDialogOpen] = useState(false);
 
   return (
     <div>
-      {dialogOpen
+      {loginDialogOpen
         && (
         <LoginDialogStyle>
-          <div className="blackbg" onClick={() => setDialogOpen(!dialogOpen)} />
+          <div className="blackbg" onClick={CloseLoginDialog} />
           <div className="loginWrapper scale-in-center">
             <div className="loginImg">
               <img src={l} alt="l" width="30" />
@@ -40,7 +40,7 @@ export default function Nav({
               render={(props) => (
                 <div
                   className="kakaoWrapper"
-                  onClick={() => { props.onClick(); setDialogOpen(false); }}
+                  onClick={() => { props.onClick(); CloseLoginDialog(); }}
                 >
                   <img src={kakao} alt="kakaologo" width="30" />
                   <div className="typo-s1 ml-1">카카오톡 계정으로 로그인</div>
@@ -62,7 +62,7 @@ export default function Nav({
               <Link to="/">홈</Link>
               {isLogin
                 ? <Link to="/MyPage">마이페이지</Link>
-                : <button type="button" onClick={() => setDialogOpen(!dialogOpen)}>로그인</button>}
+                : <button type="button" onClick={OpenLoginDialog}>로그인</button>}
               <Link to="/EventPage">이벤트</Link>
               <Link to="/AboutUs">팀원소개</Link>
               <Link to="/feedback">피드백</Link>

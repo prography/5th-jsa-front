@@ -1,52 +1,82 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ResultPage } from 'components';
+import { ResultPage, Loading } from 'components';
 import * as api from 'lib/api';
-import { update } from 'modules/topping';
+import { update, updateInitial } from 'modules/topping';
+import { openLoginDialog } from 'modules/dialog';
 
 export default function ResultPageContainer({ match }) {
   const [openDetail, setOpenDetail] = useState(false);
   const [detail, setDetail] = useState();
   const [resultList, setResultList] = useState([]);
-  const [result, setResult] = useState(undefined);
-  const [hasMore, setHasMore] = useState(false);
-  const [page, setPage] = useState(1);
-  const [pending, setPending] = useState(false);
+  const [comment, setComment] = useState('');
+  const [selectedTopping, setSelectedTopping] = useState([]);
+  const [smallToppings, setSmallToppings] = useState([]); // small topping
+
+  const [pending, setPending] = useState(true); // pending
+  // const [smallToppings, setSmallToppings] = useState({
+  //   meat: [], sauce: [], cheese: [], seafood: [], vegetable: [], etc: [],
+  // }); // small topping
+
   const { initialResult } = useSelector((state) => (state.topping));
   // 디스패치
   const dispatch = useDispatch();
   const Update = useCallback((list) => dispatch((update(list))), [dispatch]);
-  // const UpdateInitial = useCallback((list) => dispatch((updateInitial(list))), [dispatch]);
+  const UpdateInitial = useCallback((list) => dispatch((updateInitial(list))), [dispatch]);
+  const OpenLoginDialog = useCallback((user) => dispatch((openLoginDialog(user))), [dispatch]);
+  const { userInfo, isLogin } = useSelector((store) => store.user);
 
-  // 몇개가 매칭된 피자 입니다. 리스트랑 디테일에서 둘다 보여주기 (리덕스에서 불러와서 하기)
-  // ! 근데 로딩은 할데로 하고 여기서 딜레이가 보인담말이야. ( 페이지 이동 후에 로딩 화면을 보여주게 하는 방법이 있지)
-  useEffect(() => {
-    api.postPizzaRecommendation(match.params.name)
+  const token = localStorage.getItem('userInfo');
+
+  function loadResult() {
+    api.postPizzaRecommendation(match.params.name, token)
       .then((res) => {
-        if (res.data.num > res.data.pizzas.length) {
-          setHasMore(true);
-        }
+        setPending(false);
+        //  ! 데이터가 없으면 없다고 뜨게?
+        UpdateInitial(res.data.pizzas);
         setResultList(res.data.pizzas);
-        setResult(res.data);
       });
-  }, []);
+  }
 
-  // 디테일 정보 로드 핸들러
-  function getDetail(id) {
+  function loadDetail(id) {
     setOpenDetail(true);
     api.getPizzaDetail(id)
       .then((res) => setDetail(res.data));
   }
 
+  // 몇개가 매칭된 피자 입니다. 리스트랑 디테일에서 둘다 보여주기 (리덕스에서 불러와서 하기)
+  useEffect(() => {
+    loadResult();
+    // smallTopping 가져오는 로직! (리듀서로 공유하기 서로)
+    api.getPizzaToppings()
+      .then((res) => {
+        setSmallToppings(Object.values(res.data).flat());
+      });
+    setSelectedTopping(match.params.name.split(','));
+  }, []);
+
+
+  // 디테일 정보 로드 핸들러
+  function getDetail(id) {
+    setDetail(); // detail 컴포넌트 리셋후 다시 보여준다.
+    loadDetail(id);
+  }
+
   // 필터기능 / sorting 기능
   function handleFilter(value, name) {
+    console.log(value, name);
+    console.log(initialResult.filter((val) => val.brand === name));
+
     if (value === 'filter') {
       switch (name) {
         case 'ALL':
-          Update({ result: initialResult });
+          console.log(initialResult);
+          setResultList(initialResult);
+          // Update({ result: initialResult });s
           break;
         default:
-          Update({ result: initialResult.filter((val) => val.brand === name) });
+          setResultList(initialResult);
+          // Update({ result: initialResult.filter((val) => val.brand === name) });
           break;
       }
     } else {
@@ -70,37 +100,60 @@ export default function ResultPageContainer({ match }) {
   }
 
   // 좋아요기능
-  function handleFavorite(name) {
-    console.log(`좋아요 기능 아직 안나와쏘 ${name}`);
+  function handleFavorite(val) {
+    if (isLogin) {
+      api.getPizzaLike(val, token)
+        .then(() => {
+          loadDetail(val);
+          loadResult();
+        });
+    } else OpenLoginDialog();
   }
 
-  // 인피니트 스크롤
-  function loadMore() {
-    if (!pending && resultList.length) {
-      setPending(true);
-      api.postPizzaRecommendation(match.params.name, page + 1)
-        .then((res) => {
-          if (res.data.num > (resultList.concat(res.data.pizzas)).length) setHasMore(true);
-          else setHasMore(false);
-          setPage(page + 1);
-          setResultList(resultList.concat(res.data.pizzas));
-          setPending(false);
-        });
+
+  // 여기서 엔터 누르면 바로 제출 되게 해야됩니다.
+  function handleUpdate(evt) {
+    setComment(evt.target.value);
+  }
+
+  function handleSubmit(val) {
+    // 댓글 제출 후!!1 데이터가 업데이트 되어야 합니다
+    if (isLogin) {
+      const data = { pizza: val, comment };
+      if (comment !== '') {
+        api.postPizzaComments(data, token)
+          .then((res) => {
+            setComment('');
+          })
+          .catch((err) => console.log(err));
+      }
+    } else OpenLoginDialog();
+  }
+
+  function handleKeyPress(e, val) {
+    if (e.key === 'Enter') {
+      handleSubmit(val);
     }
   }
+
   return (
     <div>
       <ResultPage
         handleFilter={handleFilter}
         handleFavorite={handleFavorite}
         resultList={resultList}
-        result={result}
         openDetail={openDetail}
         getDetail={getDetail}
         detail={detail}
-        loadMore={loadMore}
-        hasMore={hasMore}
+        handleUpdate={handleUpdate}
+        handleSubmit={handleSubmit}
+        userInfo={userInfo}
+        handleKeyPress={handleKeyPress}
+        comment={comment}
+        smallToppings={smallToppings}
+        selectedTopping={selectedTopping}
       />
+      {pending && <Loading />}
     </div>
   );
 }
