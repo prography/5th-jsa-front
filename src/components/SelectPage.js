@@ -36,9 +36,7 @@ export default function SelectPage({
         draggedTopping={draggedTopping}
         handleDrag={handleDrag}
       />
-      <SubmitBtn
-        handleSubmit={handleSubmit}
-      />
+      <SubmitBtn handleSubmit={handleSubmit} />
     </SelectPageStyle>
   );
 }
@@ -56,7 +54,12 @@ function Dough({ selectedTopping, draggedTopping, handleDrag }) {
         onDragOver={handleDragOver}
       >
         {selectedTopping.map((val, i) => (
-          <img src={val.resultImage} alt="largeToping" key={i} />
+          <img
+            src={val.resultImage}
+            alt="largeToping"
+            key={i}
+            className="scale-up"
+          />
         ))}
       </div>
       <img src={dough} alt="doughImg" className="img-dough" />
@@ -98,7 +101,12 @@ function SelectTopping({
 }
 
 function SelectToppingMenu({
-  smallToppings, val, setDraggedTopping, handleDrag, selectedTopping, handleDelete,
+  smallToppings,
+  val,
+  setDraggedTopping,
+  handleDrag,
+  selectedTopping,
+  handleDelete,
 }) {
   const [open, setOpen] = useState(true);
   return (
@@ -107,21 +115,28 @@ function SelectToppingMenu({
         {val.title}
         <i className="material-icons">arrow_drop_down</i>
       </div>
-      {open && (smallToppings[val.name]).map((topping, idx) => (
-        <div className="topping-item" key={idx}>
-          {selectedTopping.findIndex((el) => el.name === topping.name) >= 0
-          && <div className="topping-Wrapper" onClick={() => handleDelete(topping)}>픽!!</div>}
-          <div
-            className={`circle ${topping.name}`}
-            draggable
-            onClick={() => handleDrag(topping)}
-            onDragStart={() => setDraggedTopping(topping)}
-          >
-            <img src={topping.image} alt="topping" width="40" />
+      {open &&
+        smallToppings[val.name].map((topping, idx) => (
+          <div className="topping-item" key={idx}>
+            {selectedTopping.findIndex(el => el.name === topping.name) >= 0 && (
+              <div
+                className="topping-Wrapper"
+                onClick={() => handleDelete(topping)}
+              >
+                픽!!
+              </div>
+            )}
+            <div
+              className={`circle ${topping.name}`}
+              draggable
+              onClick={() => handleDrag(topping)}
+              onDragStart={() => setDraggedTopping(topping)}
+            >
+              <img src={topping.image} alt="topping" width="40" />
+            </div>
+            <span>{topping.name}</span>
           </div>
-          <span>{topping.name}</span>
-        </div>
-      ))}
+        ))}
     </>
   );
 }
@@ -146,23 +161,24 @@ function SubmitBtn({ handleSubmit }) {
 
 const SelectPageStyle = styled.div`
   position: relative;
-  .SubmitBtn{
+  .SubmitBtn {
     position: absolute;
     bottom: 20px;
     right: 30px;
     display: flex;
     align-items: flex-end;
     user-select: none;
-    img{
+    img {
       user-select: none;
       width: 110px;
     }
-    .SubmitBtnText{
+    .SubmitBtnText {
+      cursor: pointer;
       user-select: none;
-      background-color: rgba(0,0,0,0.5);
+      background-color: rgba(0, 0, 0, 0.5);
       border-radius: 100px;
       color: white;
-      padding: 5px 24px;
+      padding: 5px 20px;
       margin-right: 10px;
       margin-bottom: 8px;                                                    
     }
@@ -181,18 +197,18 @@ const DoughStyle = styled.div`
     width: 70%;
   }
   /* 도우 */
-  .img-dough{
+  .img-dough {
     width: 100%;
   }
   /* 큰 토핑 style */
-  .large_topping{
+  .large_topping {
     position: absolute;
     border-radius: 100%;
     width: 73%;
     height: 69%;
     margin-left: 5%;
     margin-top: 1%;
-    img{
+    img {
       width: 100%;
       position: absolute;
     }
@@ -202,19 +218,19 @@ const DoughStyle = styled.div`
 const SelectToppingStyle = styled.div`
   position: absolute;
   top: 0;
-  left: ${(props) => (props.open ? '0px' : '-356px')};
+  left: ${props => (props.open ? '0px' : '-356px')};
   width: 356px;
   height: 100vh;
   overflow: auto;
   transition: 0.2s;
-  background-color: rgba(0,0,0,0.6);
+  background-color: rgba(0, 0, 0, 0.6);
   color: #fff;
   z-index: 10;
   padding-left: 16px;
-  i{
+  i {
     vertical-align: bottom;
   }
-  .topping-title{
+  .topping-title {
     /* font-weight: bold; */
     font-size: 0.875rem;
     cursor: pointer;
@@ -222,7 +238,7 @@ const SelectToppingStyle = styled.div`
     margin-top: 8px;
     position: relative;
   }
-  .topping-Wrapper{
+  .topping-Wrapper {
     cursor: pointer;
     position: absolute;
     /* background-color: rgba(0,0,0,0.8); */
@@ -236,19 +252,19 @@ const SelectToppingStyle = styled.div`
     align-items: center;
     font-size: 16px;
     font-weight: bold;
-    transform: rotate( -20deg );
-    box-shadow: 4px 4px 0 rgba(0,0,0,1);
+    transform: rotate(-20deg);
+    box-shadow: 4px 4px 0 rgba(0, 0, 0, 1);
   }
-  .topping-item{
+  .topping-item {
     height: 97px;
     width: 50px;
     display: inline-flex;
     flex-direction: column;
     margin-right: 16px;
     text-align: center;
-    .circle{
+    .circle {
       cursor: pointer;
-      border: 1px solid rgba(255,255,255,0.03);
+      border: 1px solid rgba(255, 255, 255, 0.03);
       border-radius: 50%;
       width: 50px;
       height: 50px;
@@ -256,11 +272,11 @@ const SelectToppingStyle = styled.div`
       align-items: center;
       justify-content: center;
       transition: 0.1s ease;
-      &:hover{
-        background-color: rgba(0,0,0,0.1);
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.1);
       }
     }
-    span{
+    span {
       color: white;
       font-size: 11px;
       margin-top: 6px;
@@ -268,10 +284,10 @@ const SelectToppingStyle = styled.div`
       display: block;
     }
   }
-  .closeBtn{
+  .closeBtn {
     width: 50px;
     height: 100px;
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0, 0, 0, 0.5);
   }
 `;
 
@@ -300,17 +316,17 @@ const SelectToppingCloseBtnStyle = styled.div`
   position: absolute;
   width: 40px;
   height: 80px;
-  background-color: rgba(0,0,0,0.6);
+  background-color: rgba(0, 0, 0, 0.6);
   top: 50%;
   transition: 0.2s;
-  left: ${(props) => (props.open ? '356px' : '0px')};
+  left: ${props => (props.open ? '356px' : '0px')};
   transform: translateY(-50%);
   border-radius: 0 100px 100px 0;
   display: flex;
   align-items: center;
   justify-content: center;
   user-select: none;
-  img{
+  img {
     width: 8px;
     margin-left: -13px;
   }

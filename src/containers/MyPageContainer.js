@@ -5,7 +5,7 @@ import { MyPage } from 'components';
 import * as api from 'lib/api';
 import { update, updateInitial } from 'modules/topping';
 
-export default function MyPageContainer({ match }) {
+export default function MyPageContainer({ match, history }) {
   const [user, setUser] = useState([]);
   const [recentTopping, setRecentTopping] = useState([]);
   const [likePizza, setLikePizza] = useState([]);
@@ -21,23 +21,8 @@ export default function MyPageContainer({ match }) {
   const UpdateInitial = useCallback(list => dispatch(updateInitial(list)), [
     dispatch,
   ]);
-
   const { userInfo, isLogin } = useSelector(store => store.user);
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        api.myPageMain(getToken).then((res) => {
-          console.log(res);
-          setUser(res.data);
-          setLikePizza(res.data.likes);
-          setRecentTopping(res.data.recent);
-        });
-      } catch (e) {}
-    };
-    fetchUser();
-  }, []);
 
-  console.log(recentTopping);
   useEffect(() => {
     const fetchUserId = async () => {
       try {
@@ -49,6 +34,20 @@ export default function MyPageContainer({ match }) {
     };
     fetchUserId();
   }, []);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        api.myPageMain(getToken).then(res => {
+          setUser(res.data);
+          setLikePizza(res.data.likes);
+          setRecentTopping(res.data.recent);
+        });
+      } catch (e) {}
+    };
+    fetchUser();
+  }, []);
+  console.log(user);
 
   function loadResult() {
     api.postPizzaRecommendation(match.params.name).then(res => {
@@ -66,40 +65,39 @@ export default function MyPageContainer({ match }) {
       setDetail(res.data);
     });
   }
+
   function getDetail(id) {
     setDetail(); // detail 컴포넌트 리셋후 다시 보여준다.
     loadDetail(id);
   }
+
   const handleFavorite = _id => {
     setLikePizza(likePizza.filter(like => like._id !== _id));
-    if (isLogin) {
-      api.getPizzaLike(_id).then(() => {
-        loadDetail(_id);
-        loadResult();
-      });
-    }
+    api.getPizzaLike(_id, getToken).then(() => {
+      loadResult();
+    });
   };
 
-  // const handleSubmit = () => {
-  //   if (recentTopping.length) {
-  //     const submitTopping = [...new Set(recentTopping.map(val => val.name))];
-  //     console.log(submitTopping);
+  const handleSubmit = val => {
+    if (recentTopping.length) {
+      const submitTopping = [...new Set(val.map(v => v.name))];
+      console.log(submitTopping);
 
-  //     const postToppingResult = async () => {
-  //       try {
-  //         api.postPizzaRecommendation(submitTopping.join()).then(res => {
-  //           const data = res.data.pizzas;
-  //           Update({ result: data });
-  //           UpdateInitial({ initialResult: data });
-  //         });
-  //       } catch (e) {}
-  //     };
+      const postToppingResult = async () => {
+        try {
+          api.postPizzaRecommendation(submitTopping.join()).then(res => {
+            const data = res.data.pizzas;
+            Update({ result: data });
+            UpdateInitial({ initialResult: data });
+          });
+        } catch (e) {}
+      };
 
-  //     postToppingResult();
+      postToppingResult();
 
-  //     history.push('/result');
-  //   }
-  // };
+      history.push(`/result/${submitTopping.join()}`);
+    }
+  };
   return (
     <div>
       <MyPage
@@ -110,7 +108,7 @@ export default function MyPageContainer({ match }) {
         detail={detail}
         getDetail={getDetail}
         userInfo={userInfo}
-        // handleSubmit={handleSubmit}
+        handleSubmit={handleSubmit}
       />
     </div>
   );
