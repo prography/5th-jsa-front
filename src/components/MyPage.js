@@ -48,7 +48,7 @@ export default function MyPage({
               <div className="like-content">
                 {likePizza.length !== 0 ? (
                   likePizza.map(val => (
-                    <div className="like-content-1">
+                    <div className="like-content-1 swing-in-top-fwd">
                       <div key={val._id}>
                         {favorite ? (
                           <>
@@ -57,10 +57,9 @@ export default function MyPage({
                               alt="hearticon"
                               className="emptyHeart"
                               onClick={() => {
-                                setFavorite(!favorite);
-                              }}
-                              onClick={() => {
-                                handleFavorite(val._id);
+                                {
+                                  handleFavorite(val._id);
+                                }
                               }}
                             />
                           </>
@@ -69,9 +68,6 @@ export default function MyPage({
                             src={emptyHeartIcon}
                             alt="hearticon"
                             className="emptyHeart"
-                            onClick={() => {
-                              setFavorite(!favorite);
-                            }}
                             onClick={() => {
                               handleFavorite(val._id);
                             }}
@@ -108,15 +104,17 @@ export default function MyPage({
                 {recentTopping.length !== 0 ? (
                   recentTopping.map((val, index) => (
                     <div
-                      className="recent-content-1"
+                      className="recent-content-1 swing-in-top-fwd"
                       key={index}
-                      onClick={handleSubmit}
+                      onClick={() => {
+                        handleSubmit(val);
+                      }}
                     >
                       <div className="recent-toppings">
                         {val.map((v, index) => (
                           <div className="recent-topping" key={index}>
                             <img src={v.image}></img>
-                            <span className="topping-hover">스테이크치즈</span>
+                            <span className="topping-hover">{v.name}</span>
                           </div>
                         ))}
                       </div>
@@ -139,14 +137,14 @@ export default function MyPage({
                 className="back-background"
                 onClick={() => {
                   getDetail();
-                  setOpen(!open);
+                  setOpen(true);
                 }}
               ></div>
               <button
                 className="back"
                 onClick={() => {
                   getDetail();
-                  setOpen(!open);
+                  setOpen(true);
                 }}
               >
                 돌아가기
@@ -351,7 +349,6 @@ const MyPageStyle = styled.div`
       border-radius: 10px;
       transition: 0.2s;
       background-color: rgba(0, 0, 0, 0.3);
-      box-shadow: 0 3px 18px 4px rgba(0, 0, 0, 0.2);
       color: #fff;
       &:hover {
         background-color: rgba(255, 201, 13, 1);
@@ -429,13 +426,14 @@ const MyPageStyle = styled.div`
   }
   .recent-topping {
     width: 49px;
+    min-width: 49px;
     height: 49px;
     border-radius: 50%;
     justify-content: center;
     display: flex;
     flex-direction: row;
     margin-left: 10px;
-    background-color: #ededed;
+    background-color: rgba(237, 237, 237, 0.7);
     align-items: center;
     .topping-hover {
       display: none;
