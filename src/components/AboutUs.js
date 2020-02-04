@@ -9,6 +9,7 @@ import kj from 'img/aboutus/kj.png';
 import ym from 'img/aboutus/ym.png';
 import TEAM from 'img/aboutus/TEAM.png';
 import github from 'img/aboutus/github.png';
+import { Link } from 'react-router-dom';
 
 export default function AboutUs() {
   const [open, setOpen] = useState(true);
@@ -28,7 +29,7 @@ export default function AboutUs() {
           open={open}
           position="backend"
           say="집에 가고싶어요"
-          githubID="@lemontech119"
+          githubID="lemontech119"
         />
       </div>
       <div className="item-dd member">
@@ -39,7 +40,7 @@ export default function AboutUs() {
           position="web design"
           position="frontend"
           say="i love react"
-          githubID="@dodody"
+          githubID="dodody"
         />
       </div>
       <div className="item-sa member">
@@ -51,7 +52,7 @@ export default function AboutUs() {
           say="Te gusta pizza?
           A mi, es mi favorito. 
           "
-          githubID="@hackertaco"
+          githubID="hackertaco"
         />
       </div>
       <div className="item-ym member">
@@ -62,7 +63,7 @@ export default function AboutUs() {
           position="backend"
           say="이거 만들고
           요즘 피자를 잘 안 먹어요.."
-          githubID="@ymink716"
+          githubID="ymink716"
         />
       </div>
       <div className="item-kj member">
@@ -72,7 +73,7 @@ export default function AboutUs() {
           open={open}
           position="피자 한입컷 장인"
           say="치킨 좋아함"
-          githubID="@paikend"
+          githubID="paikend"
         />
       </div>
       <div className="item-jq member">
@@ -82,7 +83,7 @@ export default function AboutUs() {
           open={open}
           position="supporter"
           say="우리팀 텐션최고"
-          githubID="@q00"
+          githubID="q00"
         />
       </div>
       <div className="item-sm member">
@@ -108,7 +109,7 @@ function TeamMember({ open, position, say, githubID }) {
         <div className="github">
           <img src={github} />
 
-          <a href={'www.github.com'}>{githubID}</a>
+          <Link to={`www.github.com/${githubID}`}>@{githubID}</Link>
         </div>
       </div>
     </TeamMemberBlock>
