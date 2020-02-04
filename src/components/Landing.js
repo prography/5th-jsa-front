@@ -13,12 +13,28 @@ export default function Landing({ history }) {
       <div className="content">
         <img src={sauce} alt="sauce" className="sauce" />
         <div className="relative" style={{ zIndex: 1 }}>
-          <div className="main">토핑만<br />고르세요</div>
-          <div className="sub">좋아하는 토핑을 골라 도우에 올려놓으세요.<br />선택한 토핑에 맞는 피자를 보여드립니다 </div>
+          <div className="main">
+            토핑만
+            <br />
+            고르세요
+          </div>
+          <div className="sub">
+            좋아하는 토핑을 도우에 올리고 화덕에 굽기만 하세요.
+            <br />
+            🍕해당 토핑이 들어간 피자 리스트를 보여드립니다.🍕
+          </div>
           <Link to="/selectTopping">
-            <div className="btnWrapper" onMouseOver={() => setHover(true)} onFocus={() => setHover(true)} onMouseLeave={() => setHover(false)}>
-              {hover ? <img src={buttonPush} alt="start button" />
-                : <img src={button} alt="start button" />}
+            <div
+              className="btnWrapper"
+              onMouseOver={() => setHover(true)}
+              onFocus={() => setHover(true)}
+              onMouseLeave={() => setHover(false)}
+            >
+              {hover ? (
+                <img src={buttonPush} alt="start button" />
+              ) : (
+                <img src={button} alt="start button" />
+              )}
             </div>
           </Link>
         </div>
@@ -37,32 +53,33 @@ const LandingStyle = styled.div`
   justify-content: center;
   align-items: center;
   position: relative;
-  .sauce{
+  .sauce {
     width: 100%;
     position: absolute;
     top: 0;
     left: 0;
   }
-  .content{
+  .content {
     text-align: center;
-    .main{
+    .main {
       font-size: 70px;
       line-height: 1.2;
       margin-top: 3rem;
     }
-    .sub{
+    .sub {
       line-height: 1.5;
       margin-bottom: 5rem;
+      margin-top: 1rem;
     }
-    .btnWrapper{
+    .btnWrapper {
       width: 150px;
       height: auto;
       display: inline-block;
-      img{
+      img {
         width: 150px;
         height: 150px;
       }
-      .text{
+      .text {
         margin-top: -95px;
         color: #461009;
         font-weight: bold;
