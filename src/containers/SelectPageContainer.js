@@ -62,6 +62,11 @@ export default function SelectPageContainer({ history }) {
     setSelectedTopping(SelectedTopping);
   };
 
+  const handleReset = () => {
+    setSelectedSmallTopping([]);
+    setSelectedTopping([]);
+  };
+
   return (
     <>
       <SelectPage
@@ -70,6 +75,7 @@ export default function SelectPageContainer({ history }) {
         handleDrag={handleDrag}
         handleSubmit={handleSubmit}
         handleDelete={handleDelete}
+        handleReset={handleReset}
         selectedSmallTopping={selectedSmallTopping}
       />
     </>

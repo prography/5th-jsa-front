@@ -16,16 +16,9 @@ const toppingGroup = [
 ];
 
 export default function SelectPage({
-  smallToppings,
-  handleDrag,
-  selectedTopping,
-  handleSubmit,
-  selectedSmallTopping,
-  handleDelete,
+  smallToppings, handleDrag, selectedTopping, handleSubmit, handleDelete, handleReset,
 }) {
-  // handleDrag를 하면 드래그 되고 있는 값을 여기서 저장해 놓다가, 올바른 곳에 drop 하면 그때 전송해야된다 .
   const [draggedTopping, setDraggedTopping] = useState('');
-  console.log(selectedTopping);
 
   return (
     <SelectPageStyle className="SelectPage">
@@ -35,6 +28,7 @@ export default function SelectPage({
         handleDrag={handleDrag}
         selectedTopping={selectedTopping}
         handleDelete={handleDelete}
+        handleReset={handleReset}
       />
       {/* 도우와 토핑 */}
       <Dough
@@ -60,12 +54,14 @@ function Dough({ selectedTopping, draggedTopping, handleDrag }) {
         onDragOver={handleDragOver}
       >
         {selectedTopping.map((val, i) => (
-          <img
-            src={val.resultImage}
-            alt="largeToping"
-            key={i}
-            className="scale-up"
-          />
+          <ImgStyle zindex={val.z_index}>
+            <img
+              src={val.resultImage}
+              alt="largeToping"
+              key={i}
+              className="scale-up"
+            />
+          </ImgStyle>
         ))}
       </div>
       <img src={dough} alt="doughImg" className="img-dough" />
@@ -74,11 +70,7 @@ function Dough({ selectedTopping, draggedTopping, handleDrag }) {
 }
 
 function SelectTopping({
-  smallToppings,
-  setDraggedTopping,
-  handleDrag,
-  selectedTopping,
-  handleDelete,
+  smallToppings, setDraggedTopping, handleDrag, selectedTopping, handleDelete, handleReset,
 }) {
   const [open, setOpen] = useState(true);
   return (
@@ -103,6 +95,9 @@ function SelectTopping({
       <SelectToppingCloseBtnStyle open={open} onClick={() => setOpen(!open)}>
         <img src={open ? expand : contract} alt="close" />
       </SelectToppingCloseBtnStyle>
+      <ResetSelectedTopping open={open} onClick={() => { handleReset(); }}>
+        토핑 리셋 🔥
+      </ResetSelectedTopping>
     </>
   );
 }
@@ -122,10 +117,10 @@ function SelectToppingMenu({
         {val.title}
         <i className="material-icons">arrow_drop_down</i>
       </div>
-      {open &&
-        smallToppings[val.name].map((topping, idx) => (
+      {open
+        && smallToppings[val.name].map((topping, idx) => (
           <div className="topping-item" key={idx}>
-            {selectedTopping.findIndex(el => el.name === topping.name) >= 0 && (
+            {selectedTopping.findIndex((el) => el.name === topping.name) >= 0 && (
               <div
                 className="topping-Wrapper"
                 onClick={() => handleDelete(topping)}
@@ -152,15 +147,14 @@ function SubmitBtn({ handleSubmit }) {
   const [submit, setSubmit] = useState(false);
   return (
     <div
-      className="SubmitBtn"
+      className="SubmitBtn pointer"
       onMouseOver={() => setSubmit(true)}
       onFocus={() => setSubmit(true)}
       onMouseLeave={() => setSubmit(false)}
+      onClick={submitbtn && handleSubmit}
     >
-      <div className="SubmitBtnText ml-1" onClick={handleSubmit}>
-        피자 굽기 👉
-      </div>
-      <div className="pointer" onClick={submitbtn && handleSubmit}>
+      <div className="SubmitBtnText ml-1">피자 굽기 👉</div>
+      <div>
         <img src={submit ? submitbtnHover : submitbtn} alt="submit btn" />
       </div>
     </div>
@@ -188,7 +182,7 @@ const SelectPageStyle = styled.div`
       color: white;
       padding: 5px 20px;
       margin-right: 10px;
-      margin-bottom: 5px;
+      margin-bottom: 8px;                                                    
     }
   }
 `;
@@ -223,71 +217,10 @@ const DoughStyle = styled.div`
   }
 `;
 
-const SelectedToppingStyle = styled.div`
-  position: absolute;
-  top: 100px;
-  right: 23px;
-  width: 70px;
-  height: 60%;
-  border-radius: 100px;
-  background-color: rgba(0, 0, 0, 0.4);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  .icon {
-    margin: 10px 0;
-    user-select: none;
-    &:hover {
-      opacity: 0.2;
-    }
-  }
-  .selected-section {
-    height: calc(100% + 88px);
-    overflow: auto;
-    ::-webkit-scrollbar {
-      width: 0px; /* 세로축 스크롤바 길이 */
-      height: 0px; /* 가로축 스크롤바 길이 */
-    }
-    .selected {
-      animation: swing-in-top-fwd 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)
-        both;
-      border-radius: 100px;
-      background-color: rgba(0, 0, 0, 0.2);
-      width: 50px;
-      height: 50px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      align-items: center;
-      margin-bottom: 8px;
-      user-select: none;
-      .selectedTopping {
-        width: 40px;
-      }
-      .delete {
-        display: none;
-      }
-      &:hover {
-        background-color: #b93030;
-        .selectedTopping {
-          display: none;
-        }
-        .delete {
-          display: block;
-          font-size: 13px;
-          color: white;
-          font-weight: bold;
-        }
-      }
-    }
-  }
-`;
-
 const SelectToppingStyle = styled.div`
   position: absolute;
   top: 0;
-  left: ${props => (props.open ? '0px' : '-356px')};
+  left: ${(props) => (props.open ? '0px' : '-356px')};
   width: 356px;
   height: 100vh;
   overflow: auto;
@@ -360,6 +293,26 @@ const SelectToppingStyle = styled.div`
   }
 `;
 
+const ResetSelectedTopping = styled.div`
+  cursor: pointer;
+  z-index: 10;
+  position: absolute;
+  background-color: rgba(0,0,0,0.5);
+  bottom: 20px;
+  transition: 0.2s;
+  left: ${(props) => (props.open ? '372px' : '16px')};
+  padding: 5px 24px;
+  border-radius: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  color: white;
+  &:hover{
+    background-color: rgba(0,0,0,0.4);
+  }
+`;
+
 const SelectToppingCloseBtnStyle = styled.div`
   z-index: 10;
   position: absolute;
@@ -368,7 +321,7 @@ const SelectToppingCloseBtnStyle = styled.div`
   background-color: rgba(0, 0, 0, 0.6);
   top: 50%;
   transition: 0.2s;
-  left: ${props => (props.open ? '356px' : '0px')};
+  left: ${(props) => (props.open ? '356px' : '0px')};
   transform: translateY(-50%);
   border-radius: 0 100px 100px 0;
   display: flex;
@@ -379,4 +332,11 @@ const SelectToppingCloseBtnStyle = styled.div`
     width: 8px;
     margin-left: -13px;
   }
+`;
+
+const ImgStyle = styled.div`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: ${(props) => props.zindex};
 `;

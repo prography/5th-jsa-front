@@ -16,14 +16,18 @@ export default function AboutUs() {
 
   return (
     <AboutUsStyle className="AboutUs">
-      <img
-        src={TEAM}
-        className="team swing-in-top-fwd"
-        onClick={() => setOpen(true)}
-      />
+      <div onClick={() => setOpen(true)}>
+        <img
+          src={TEAM}
+          alt="team"
+          className="team swing-in-top-fwd"
+        />
+      </div>
 
       <div className="item-dw member">
-        <img src={dw} className="dw p-img" onClick={() => setOpen(!open)} />
+        <div onClick={() => setOpen(!open)} className="p-img-wrapper">
+          <img src={dw} alt="dw" className="dw p-img" />
+        </div>
         <div className="name">동원</div>
         <TeamMember
           open={open}
@@ -33,30 +37,35 @@ export default function AboutUs() {
         />
       </div>
       <div className="item-dd member">
-        <img src={dd} className="dd p-img" onClick={() => setOpen(!open)} />
+        <div onClick={() => setOpen(!open)} className="p-img-wrapper">
+          <img src={dd} className="dd p-img" alt="dd" />
+        </div>
         <div className="name">도디</div>
         <TeamMember
           open={open}
-          position="web design"
           position="frontend"
           say="i love react"
           githubID="dodody"
         />
       </div>
       <div className="item-sa member">
-        <img src={sa} className="sa p-img" onClick={() => setOpen(!open)} />
+        <div onClick={() => setOpen(!open)} className="p-img-wrapper">
+          <img src={sa} className="sa p-img" alt="sa" />
+        </div>
         <div className="name">승아</div>
         <TeamMember
           open={open}
           position="teamjang"
           say="Te gusta pizza?
-          A mi, es mi favorito. 
+          A mi, es mi favorito.
           "
           githubID="hackertaco"
         />
       </div>
       <div className="item-ym member">
-        <img src={ym} className="ym p-img" onClick={() => setOpen(!open)} />
+        <div onClick={() => setOpen(!open)} className="p-img-wrapper">
+          <img src={ym} className="ym p-img" alt="ym" />
+        </div>
         <div className="name">용민</div>
         <TeamMember
           open={open}
@@ -67,7 +76,9 @@ export default function AboutUs() {
         />
       </div>
       <div className="item-kj member">
-        <img src={kj} className="kj p-img" onClick={() => setOpen(!open)} />
+        <div onClick={() => setOpen(!open)} className="p-img-wrapper">
+          <img src={kj} className="kj p-img" alt="kj" />
+        </div>
         <div className="name">경준</div>
         <TeamMember
           open={open}
@@ -77,7 +88,9 @@ export default function AboutUs() {
         />
       </div>
       <div className="item-jq member">
-        <img src={jq} className="jq p-img" onClick={() => setOpen(!open)} />
+        <div onClick={() => setOpen(!open)} className="p-img-wrapper">
+          <img src={jq} className="jq p-img" alt="jq" />
+        </div>
         <div className="name">재규</div>
         <TeamMember
           open={open}
@@ -87,7 +100,9 @@ export default function AboutUs() {
         />
       </div>
       <div className="item-sm member">
-        <img src={sm} className="sm p-img" onClick={() => setOpen(!open)} />
+        <div onClick={() => setOpen(!open)} className="p-img-wrapper">
+          <img src={sm} className="sm p-img" alt="sm" />
+        </div>
         <div className="name">승민</div>
         <TeamMember
           open={open}
@@ -100,14 +115,16 @@ export default function AboutUs() {
   );
 }
 
-function TeamMember({ open, position, say, githubID }) {
+function TeamMember({
+  open, position, say, githubID,
+}) {
   return (
     <TeamMemberBlock className="swing-in-top-fwd" open={open}>
       <div className="Item">
         <div className="position">{position}</div>
         <div className="say">{say}</div>
         <div className="github">
-          <img src={github} />
+          <img src={github} alt="github" />
 
           <Link to={`www.github.com/${githubID}`}>@{githubID}</Link>
         </div>
@@ -118,9 +135,7 @@ function TeamMember({ open, position, say, githubID }) {
 
 const AboutUsStyle = styled.div`
   display: flex;
-
   color: black;
-
   font-weight: 100;
   .member {
     position: relative;
@@ -129,7 +144,6 @@ const AboutUsStyle = styled.div`
     justify-content: center;
     display: flex;
     @media(max-width: 1440px){
-      
       width: 250px;
     }
   }
@@ -140,9 +154,15 @@ const AboutUsStyle = styled.div`
     right: 350px;
     
     @media(max-width: 1440px){
-      right: 300px
+      right: 300px;
       width: 350px;
     }
+  }
+  .p-img-wrapper{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: contents;
   }
   .p-img {
     position: absolute;
@@ -153,7 +173,6 @@ const AboutUsStyle = styled.div`
       opacity: 50%;
     }
     @media(max-width: 1440px){
-      
       width: 250px;
     }
   }
@@ -193,8 +212,9 @@ const AboutUsStyle = styled.div`
     left: 100px;
   }
 `;
+
 const TeamMemberBlock = styled.div`
-  display: ${props => (props.open ? 'none' : 'flex')};
+  display: ${(props) => (props.open ? 'none' : 'flex')};
   box-shadow: 10px 20px 40px 0 rgba(0, 0, 0, 0.4);
   background-color: rgba(255, 255, 255, 0.5);
   position: absolute;
