@@ -54,12 +54,14 @@ function Dough({ selectedTopping, draggedTopping, handleDrag }) {
         onDragOver={handleDragOver}
       >
         {selectedTopping.map((val, i) => (
-          <img
-            src={val.resultImage}
-            alt="largeToping"
-            key={i}
-            className="scale-up"
-          />
+          <ImgStyle zindex={val.z_index}>
+            <img
+              src={val.resultImage}
+              alt="largeToping"
+              key={i}
+              className="scale-up"
+            />
+          </ImgStyle>
         ))}
       </div>
       <img src={dough} alt="doughImg" className="img-dough" />
@@ -115,10 +117,10 @@ function SelectToppingMenu({
         {val.title}
         <i className="material-icons">arrow_drop_down</i>
       </div>
-      {open &&
-        smallToppings[val.name].map((topping, idx) => (
+      {open
+        && smallToppings[val.name].map((topping, idx) => (
           <div className="topping-item" key={idx}>
-            {selectedTopping.findIndex(el => el.name === topping.name) >= 0 && (
+            {selectedTopping.findIndex((el) => el.name === topping.name) >= 0 && (
               <div
                 className="topping-Wrapper"
                 onClick={() => handleDelete(topping)}
@@ -218,7 +220,7 @@ const DoughStyle = styled.div`
 const SelectToppingStyle = styled.div`
   position: absolute;
   top: 0;
-  left: ${props => (props.open ? '0px' : '-356px')};
+  left: ${(props) => (props.open ? '0px' : '-356px')};
   width: 356px;
   height: 100vh;
   overflow: auto;
@@ -319,7 +321,7 @@ const SelectToppingCloseBtnStyle = styled.div`
   background-color: rgba(0, 0, 0, 0.6);
   top: 50%;
   transition: 0.2s;
-  left: ${props => (props.open ? '356px' : '0px')};
+  left: ${(props) => (props.open ? '356px' : '0px')};
   transform: translateY(-50%);
   border-radius: 0 100px 100px 0;
   display: flex;
@@ -330,4 +332,11 @@ const SelectToppingCloseBtnStyle = styled.div`
     width: 8px;
     margin-left: -13px;
   }
+`;
+
+const ImgStyle = styled.div`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: ${(props) => props.zindex};
 `;
