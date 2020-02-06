@@ -9,7 +9,8 @@ import kj from 'img/aboutus/kj.png';
 import ym from 'img/aboutus/ym.png';
 import TEAM from 'img/aboutus/TEAM.png';
 import github from 'img/aboutus/github.png';
-import { Link } from 'react-router-dom';
+
+// ! 마우스 호버 하면 쫘라라락 뜨게 하자
 
 export default function AboutUs() {
   const [open, setOpen] = useState(true);
@@ -44,7 +45,7 @@ export default function AboutUs() {
         <TeamMember
           open={open}
           position="frontend"
-          say="i love react"
+          say="I ️️❤️ react"
           githubID="dodody"
         />
       </div>
@@ -108,7 +109,7 @@ export default function AboutUs() {
           open={open}
           position="designer"
           say="pizza is life"
-          githubID="coming soon"
+          githubID=""
         />
       </div>
     </AboutUsStyle>
@@ -124,9 +125,9 @@ function TeamMember({
         <div className="position">{position}</div>
         <div className="say">{say}</div>
         <div className="github">
-          <img src={github} alt="github" />
-
-          <Link to={`www.github.com/${githubID}`}>@{githubID}</Link>
+          <a href={`https://github.com/${githubID}`} target="_blank" rel="noopener noreferrer">
+            <img src={github} alt="github" />
+          </a>
         </div>
       </div>
     </TeamMemberBlock>
@@ -169,6 +170,7 @@ const AboutUsStyle = styled.div`
     width: 300px;
     cursor: pointer;
     border-radius: 50%;
+    transition: 0.1s;
     &:hover {
       opacity: 50%;
     }
@@ -183,6 +185,8 @@ const AboutUsStyle = styled.div`
     position: relative;
     left: 5px;
     font-weight: bold;
+    height: 30px;
+    margin-top: 7px;
   }
   .item-sm {
     top: 80px;
@@ -216,17 +220,17 @@ const AboutUsStyle = styled.div`
 const TeamMemberBlock = styled.div`
   display: ${(props) => (props.open ? 'none' : 'flex')};
   box-shadow: 10px 20px 40px 0 rgba(0, 0, 0, 0.4);
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 1);
   position: absolute;
   top: 250px;
-  width: 180px;
-  height: 180px;
-  border-radius: 42px;
+  width: 200px;
+  height: auto;
+  padding: 10px 0;
+  border-radius: 10px;
   justify-content: center;
   @media (max-width: 1440px) {
-    top: 150px;
-    width: 150px;
-    height: 150px;
+    top: 200px;
+    width: 170px;
   }
   .Item {
     display: flex;
@@ -237,29 +241,25 @@ const TeamMemberBlock = styled.div`
     text-align: center;
   }
   .position {
-    box-shadow: 10px 20px 40px 0 rgba(0, 0, 0, 0.4);
+    /* box-shadow: 10px 20px 40px 0 rgba(0, 0, 0, 0.4); */
     justify-content: center;
-    font-size: 15px;
-    font-weight: bold;
-    color: #fff;
-    width: 110px;
-    height: 40px;
-
+    font-size: 36px;
+    /* font-weight: bold; */
+    color: #333;
     border-radius: 28px;
-    background-color: rgba(111, 114, 120, 0.7);
-    margin-top: 10px;
-    margin-bottom: 20px;
+    /* background-color: rgba(25, 25, 25, 0.7); */
+    margin-bottom: 10px;
     display: flex;
     align-items: center;
-    @media (max-width: 1440px) {
+    padding: 3px 10px;
+    /* @media (max-width: 1440px) {
       font-size: 13px;
-    }
+    } */
   }
   .say {
     margin-bottom: 10px;
     font-size: 15px;
     font-weight: bold;
-    height: 45px;
     width: 160px;
     @media (max-width: 1440px) {
       font-size: 13px;
@@ -273,10 +273,15 @@ const TeamMemberBlock = styled.div`
     align-items: center;
     margin-bottom: 2px;
     font-weight: 300;
+    transition: 0.2s;
     img {
       width: 30px;
       height: 30px;
-      margin-bottom: 5px;
+      border-radius: 100px;
+      transition: 0.2s;
+      &:hover{
+        box-shadow: 0px 2px 10px 0 rgba(49, 49, 49, 0.65);
+      }
     }
     a {
       text-decoration: none;
