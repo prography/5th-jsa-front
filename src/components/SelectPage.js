@@ -16,10 +16,17 @@ const toppingGroup = [
 ];
 
 export default function SelectPage({
-  smallToppings, handleDrag, selectedTopping, handleSubmit, handleDelete, handleReset,
+  smallToppings,
+  handleDrag,
+  selectedTopping,
+  handleSubmit,
+  handleDelete,
+  handleReset,
 }) {
   const [draggedTopping, setDraggedTopping] = useState('');
-
+  // const BREAK_POINT_MOBILE = 480;
+  // const BREAK_POINT_TABLET = 840;
+  // const BREAK_POINT_PC = 1200;
   return (
     <SelectPageStyle className="SelectPage">
       <SelectTopping
@@ -70,7 +77,12 @@ function Dough({ selectedTopping, draggedTopping, handleDrag }) {
 }
 
 function SelectTopping({
-  smallToppings, setDraggedTopping, handleDrag, selectedTopping, handleDelete, handleReset,
+  smallToppings,
+  setDraggedTopping,
+  handleDrag,
+  selectedTopping,
+  handleDelete,
+  handleReset,
 }) {
   const [open, setOpen] = useState(true);
   return (
@@ -95,7 +107,12 @@ function SelectTopping({
       <SelectToppingCloseBtnStyle open={open} onClick={() => setOpen(!open)}>
         <img src={open ? expand : contract} alt="close" />
       </SelectToppingCloseBtnStyle>
-      <ResetSelectedTopping open={open} onClick={() => { handleReset(); }}>
+      <ResetSelectedTopping
+        open={open}
+        onClick={() => {
+          handleReset();
+        }}
+      >
         토핑 리셋 🔥
       </ResetSelectedTopping>
     </>
@@ -117,10 +134,10 @@ function SelectToppingMenu({
         {val.title}
         <i className="material-icons">arrow_drop_down</i>
       </div>
-      {open
-        && smallToppings[val.name].map((topping, idx) => (
+      {open &&
+        smallToppings[val.name].map((topping, idx) => (
           <div className="topping-item" key={idx}>
-            {selectedTopping.findIndex((el) => el.name === topping.name) >= 0 && (
+            {selectedTopping.findIndex(el => el.name === topping.name) >= 0 && (
               <div
                 className="topping-Wrapper"
                 onClick={() => handleDelete(topping)}
@@ -170,9 +187,15 @@ const SelectPageStyle = styled.div`
     display: flex;
     align-items: flex-end;
     user-select: none;
+    @media (max-width: 840px) {
+      right: 0;
+    }
     img {
       user-select: none;
       width: 110px;
+      @media (max-width: 840px) {
+        display: none;
+      }
     }
     .SubmitBtnText {
       cursor: pointer;
@@ -182,7 +205,12 @@ const SelectPageStyle = styled.div`
       color: white;
       padding: 5px 20px;
       margin-right: 10px;
-      margin-bottom: 8px;                                                    
+      margin-bottom: 8px;
+      @media (max-width: 840px) {
+        right: 0;
+        top: 40%;
+        left: 60%;
+      }
     }
   }
 `;
@@ -220,8 +248,18 @@ const DoughStyle = styled.div`
 const SelectToppingStyle = styled.div`
   position: absolute;
   top: 0;
-  left: ${(props) => (props.open ? '0px' : '-356px')};
-  width: 356px;
+  left: ${props => (props.open ? '0px' : '-356px')};
+
+  @media (max-width: 480px) {
+    width: 160px;
+  }
+  @media (min-width: 481px) {
+    width: 260px;
+  }
+  @media (min-width: 841px) {
+    width: 356px;
+  }
+
   height: 100vh;
   overflow: auto;
   transition: 0.2s;
@@ -297,10 +335,8 @@ const ResetSelectedTopping = styled.div`
   cursor: pointer;
   z-index: 10;
   position: absolute;
-  background-color: rgba(0,0,0,0.5);
-  bottom: 20px;
+  background-color: rgba(0, 0, 0, 0.5);
   transition: 0.2s;
-  left: ${(props) => (props.open ? '372px' : '16px')};
   padding: 5px 24px;
   border-radius: 100px;
   display: flex;
@@ -308,20 +344,36 @@ const ResetSelectedTopping = styled.div`
   justify-content: center;
   user-select: none;
   color: white;
-  &:hover{
-    background-color: rgba(0,0,0,0.4);
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+  @media (max-width: 480px) {
+    left: 70%;
+    width: 5rem;
+    height: 5rem;
+    bottom: 60%;
+    text-align: center;
+  }
+  @media (min-width: 481px) {
+    bottom: 60%;
+    right: 10px;
+    width: 132px;
+    text-align: center;
+  }
+  @media (min-width: 841px) {
+    left: ${props => (props.open ? '372px' : '16px')};
+    bottom: 28px;
   }
 `;
 
 const SelectToppingCloseBtnStyle = styled.div`
   z-index: 10;
   position: absolute;
-  width: 40px;
-  height: 80px;
+
   background-color: rgba(0, 0, 0, 0.6);
   top: 50%;
   transition: 0.2s;
-  left: ${(props) => (props.open ? '356px' : '0px')};
+
   transform: translateY(-50%);
   border-radius: 0 100px 100px 0;
   display: flex;
@@ -332,11 +384,26 @@ const SelectToppingCloseBtnStyle = styled.div`
     width: 8px;
     margin-left: -13px;
   }
+  @media (max-width: 480px) {
+    width: 25px;
+    height: 50px;
+    left: ${props => (props.open ? '160px' : '0px')};
+  }
+  @media (min-width: 481px) {
+    left: ${props => (props.open ? '260px' : '0px')};
+    width: 35px;
+    height: 75px;
+  }
+  @media (min-width: 841px) {
+    left: ${props => (props.open ? '356px' : '0px')};
+    width: 40px;
+    height: 80px;
+  }
 `;
 
 const ImgStyle = styled.div`
   width: 100%;
   height: 100%;
   position: absolute;
-  z-index: ${(props) => props.zindex};
+  z-index: ${props => props.zindex};
 `;
