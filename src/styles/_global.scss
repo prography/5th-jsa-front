@@ -2,6 +2,13 @@ html{
   font-family: 'Spoqa Han Sans', '나눔고딕', NanumGothic, '맑은 고딕', Malgun Gothic, '애플 SD 산돌고딕 Neo', Apple SD Gothic Neo, '돋움', Dotum, '굴림';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-size: 1rem;
+  @media (min-width: 480px) and (max-width: 839px) {
+    font-size: 0.875rem;
+  }
+  @media (max-width: 479px) {
+    font-size: 0.75rem;
+  } 
 }
 
 body {
