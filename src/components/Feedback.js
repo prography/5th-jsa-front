@@ -47,6 +47,9 @@ const FeedbackStyle = styled.div`
     border-radius: 4px;
     font-size: 0.875rem;
     box-shadow: 0 3px 6px 4px rgba(0,0,0,0.2);
+    @media (max-width: 479px) {
+      width: 80%;
+    }
   }
   .feedback-button{
     width: 300px;
