@@ -42,4 +42,8 @@ export default handleActions({
     ...state,
     initialResult: action.payload,
   }),
+  [UPDATE_SMALL_TOPPING]: (state, action) => ({
+    ...state,
+    smallToppings: action.payload,
+  }),
 }, initialState);
