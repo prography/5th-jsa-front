@@ -251,6 +251,7 @@ const SelectToppingStyle = styled.div`
   color: #fff;
   z-index: 10;
   padding-left: 16px;
+  width: 356px;
   @media (max-width: 479px) {
     width: 100%;
     height: 30%;
@@ -369,6 +370,9 @@ const SelectToppingCloseBtnStyle = styled.div`
   align-items: center;
   justify-content: center;
   user-select: none;
+  width: 40px;
+  height: 80px;
+  left: ${(props) => (props.open ? '356px' : '0px')};
   img {
     width: 8px;
     margin-left: -13px;
