@@ -30,24 +30,24 @@ export default function MyPage({
       <div className="mypage">
         <div className="mypage-user">
           <div className="user-img">
-            <img src={user.profileImage}></img>
+            <img src={user.profileImage} />
           </div>
           <div className="user-name">{user.name}님</div>
         </div>
         <div className="mypage-wrapper">
           <div className="mypage-title">
-            <div className="title-background"></div>
+            <div className="title-background" />
             <Link to="MyPage">
               <div className="title">MY PAGE</div>
             </Link>
           </div>
           <div className="mypage-content">
             <div className="mypage-like">
-              <img src={heartIcon} className="heart"></img>
+              <img src={heartIcon} className="heart" />
               <div className="like-title">좋아한 피자</div>
               <div className="like-content">
                 {likePizza.length !== 0 ? (
-                  likePizza.map(val => (
+                  likePizza.map((val) => (
                     <div className="like-content-1 swing-in-top-fwd">
                       <div key={val._id}>
                         {favorite ? (
@@ -98,7 +98,7 @@ export default function MyPage({
               </div>
             </div>
             <div className="mypage-recent">
-              <img src={recent} className="recent"></img>
+              <img src={recent} className="recent" />
               <div className="recent-title">최근 고른 토핑</div>
               <div className="recent-content">
                 {recentTopping.length !== 0 ? (
@@ -113,12 +113,12 @@ export default function MyPage({
                       <div className="recent-toppings">
                         {val.map((v, index) => (
                           <div className="recent-topping" key={index}>
-                            <img src={v.image}></img>
+                            <img src={v.image} />
                             <span className="topping-hover">{v.name}</span>
                           </div>
                         ))}
                       </div>
-                      <img src={go} className="go"></img>
+                      <img src={go} className="go" />
                     </div>
                   ))
                 ) : (
@@ -139,7 +139,7 @@ export default function MyPage({
                   getDetail();
                   setOpen(true);
                 }}
-              ></div>
+               />
               <button
                 className="back"
                 onClick={() => {
@@ -163,13 +163,13 @@ export default function MyPage({
         </div>
       </div>
 
-      {/* background pizzas*/}
+      {/* background pizzas */}
       <div className="pizzas">
-        <img src={pizza} className="pizza1"></img>
-        <img src={pizza} className="pizza2"></img>
-        <img src={pizza} className="pizza3"></img>
-        <img src={pizza} className="pizza4"></img>
-        <img src={pizza} className="pizza5"></img>
+        <img src={pizza} className="pizza1" />
+        <img src={pizza} className="pizza2" />
+        <img src={pizza} className="pizza3" />
+        <img src={pizza} className="pizza4" />
+        <img src={pizza} className="pizza5" />
       </div>
     </MyPageStyle>
   );
@@ -217,7 +217,7 @@ const MyPageStyle = styled.div`
     font-weight: 600;
   }
   .pizzas {
-    z-index: ${props => (props.open ? '0' : '-1')};
+    z-index: ${(props) => (props.open ? '0' : '-1')};
     display: flex;
     width: 100%;
     position: fixed;
@@ -246,7 +246,7 @@ const MyPageStyle = styled.div`
     position: relative;
   }
   .mypage-title {
-    z-index: ${props => (props.open ? '0' : '-1')};
+    z-index: ${(props) => (props.open ? '0' : '-1')};
     font-weight: 700;
     font-size: 54px;
     text-align: center;
@@ -273,7 +273,7 @@ const MyPageStyle = styled.div`
     top: 10px;
   }
   .mypage-content {
-    display: ${props => (props.open ? 'flex' : 'none')};
+    display: ${(props) => (props.open ? 'flex' : 'none')};
     // display: flex;
     top: 17%;
     position: absolute;
@@ -457,7 +457,7 @@ const MyPageStyle = styled.div`
   }
   span {
     width: 70px;
-    font-size: 14px;
+    font-size: 0.875rem;
     color: #fff;
     opacity: 0.8;
   }
