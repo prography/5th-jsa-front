@@ -44,7 +44,7 @@ export default function ResultsPageList({
           <Menu handleFilter={handleFilter} />
         </div>
       </header>
-      <div style={{ height: 'calc(100% - 114px)', overflow: 'auto' }}>
+      <div className="listWrapperBox">
         {resultList.length === 0
           ? <div className="emptyResultList">결과가 없습니다</div>
           : resultList.map((val, i) => (
@@ -152,13 +152,20 @@ const ResultsPageListStyle = styled.div`
   margin-right: 30px;
   width: 500px;
   height: 100%;
+  @media (max-width: 479px) {
+    width: 100%;
+    margin-right: 0;
+  }
   header{
     color: white;
     display: flex;
     justify-content: space-between;
-    font-size: 14px;
-    margin-bottom: 20px;
+    font-size: 0.875rem;
+    margin-bottom: 1.25rem;
     width: 484px;
+    @media (max-width: 479px) {
+      width: 100%;
+    }
     .sortingWrapper{
       span{
         transition: 0.2s;
@@ -174,9 +181,19 @@ const ResultsPageListStyle = styled.div`
       }
     }
   }
+  .listWrapperBox{
+    height: calc(100% - 114px);
+    overflow: auto;
+    @media (max-width: 479px) {
+      height: calc(100% - 86px);
+    }
+  }
   .listBg{
     width: 484px;
     margin-bottom: 16px;
+    @media (max-width: 479px) {
+      width: 100%;
+    }
   }
   .elementStyle{
     position: relative;
@@ -188,12 +205,20 @@ const ResultsPageListStyle = styled.div`
       height: calc(100% - 20px);
       padding: 16px;
       display: flex;
+      @media (max-width: 479px) {
+        width: 100%;
+        padding: 0.5rem;
+      }
       &-img-wrapper{
         position: relative;
         width: 180px;
         height: 160px;
         background-color: #f9f9f9;
         flex-shrink: 0;
+        @media (max-width: 479px) {
+          width: 136px;
+          height: 120px;
+        }
         .element-img{
           position: absolute;
           top: 0;
@@ -218,23 +243,32 @@ const ResultsPageListStyle = styled.div`
         }
       }
       &-content{
-        margin-left: 18px;
+        margin-left: 1.125rem;
         .title{
-          margin-bottom: 20px;
-          font-size: 18px;
+          margin-bottom: 1.25rem;
+          font-size: 1.125rem;
           width: 235px;
           text-overflow: ellipsis;
           overflow: hidden;
           white-space: nowrap;
+          @media (max-width: 479px) {
+            margin-top: 0.25rem;
+            margin-bottom: 0.5rem;
+            font-size: 18px;
+            width: 100%;
+          }
           span{
-            font-size: 10px;
+            font-size: 0.75rem;
           }
         }
         .explain{
           font-size: 13px;
           display: flex;
+          @media (max-width: 479px) {
+            font-size: 11px;
+          }
           div{
-            margin-bottom: 16px;
+            margin-bottom: 1rem;
           }
           span{
             font-weight: bold;
@@ -376,5 +410,9 @@ const SelectedToppingImgStyle = styled.div`
   margin-right: 5px;
   img{
     width: 80%;
+  }
+  @media (max-width: 479px) {
+    width: ${(props) => `${props.w * 0.8}px`};
+  height: ${(props) => `${props.w * 0.8}px`};
   }
 `;

@@ -14,7 +14,7 @@ export default function ResultPage({
       </a>
       <Link to="/selectTopping" className="ResultsPageHeaderStyle">
         <i className="material-icons">chevron_left</i>
-        다시 고르러 가기
+        <span className="hide-on-phone">다시 고르러 가기</span>
       </Link>
       <ResultsWrapperStyle>
         <ResultsPageList
@@ -46,4 +46,8 @@ const ResultsWrapperStyle = styled.div`
   height: 100%;
   margin: 0 auto;
   display: flex;
+  padding: 0 1rem;
+  @media (max-width: 479px) {
+    width: 100%;
+  }
 `;

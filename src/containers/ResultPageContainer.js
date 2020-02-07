@@ -62,8 +62,10 @@ export default function ResultPageContainer({ match }) {
 
   // 디테일 정보 로드 핸들러
   function getDetail(id) {
-    setDetail(); // detail 컴포넌트 리셋후 다시 보여준다.
-    loadDetail(id);
+    if (window.innerWidth > 479) {
+      setDetail(); // detail 컴포넌트 리셋후 다시 보여준다.
+      loadDetail(id);
+    }
   }
 
   // 필터기능 / sorting 기능
