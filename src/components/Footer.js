@@ -17,7 +17,7 @@ const FooterStyle = styled.div`
     position: absolute;
     bottom: 0;
     left: 0;
-    font-size: 12px;
+    font-size: 0.75rem;
     color: #ffffff66;
     margin: 0 0 10px 10px;
   }
