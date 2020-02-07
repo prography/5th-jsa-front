@@ -2,27 +2,27 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ResultPage, Loading } from 'components';
 import * as api from 'lib/api';
-import { update, updateInitial } from 'modules/topping';
+import {
+  update, updateInitial, updateSmallTopping, updateTopping,
+} from 'modules/topping';
 import { openLoginDialog } from 'modules/dialog';
 
 export default function ResultPageContainer({ match }) {
-  const [openDetail, setOpenDetail] = useState(false);
+  const [resultList, setResultList] = useState([]); // 왼쪽 리스트
+  const [openDetail, setOpenDetail] = useState(false); // 디테일 페이지 열기
   const [detail, setDetail] = useState();
-  const [resultList, setResultList] = useState([]);
   const [comment, setComment] = useState('');
   const [selectedTopping, setSelectedTopping] = useState([]);
-  const [smallToppings, setSmallToppings] = useState([]); // small topping
-
   const [pending, setPending] = useState(true); // pending
-  // const [smallToppings, setSmallToppings] = useState({
-  //   meat: [], sauce: [], cheese: [], seafood: [], vegetable: [], etc: [],
-  // }); // small topping
 
-  const { initialResult } = useSelector((state) => (state.topping));
+
+  const { initialResult, smallToppings, submitTopping } = useSelector((state) => (state.topping));
   // 디스패치
   const dispatch = useDispatch();
   const Update = useCallback((list) => dispatch((update(list))), [dispatch]);
+  const UpdateTopping = useCallback((list) => dispatch((updateTopping(list))), [dispatch]);
   const UpdateInitial = useCallback((list) => dispatch((updateInitial(list))), [dispatch]);
+  const UpdateSmallTopping = useCallback((list) => dispatch((updateSmallTopping(list))), [dispatch]);
   const OpenLoginDialog = useCallback((user) => dispatch((openLoginDialog(user))), [dispatch]);
   const { userInfo, isLogin } = useSelector((store) => store.user);
 
@@ -30,12 +30,13 @@ export default function ResultPageContainer({ match }) {
 
   function loadResult() {
     const data = { items: match.params.name };
-    api.postPizzaRecommendation(data, token)
+    const Token = !submitTopping.length ? undefined : token;
+    api.postPizzaRecommendation(data, Token)
       .then((res) => {
         setPending(false);
-        //  ! 데이터가 없으면 없다고 뜨게?
         UpdateInitial(res.data.pizzas);
         setResultList(res.data.pizzas);
+        UpdateTopping([]);
       });
   }
 
@@ -45,14 +46,16 @@ export default function ResultPageContainer({ match }) {
       .then((res) => setDetail(res.data));
   }
 
-  // 몇개가 매칭된 피자 입니다. 리스트랑 디테일에서 둘다 보여주기 (리덕스에서 불러와서 하기)
   useEffect(() => {
+    // 결과 데이터를 불러옵니다!
     loadResult();
-    // smallTopping 가져오는 로직! (리듀서로 공유하기 서로)
-    api.getPizzaToppings()
-      .then((res) => {
-        setSmallToppings(Object.values(res.data).flat());
-      });
+    // smallTopping 데이터 없을 경우 가져오는 로직!
+    if (!smallToppings.meat.length) {
+      api.getPizzaToppings()
+        .then((res) => {
+          UpdateSmallTopping(res.data);
+        });
+    }
     setSelectedTopping(match.params.name.split(','));
   }, []);
 
@@ -102,6 +105,7 @@ export default function ResultPageContainer({ match }) {
 
   // 좋아요기능
   function handleFavorite(val) {
+    console.log(val);
     if (isLogin) {
       api.getPizzaLike(val, token)
         .then(() => {
@@ -123,7 +127,10 @@ export default function ResultPageContainer({ match }) {
       const data = { pizza: val, comment };
       if (comment !== '') {
         api.postPizzaComments(data, token)
-          .then((res) => {
+        // 데이터 성공적으로 보내면, 데이터 리셋 해야된다.
+          .then(() => {
+            loadDetail(val);
+            loadResult();
             setComment('');
           })
           .catch((err) => console.log(err));
@@ -151,7 +158,7 @@ export default function ResultPageContainer({ match }) {
         userInfo={userInfo}
         handleKeyPress={handleKeyPress}
         comment={comment}
-        smallToppings={smallToppings}
+        smallToppings={Object.values(smallToppings).flat()}
         selectedTopping={selectedTopping}
       />
       {pending && <Loading />}
