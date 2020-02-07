@@ -160,7 +160,7 @@ const NavStyle = styled.div`
     .menus a, span, button {
       text-decoration: none;
       color: #fff;
-      margin-right: 0.625rem;
+      margin-right: 13px;
       font-size: 0.625rem;
       transition: 0.2s;
       &:hover {
