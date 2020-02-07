@@ -134,10 +134,10 @@ function SelectToppingMenu({
         {val.title}
         <i className="material-icons">arrow_drop_down</i>
       </div>
-      {open &&
-        smallToppings[val.name].map((topping, idx) => (
+      {open
+        && smallToppings[val.name].map((topping, idx) => (
           <div className="topping-item" key={idx}>
-            {selectedTopping.findIndex(el => el.name === topping.name) >= 0 && (
+            {selectedTopping.findIndex((el) => el.name === topping.name) >= 0 && (
               <div
                 className="topping-Wrapper"
                 onClick={() => handleDelete(topping)}
@@ -248,7 +248,7 @@ const DoughStyle = styled.div`
 const SelectToppingStyle = styled.div`
   position: absolute;
   top: 0;
-  left: ${props => (props.open ? '0px' : '-356px')};
+  left: ${(props) => (props.open ? '0px' : '-356px')};
 
   @media (max-width: 480px) {
     width: 160px;
@@ -361,7 +361,7 @@ const ResetSelectedTopping = styled.div`
     text-align: center;
   }
   @media (min-width: 841px) {
-    left: ${props => (props.open ? '372px' : '16px')};
+    left: ${(props) => (props.open ? '372px' : '16px')};
     bottom: 28px;
   }
 `;
@@ -387,15 +387,15 @@ const SelectToppingCloseBtnStyle = styled.div`
   @media (max-width: 480px) {
     width: 25px;
     height: 50px;
-    left: ${props => (props.open ? '160px' : '0px')};
+    left: ${(props) => (props.open ? '160px' : '0px')};
   }
   @media (min-width: 481px) {
-    left: ${props => (props.open ? '260px' : '0px')};
+    left: ${(props) => (props.open ? '260px' : '0px')};
     width: 35px;
     height: 75px;
   }
   @media (min-width: 841px) {
-    left: ${props => (props.open ? '356px' : '0px')};
+    left: ${(props) => (props.open ? '356px' : '0px')};
     width: 40px;
     height: 80px;
   }
@@ -405,5 +405,5 @@ const ImgStyle = styled.div`
   width: 100%;
   height: 100%;
   position: absolute;
-  z-index: ${props => props.zindex};
+  z-index: ${(props) => props.zindex};
 `;
