@@ -7,7 +7,7 @@ import recent from 'img/mypage/recent.png';
 import go from 'img/mypage/go.png';
 
 import { Link } from 'react-router-dom';
-import { ResultsPageDetail, MyPagePizzaDetail } from 'components';
+import { ResultsPageDetail } from 'components';
 
 export default function MyPage({
   user,
@@ -26,58 +26,41 @@ export default function MyPage({
   const [open, setOpen] = useState(true);
 
   return (
-    <>
-    <MyPageStyle>
-    {detail && (
-          <ResultsPageDetail
-            handleFavorite={handleFavorite}
-            detail={detail}
-            handleUpdate={handleUpdate}
-            handleSubmit={handleSubmit}
-            userInfo={userInfo}
-            handleKeyPress={handleKeyPress}
-            comment={comment}
-          />
-        )}
+    <MyPageStyle open={open}>
       <div className="mypage">
         <div className="mypage-user">
           <div className="user-img">
-            <img src={user.profileImage}></img>
+            <img src={user.profileImage} />
           </div>
           <div className="user-name">{user.name}님</div>
         </div>
         <div className="mypage-wrapper">
           <div className="mypage-title">
-            <div className="title-background"></div>
+            <div className="title-background" />
             <Link to="MyPage">
               <div className="title">MY PAGE</div>
             </Link>
           </div>
           <div className="mypage-content">
             <div className="mypage-like">
-              <img src={heartIcon} className="heart"></img>
+              <img src={heartIcon} className="heart" />
               <div className="like-title">좋아한 피자</div>
               <div className="like-content">
                 {likePizza.length !== 0 ? (
-                  likePizza.map(val => (
-                    <div
-                      className="like-content-1"
-                      onClick={() => {getDetail(val._id); setOpen(!open);}}
-                    >
+                  likePizza.map((val) => (
+                    <div className="like-content-1 swing-in-top-fwd">
                       <div key={val._id}>
                         {favorite ? (
                           <>
-                            {/* <span>좋아요취소</span> */}
                             <img
                               src={heartIcon}
                               alt="hearticon"
                               className="emptyHeart"
                               onClick={() => {
-                                {setFavorite(!favorite); handleFavorite(val._id);}
+                                {
+                                  handleFavorite(val._id);
+                                }
                               }}
-                              // onClick={() => {
-                              //   handleFavorite(val._id);
-                              // }}
                             />
                           </>
                         ) : (
@@ -85,9 +68,6 @@ export default function MyPage({
                             src={emptyHeartIcon}
                             alt="hearticon"
                             className="emptyHeart"
-                            onClick={() => {
-                              setFavorite(!favorite);
-                            }}
                             onClick={() => {
                               handleFavorite(val._id);
                             }}
@@ -98,6 +78,15 @@ export default function MyPage({
                         <div className="like-brand">{val.brand}</div>
                         <div className="like-pizza">{val.name}</div>
                       </div>
+                      <button
+                        className="like-detail"
+                        onClick={() => {
+                          getDetail(val._id);
+                          setOpen(!open);
+                        }}
+                      >
+                        자세히
+                      </button>
                     </div>
                   ))
                 ) : (
@@ -107,32 +96,29 @@ export default function MyPage({
                   </div>
                 )}
               </div>
-
-              {/* <div className="like-footer">
-                <Link to="/result/베이컨">> 자세히</Link>
-              </div> */}
-              
             </div>
             <div className="mypage-recent">
-              <img src={recent} className="recent"></img>
+              <img src={recent} className="recent" />
               <div className="recent-title">최근 고른 토핑</div>
               <div className="recent-content">
                 {recentTopping.length !== 0 ? (
                   recentTopping.map((val, index) => (
                     <div
-                      className="recent-content-1"
+                      className="recent-content-1 swing-in-top-fwd"
                       key={index}
-                      onClick={handleSubmit}
+                      onClick={() => {
+                        handleSubmit(val);
+                      }}
                     >
                       <div className="recent-toppings">
                         {val.map((v, index) => (
                           <div className="recent-topping" key={index}>
-                            <img src={v.image}></img>
-                            <span className="topping-hover">스테이크치즈</span>
+                            <img src={v.image} />
+                            <span className="topping-hover">{v.name}</span>
                           </div>
                         ))}
                       </div>
-                      <img src={go} className="go"></img>
+                      <img src={go} className="go" />
                     </div>
                   ))
                 ) : (
@@ -144,47 +130,59 @@ export default function MyPage({
               </div>
             </div>
           </div>
+
+          {detail && (
+            <>
+              <div
+                className="back-background"
+                onClick={() => {
+                  getDetail();
+                  setOpen(true);
+                }}
+               />
+              <button
+                className="back"
+                onClick={() => {
+                  getDetail();
+                  setOpen(true);
+                }}
+              >
+                돌아가기
+              </button>
+              <ResultsPageDetail
+                handleFavorite={handleFavorite}
+                detail={detail}
+                handleUpdate={handleUpdate}
+                handleSubmit={handleSubmit}
+                userInfo={userInfo}
+                handleKeyPress={handleKeyPress}
+                comment={comment}
+              />
+            </>
+          )}
         </div>
       </div>
 
-      {/* background pizzas*/}
+      {/* background pizzas */}
       <div className="pizzas">
-        <img src={pizza} className="pizza1"></img>
-        <img src={pizza} className="pizza2"></img>
-        <img src={pizza} className="pizza3"></img>
-        <img src={pizza} className="pizza4"></img>
-        <img src={pizza} className="pizza5"></img>
+        <img src={pizza} className="pizza1" />
+        <img src={pizza} className="pizza2" />
+        <img src={pizza} className="pizza3" />
+        <img src={pizza} className="pizza4" />
+        <img src={pizza} className="pizza5" />
       </div>
     </MyPageStyle>
-    <LikeDetail open={open}>
-    {detail && (
-          <ResultsPageDetail
-            handleFavorite={handleFavorite}
-            detail={detail}
-            handleUpdate={handleUpdate}
-            handleSubmit={handleSubmit}
-            userInfo={userInfo}
-            handleKeyPress={handleKeyPress}
-            comment={comment}
-          />
-        )}
-      </LikeDetail></>
   );
 }
 
 const MyPageStyle = styled.div`
-display: ${(props) => (props.open ? 'flex' : 'none')};
-
   background-color: #ededed;
   justify-content: center;
   width: 100%;
   height: 100vh;
   display: flex;
   overflow: hidden;
-  .like-result {
-    width: 800px;
-    height: 800px;
-  }
+
   .mypage-user {
     color: black;
     display: flex;
@@ -219,6 +217,7 @@ display: ${(props) => (props.open ? 'flex' : 'none')};
     font-weight: 600;
   }
   .pizzas {
+    z-index: ${(props) => (props.open ? '0' : '-1')};
     display: flex;
     width: 100%;
     position: fixed;
@@ -239,16 +238,15 @@ display: ${(props) => (props.open ? 'flex' : 'none')};
     justify-content: center;
   }
   .mypage-wrapper {
-    // display: ${props => (props.open ? 'flex' : 'none')};
-
     display: flex;
     width: 100%;
-    height: 500px;
+    height: 600px;
     justify-content: center;
     top: 8%;
     position: relative;
   }
   .mypage-title {
+    z-index: ${(props) => (props.open ? '0' : '-1')};
     font-weight: 700;
     font-size: 54px;
     text-align: center;
@@ -275,7 +273,8 @@ display: ${(props) => (props.open ? 'flex' : 'none')};
     top: 10px;
   }
   .mypage-content {
-    display: flex;
+    display: ${(props) => (props.open ? 'flex' : 'none')};
+    // display: flex;
     top: 17%;
     position: absolute;
     justify-content: space-between;
@@ -340,6 +339,46 @@ display: ${(props) => (props.open ? 'flex' : 'none')};
     img {
       cursor: pointer;
     }
+    .like-detail {
+      text-align: center;
+      position: absolute;
+      left: 215px;
+      width: 40px;
+      padding: 5px 5px;
+      font-size: 5px;
+      border-radius: 10px;
+      transition: 0.2s;
+      background-color: rgba(0, 0, 0, 0.3);
+      color: #fff;
+      &:hover {
+        background-color: rgba(255, 201, 13, 1);
+        box-shadow: 0 3px 6px 6px rgba(0, 0, 0, 0.2);
+      }
+    }
+  }
+  .back {
+    text-align: center;
+    position: absolute;
+    z-index: 1;
+    top: -20px;
+    left: 400px
+    width: 70px;
+    height: 70px
+    padding: 5px 5px;
+    border-radius: 50%;
+    transition: 0.2s;
+    background-color: rgba(255, 201, 13, 0.7);
+    box-shadow: 0 3px 18px 4px rgba(0, 0, 0, 0.2);
+    color: #fff;
+    &:hover {
+      background-color: rgba(255, 201, 13, 1);
+      box-shadow: 0 3px 6px 6px rgba(0, 0, 0, 0.2);
+    }
+  }
+  .back-background{
+    width: 1440px;
+    height: 800px;
+    position: absolute;
   }
   .recent-content-1 {
     &:hover {
@@ -364,11 +403,7 @@ display: ${(props) => (props.open ? 'flex' : 'none')};
     font-size: 20px;
     font-weight: 600;
   }
-  // .like-footer {
-  //   text-align: right;
-  //   position: relative;
-  //   top: 3px;
-  // }
+
   a {
     text-decoration: none;
   }
@@ -391,13 +426,14 @@ display: ${(props) => (props.open ? 'flex' : 'none')};
   }
   .recent-topping {
     width: 49px;
+    min-width: 49px;
     height: 49px;
     border-radius: 50%;
     justify-content: center;
     display: flex;
     flex-direction: row;
     margin-left: 10px;
-    background-color: #ededed;
+    background-color: rgba(237, 237, 237, 0.7);
     align-items: center;
     .topping-hover {
       display: none;
@@ -421,7 +457,7 @@ display: ${(props) => (props.open ? 'flex' : 'none')};
   }
   span {
     width: 70px;
-    font-size: 14px;
+    font-size: 0.875rem;
     color: #fff;
     opacity: 0.8;
   }
@@ -465,33 +501,4 @@ display: ${(props) => (props.open ? 'flex' : 'none')};
     float: left;
     display: absolute;
   }
-`;
-const LikeDetail = styled.div`
-  // position: fixed;
-  // width: 75%;
-  // right: 0%;
-  // bottom: 0;
-  // @media (max-width: 1100px) {
-  //   width: 90%;
-  // }
-  // @media (min-width: 1400px) {
-  //   width: 60%;
-  // }
-  // /* 도우 */
-  // .img-dough{
-  //   width: 100%;
-  // }
-  // /* 큰 토핑 style */
-  // .large_topping{
-  //   position: absolute;
-  //   border-radius: 100%;
-  //   width: 73%;
-  //   height: 69%;
-  //   margin-left: 5%;
-  //   margin-top: 1%;
-  //   img{
-  //     width: 100%;
-  //     position: absolute;
-  //   }
-  // }
 `;

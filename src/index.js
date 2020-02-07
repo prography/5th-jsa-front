@@ -1,4 +1,6 @@
 /* eslint-disable */
+import 'react-app-polyfill/ie11';
+import 'react-app-polyfill/stable';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import rootReducer from './modules';
@@ -8,18 +10,18 @@ import { Provider } from 'react-redux';
 import './styles/main.scss';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-  
+
 // 개발모드일때만 보이게 합니다.
 const isDev = process.env.NODE_ENV === 'development';
 const devtools = isDev && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
 const composeEnhancer = devtools || compose;
 const store = createStore(rootReducer, composeEnhancer());
 
-ReactDOM.render( 
+ReactDOM.render(
   <Provider store={store}>
     <App />
   </Provider>,
-  document.getElementById('root')
+  document.getElementById('root'),
 );
 
 // If you want your app to work offline and load faster, you can change

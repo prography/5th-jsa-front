@@ -5,7 +5,7 @@ export default function Footer() {
   return (
     <FooterStyle>
       <footer>
-        {/* Copyright (c) Prography Prography 5기 jsa 팀 도디 승아 동원 용민 */}
+        Copyright (c) Prography Prography 5기 jsa 팀 도디 승아 동원 용민
       </footer>
     </FooterStyle>
   );
@@ -17,7 +17,7 @@ const FooterStyle = styled.div`
     position: absolute;
     bottom: 0;
     left: 0;
-    font-size: 12px;
+    font-size: 0.75rem;
     color: #ffffff66;
     margin: 0 0 10px 10px;
   }

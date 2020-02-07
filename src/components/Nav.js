@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import KakaoLogin from 'react-kakao-login';
-
 import kakao from 'img/nav/kakao.png';
 import l from 'img/loading/l.png';
 import o from 'img/loading/o.png';
@@ -12,10 +11,8 @@ import n from 'img/loading/n.png';
 
 export default function Nav({
   isLogin, handleLogout, onSuccess, onFailure, OpenLoginDialog, CloseLoginDialog, loginDialogOpen,
-  // dialogOpen, setDialogOpen,
 }) {
   const [open, setOpen] = useState(true);
-
   return (
     <div>
       {loginDialogOpen
@@ -63,7 +60,6 @@ export default function Nav({
               {isLogin
                 ? <Link to="/MyPage">마이페이지</Link>
                 : <button type="button" onClick={OpenLoginDialog}>로그인</button>}
-              <Link to="/EventPage">이벤트</Link>
               <Link to="/AboutUs">팀원소개</Link>
               <Link to="/feedback">피드백</Link>
               {isLogin && <span onClick={handleLogout}>로그아웃</span> }
@@ -123,15 +119,18 @@ const NavStyle = styled.div`
   display: flex;
   flex-direction: row-reverse;
   position: absolute;
-  right: 30px;
-  top: 22px;
+  right: 1.875rem;
+  top: 1.375rem;
   align-content: center;
   align-items: center;
   border-radius: 23px 23px;
   z-index: 3;
+  @media (max-width: 479px) {
+    right: 1.375rem;
+  }
   .NavButton {
-    width: 41px;
-    height: 41px;
+    width: 2.5rem;
+    height: 2.5rem;
     user-select: none;
     background-color: ${(props) => (props.open ? 'rgba(0,0,0,0.2)' : 'rgba(0,0,0,0)')};
     border-radius: 50%;
@@ -139,8 +138,15 @@ const NavStyle = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    @media (max-width: 479px) {
+      width: 3rem;
+      height: 3rem;
+    }
     i{
       color: white;
+      @media (max-width: 479px) {
+        font-size: 20px;
+      }
     }
     &:hover {
       background-color: ${(props) => (props.open ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,0.1)')}
@@ -148,17 +154,21 @@ const NavStyle = styled.div`
   }
   .NavMenu {
     .menus{
-      margin: 0 10px 0 34px;
+      margin: 0 0.625rem 0 1.5rem;
       display: flex;
     }
     .menus a, span, button {
       text-decoration: none;
       color: #fff;
       margin-right: 13px;
-      font-size: 12px;
+      font-size: 0.625rem;
       transition: 0.2s;
       &:hover {
         font-weight: bold;
+      }
+      @media (max-width: 479px) {
+        font-size: 11px;
+        margin-right: 0.875rem;
       }
     }
   }
