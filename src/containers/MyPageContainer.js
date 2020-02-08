@@ -14,19 +14,19 @@ export default function MyPageContainer({ match, history }) {
   const [resultList, setResultList] = useState([]);
   const [result, setResult] = useState(undefined);
   const getToken = localStorage.getItem('userInfo');
-  const { initialResult } = useSelector(state => state.topping);
+  const { initialResult } = useSelector((state) => state.topping);
   // 디스패치
   const dispatch = useDispatch();
-  const Update = useCallback(list => dispatch(update(list)), [dispatch]);
-  const UpdateInitial = useCallback(list => dispatch(updateInitial(list)), [
+  const Update = useCallback((list) => dispatch(update(list)), [dispatch]);
+  const UpdateInitial = useCallback((list) => dispatch(updateInitial(list)), [
     dispatch,
   ]);
-  const { userInfo, isLogin } = useSelector(store => store.user);
+  const { userInfo, isLogin } = useSelector((store) => store.user);
 
   useEffect(() => {
     const fetchUserId = async () => {
       try {
-        api.getSigninCheck(getToken).then(res => {
+        api.getSigninCheck(getToken).then((res) => {
           console.log(res);
           setUserId(res.data.user.kakao);
         });
@@ -38,7 +38,7 @@ export default function MyPageContainer({ match, history }) {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        api.myPageMain(getToken).then(res => {
+        api.myPageMain(getToken).then((res) => {
           setUser(res.data);
           setLikePizza(res.data.likes);
           setRecentTopping(res.data.recent);
@@ -50,7 +50,7 @@ export default function MyPageContainer({ match, history }) {
   console.log(user);
 
   function loadResult() {
-    api.postPizzaRecommendation(match.params.name).then(res => {
+    api.postPizzaRecommendation(match.params.name).then((res) => {
       UpdateInitial(res.data.pizzas);
       setResultList(res.data.pizzas);
       setResult(res.data);
@@ -60,7 +60,7 @@ export default function MyPageContainer({ match, history }) {
 
   function loadDetail(id) {
     // setOpenDetail(true);
-    api.getPizzaDetail(id).then(res => {
+    api.getPizzaDetail(id).then((res) => {
       console.log(res.data);
       setDetail(res.data);
     });
@@ -71,21 +71,21 @@ export default function MyPageContainer({ match, history }) {
     loadDetail(id);
   }
 
-  const handleFavorite = _id => {
-    setLikePizza(likePizza.filter(like => like._id !== _id));
+  const handleFavorite = (_id) => {
+    setLikePizza(likePizza.filter((like) => like._id !== _id));
     api.getPizzaLike(_id, getToken).then(() => {
       loadResult();
     });
   };
 
-  const handleSubmit = val => {
+  const handleSubmit = (val) => {
     if (recentTopping.length) {
-      const submitTopping = [...new Set(val.map(v => v.name))];
+      const submitTopping = [...new Set(val.map((v) => v.name))];
       console.log(submitTopping);
 
       const postToppingResult = async () => {
         try {
-          api.postPizzaRecommendation(submitTopping.join()).then(res => {
+          api.postPizzaRecommendation(submitTopping.join()).then((res) => {
             const data = res.data.pizzas;
             Update({ result: data });
             UpdateInitial({ initialResult: data });

@@ -38,6 +38,9 @@ export default function Landing() {
             </div>
           </Link>
         </div>
+        <div className="typo-s2 bold mt-1 chrome">
+          이 사이트는 크롬 브라우저에 최적화 되어있습니다. 크롬 브라우저 이용을 권장드립니다.
+        </div>
       </div>
     </LandingStyle>
   );
@@ -81,5 +84,17 @@ const LandingStyle = styled.div`
         height: 9.375rem;
       }
     }
+  }
+  .chrome{
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background-color: white;
+    color: #be3827;
+    padding: 0.25rem 1rem;
+    box-shadow: 0 0px 3px 0px rgba(0,0,0,0.2);
+    @media (max-width: 839px) {
+    display: none;
+  }
   }
 `;

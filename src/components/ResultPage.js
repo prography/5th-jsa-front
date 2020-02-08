@@ -59,5 +59,11 @@ const ResultsWrapperStyle = styled.div`
     margin-top: 6rem;
     transform: rotate(-20deg);
     margin-left: 76px;
+    img{
+      width: 65%;
+    }
+    @media (max-width: 839px) {
+      display: none;
+    }
   }
 `;

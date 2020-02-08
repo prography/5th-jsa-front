@@ -27,150 +27,156 @@ export default function MyPage({
 
   return (
     <MyPageStyle open={open}>
-      <div className="mypage">
-        <div className="mypage-user">
-          <div className="user-img">
-            <img src={user.profileImage} />
-          </div>
-          <div className="user-name">{user.name}님</div>
-        </div>
-        <div className="mypage-wrapper">
-          <div className="mypage-title">
-            <div className="title-background" />
-            <Link to="MyPage">
-              <div className="title">MY PAGE</div>
-            </Link>
-          </div>
-          <div className="mypage-content">
-            <div className="mypage-like">
-              <img src={heartIcon} className="heart" />
-              <div className="like-title">좋아한 피자</div>
-              <div className="like-content">
-                {likePizza.length !== 0 ? (
-                  likePizza.map((val) => (
-                    <div className="like-content-1 swing-in-top-fwd">
-                      <div key={val._id}>
-                        {favorite ? (
-                          <>
-                            <img
-                              src={heartIcon}
-                              alt="hearticon"
-                              className="emptyHeart"
-                              onClick={() => {
-                                {
-                                  handleFavorite(val._id);
-                                }
-                              }}
-                            />
-                          </>
-                        ) : (
-                          <img
-                            src={emptyHeartIcon}
-                            alt="hearticon"
-                            className="emptyHeart"
-                            onClick={() => {
-                              handleFavorite(val._id);
-                            }}
-                          />
-                        )}
-                      </div>
-                      <div className="like-content-wrapper">
-                        <div className="like-brand">{val.brand}</div>
-                        <div className="like-pizza">{val.name}</div>
-                      </div>
-                      <button
-                        className="like-detail"
-                        onClick={() => {
-                          getDetail(val._id);
-                          setOpen(!open);
-                        }}
-                      >
-                        자세히
-                      </button>
-                    </div>
-                  ))
-                ) : (
-                  <div className="none">
-                    <div className="none-title">피자를 좋아해주세요</div>
-                    <Link to="selectTopping">고르러 가기</Link>
-                  </div>
-                )}
+      {window.innerWidth < 840
+        ? <NotiStyle>헤헤<br />마이페이지는<br />웹에서<br />확인하세요</NotiStyle>
+        : (
+          <>
+            <div className="mypage">
+              <div className="mypage-user">
+                <div className="user-img">
+                  <img src={user.profileImage} />
+                </div>
+                <div className="user-name">{user.name}님</div>
               </div>
-            </div>
-            <div className="mypage-recent">
-              <img src={recent} className="recent" />
-              <div className="recent-title">최근 고른 토핑</div>
-              <div className="recent-content">
-                {recentTopping.length !== 0 ? (
-                  recentTopping.map((val, index) => (
+              <div className="mypage-wrapper">
+                <div className="mypage-title">
+                  <div className="title-background" />
+                  <Link to="MyPage">
+                    <div className="title">MY PAGE</div>
+                  </Link>
+                </div>
+                <div className="mypage-content">
+                  <div className="mypage-like">
+                    <img src={heartIcon} className="heart" />
+                    <div className="like-title">좋아한 피자</div>
+                    <div className="like-content">
+                      {likePizza.length !== 0 ? (
+                        likePizza.map((val) => (
+                          <div className="like-content-1 swing-in-top-fwd">
+                            <div key={val._id}>
+                              {favorite ? (
+                                <>
+                                  <img
+                                    src={heartIcon}
+                                    alt="hearticon"
+                                    className="emptyHeart"
+                                    onClick={() => {
+                                      {
+                                        handleFavorite(val._id);
+                                      }
+                                    }}
+                                  />
+                                </>
+                              ) : (
+                                <img
+                                  src={emptyHeartIcon}
+                                  alt="hearticon"
+                                  className="emptyHeart"
+                                  onClick={() => {
+                                    handleFavorite(val._id);
+                                  }}
+                                />
+                              )}
+                            </div>
+                            <div className="like-content-wrapper">
+                              <div className="like-brand">{val.brand}</div>
+                              <div className="like-pizza">{val.name}</div>
+                            </div>
+                            <button
+                              className="like-detail"
+                              onClick={() => {
+                                getDetail(val._id);
+                                setOpen(!open);
+                              }}
+                            >
+                            자세히
+                            </button>
+                          </div>
+                        ))
+                      ) : (
+                        <div className="none">
+                          <div className="none-title">피자를 좋아해주세요</div>
+                          <Link to="selectTopping">고르러 가기</Link>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <div className="mypage-recent">
+                    <img src={recent} className="recent" />
+                    <div className="recent-title">최근 고른 토핑</div>
+                    <div className="recent-content">
+                      {recentTopping.length !== 0 ? (
+                        recentTopping.map((val, index) => (
+                          <div
+                            className="recent-content-1 swing-in-top-fwd"
+                            key={index}
+                            onClick={() => {
+                              handleSubmit(val);
+                            }}
+                          >
+                            <div className="recent-toppings">
+                              {val.map((v, index) => (
+                                <div className="recent-topping" key={index}>
+                                  <img src={v.image} />
+                                  <span className="topping-hover">{v.name}</span>
+                                </div>
+                              ))}
+                            </div>
+                            <img src={go} className="go" />
+                          </div>
+                        ))
+                      ) : (
+                        <div className="none">
+                          <div className="none-title">토핑을 고른 적이 없군요!</div>
+                          <Link to="selectTopping">고르러 가기</Link>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {detail && (
+                  <>
                     <div
-                      className="recent-content-1 swing-in-top-fwd"
-                      key={index}
+                      className="back-background"
                       onClick={() => {
-                        handleSubmit(val);
+                        getDetail();
+                        setOpen(true);
+                      }}
+                    />
+                    <button
+                      className="back"
+                      onClick={() => {
+                        getDetail();
+                        setOpen(true);
                       }}
                     >
-                      <div className="recent-toppings">
-                        {val.map((v, index) => (
-                          <div className="recent-topping" key={index}>
-                            <img src={v.image} />
-                            <span className="topping-hover">{v.name}</span>
-                          </div>
-                        ))}
-                      </div>
-                      <img src={go} className="go" />
-                    </div>
-                  ))
-                ) : (
-                  <div className="none">
-                    <div className="none-title">토핑을 고른 적이 없군요!</div>
-                    <Link to="selectTopping">고르러 가기</Link>
-                  </div>
+                    돌아가기
+                    </button>
+                    <ResultsPageDetail
+                      handleFavorite={handleFavorite}
+                      detail={detail}
+                      handleUpdate={handleUpdate}
+                      handleSubmit={handleSubmit}
+                      userInfo={userInfo}
+                      handleKeyPress={handleKeyPress}
+                      comment={comment}
+                    />
+                  </>
                 )}
               </div>
             </div>
-          </div>
 
-          {detail && (
-            <>
-              <div
-                className="back-background"
-                onClick={() => {
-                  getDetail();
-                  setOpen(true);
-                }}
-               />
-              <button
-                className="back"
-                onClick={() => {
-                  getDetail();
-                  setOpen(true);
-                }}
-              >
-                돌아가기
-              </button>
-              <ResultsPageDetail
-                handleFavorite={handleFavorite}
-                detail={detail}
-                handleUpdate={handleUpdate}
-                handleSubmit={handleSubmit}
-                userInfo={userInfo}
-                handleKeyPress={handleKeyPress}
-                comment={comment}
-              />
-            </>
-          )}
-        </div>
-      </div>
-
-      {/* background pizzas */}
-      <div className="pizzas">
-        <img src={pizza} className="pizza1" />
-        <img src={pizza} className="pizza2" />
-        <img src={pizza} className="pizza3" />
-        <img src={pizza} className="pizza4" />
-        <img src={pizza} className="pizza5" />
-      </div>
+            {/* background pizzas */}
+            <div className="pizzas">
+              <img src={pizza} className="pizza1" />
+              <img src={pizza} className="pizza2" />
+              <img src={pizza} className="pizza3" />
+              <img src={pizza} className="pizza4" />
+              <img src={pizza} className="pizza5" />
+            </div>
+          </>
+        )}
     </MyPageStyle>
   );
 }
@@ -361,9 +367,9 @@ const MyPageStyle = styled.div`
     position: absolute;
     z-index: 1;
     top: -20px;
-    left: 400px
+    left: 400px;
     width: 70px;
-    height: 70px
+    height: 70px;
     padding: 5px 5px;
     border-radius: 50%;
     transition: 0.2s;
@@ -489,7 +495,7 @@ const MyPageStyle = styled.div`
     background-color: rgba(255, 201, 13, 0.7);
     box-shadow: 0 3px 6px 4px rgba(0, 0, 0, 0.2);
     font-weight: bold;
-    color: #fff
+    color: #fff;
     &:hover {
       background-color: rgba(255, 201, 13, 1);
       box-shadow: 0 3px 6px 6px rgba(0, 0, 0, 0.2);
@@ -501,4 +507,19 @@ const MyPageStyle = styled.div`
     float: left;
     display: absolute;
   }
+`;
+
+const NotiStyle = styled.div`
+  font-weight: 100;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0,0,0,0.7);
+  color: white;
+  font-size: 50px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  padding-right: 10px;
+  padding-bottom: 10px;
+  text-align: right;
 `;

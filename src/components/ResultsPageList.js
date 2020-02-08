@@ -13,7 +13,7 @@ import domino from 'img/detail/domino.png';
 import mrpizza from 'img/detail/mrpizza.png';
 
 const logo = [
-  { name: 'ALL', value: null },
+  { name: 'X', value: null },
   { name: '피자헛', value: pizzahut },
   { name: '피자알볼로', value: avolo },
   { name: '피자스쿨', value: pizzaschool },
@@ -95,7 +95,7 @@ function Menu({ handleFilter }) {
   const [openSorting, setOpenSorting] = useState(false);
   return (
     <>
-      <span
+      {/* <span
         onClick={() => { setOpenFilter(true); setOpenSorting(false); }}
         style={{ borderRight: '1px solid white' }}
         className="mr-1 pr-1"
@@ -104,7 +104,7 @@ function Menu({ handleFilter }) {
       <span
         onClick={() => { setOpenFilter(false); setOpenSorting(true); }}
       >정렬
-      </span>
+      </span> */}
       {(openSorting || openFilter)
         && <MenuBack onClick={() => { setOpenFilter(false); setOpenSorting(false); }} />}
       <MenuStyle>
@@ -112,7 +112,7 @@ function Menu({ handleFilter }) {
           <div className="wrapper wrapper-filter scale-up-tr pointer">
             {logo.map((val, i) => (
               <div onClick={() => { handleFilter('filter', val.name); setOpenFilter(false); }} className="imgWrapper" key={i}>
-                {val.value ? <img src={val.value} alt={val.name} /> : <div>all</div>}
+                {val.value ? <img src={val.value} alt={val.name} /> : <div>All</div>}
               </div>
             ))}
           </div>
@@ -346,7 +346,7 @@ const MenuStyle = styled.div`
         margin-right: 5px;
         transition: 0.2s;
         color: #555;
-        font-weight: bold;
+        /* font-weight: bold; */
         font-size: 15px;
         &:last-child{
           margin-right: 0;

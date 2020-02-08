@@ -352,7 +352,7 @@ const ResetSelectedTopping = styled.div`
   z-index: 10;
   position: absolute;
   top: 50px;
-  right: 265px;
+  right: 300px;
   font-weight: bold;
   transition: 0.2s;
   width: 10rem;
@@ -369,7 +369,7 @@ const ResetSelectedTopping = styled.div`
     background-color: rgba(0, 0, 0, 0.4);
   }
   @media (max-width: 479px) {
-    right: 235px;
+    left: 10px;
   }
 `;
 
