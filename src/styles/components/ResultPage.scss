@@ -7,7 +7,7 @@
   // background-image url로 불러오는건, styled-component로 안되서 scss파일 만드어서 여기서 넣엇다
   background-image: url("../../img/detail/bg-nologo.png");
   overflow: hidden;
-  padding-top: 100px;
+  padding-top: 6.25rem;
   .prographyLogo{
     position: absolute;
     bottom: 20px;
@@ -17,18 +17,28 @@
   a{
     &.ResultsPageHeaderStyle{
       background-color: rgba(0,0,0,0.3);
-      font-size: 14px;
+      font-size: 0.875rem;
       font-weight: bold;
-      padding: 9px 32px 9px 21px;
+      padding: 0.5rem 2rem 0.5rem 1.5rem;
       position: absolute;
-      top: 22px;
-      left: 31px;
+      top: 1.375rem;
+      left: 1.875rem;
       border-radius: 100px;
       transition: 0.2s;
       color: white !important;
       text-decoration: none !important;
       display: flex;
       align-items: center;
+      @media (max-width: 479px) {
+        padding: 0;
+        width: 36px;
+        height: 36px;
+        justify-content: center;
+        left: 1.375rem;
+        i{
+          margin-right: 0 !important;
+        }
+      }
       &:hover{
         background-color: rgba(0,0,0,0.4);
       }

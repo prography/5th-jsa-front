@@ -16,7 +16,7 @@ const loadingImg = [l, o, a, d, i, n, g, comma, comma, comma];
 export default function Loading() {
   return (
     <LoadingStyle>
-      <img src={pizza} alt="pizza" width={180} className="pizza" />
+      <img src={pizza} alt="pizza" className="pizza" />
       <div className="mt-2">
         {loadingImg.map((val, index) => (
           <IMG src={val} alt="loading" key={index} className={val === comma ? 'comma' : 'loading'} index={index} />
@@ -41,12 +41,13 @@ const LoadingStyle = styled.div`
   .pizza{
     box-shadow: 10px 20px 40px 0 rgba(0,0,0,0.2);
     border-radius: 91px;
+    width: 11.25rem;
   }
   .loading{
-    width: 30px;
+    width: 1.875rem;
   }
   .comma{
-    width: 12px;
+    width: 0.75rem;
   }
 `;
 

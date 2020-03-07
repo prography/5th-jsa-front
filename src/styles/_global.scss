@@ -2,6 +2,13 @@ html{
   font-family: 'Spoqa Han Sans', '나눔고딕', NanumGothic, '맑은 고딕', Malgun Gothic, '애플 SD 산돌고딕 Neo', Apple SD Gothic Neo, '돋움', Dotum, '굴림';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-size: 1rem;
+  @media (min-width: 480px) and (max-width: 839px) {
+    font-size: 0.875rem;
+  }
+  @media (max-width: 479px) {
+    font-size: 0.75rem;
+  } 
 }
 
 body {
@@ -16,6 +23,16 @@ code {
 
 div{
   box-sizing: border-box;
+}
+
+button{
+  background-color: inherit;
+  border: none;
+  padding: 0;
+  font-size: 16px;
+  font-family: 'Spoqa Han Sans', '나눔고딕', NanumGothic, '맑은 고딕', Malgun Gothic, '애플 SD 산돌고딕 Neo', Apple SD Gothic Neo, '돋움', Dotum, '굴림';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 // padding & margin
@@ -94,7 +111,27 @@ $list-size: 0 1 2 3 4 5;
 .typo-b3{
   font-size: 24px;
 }
+.center{
+  text-align: center;
+}
 
+.hide-on-desktop{
+  @media (min-width: 840px) {
+    display: none;
+  }
+}
+
+.hide-on-tablet{
+  @media (min-width: 480px) and (max-width: 839px){
+    display: none;
+  }
+}
+
+.hide-on-phone{
+  @media (max-width: 479px){
+    display: none;
+  }
+}
 
 
 // scroll css
