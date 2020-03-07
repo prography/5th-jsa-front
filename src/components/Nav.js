@@ -161,7 +161,7 @@ const NavStyle = styled.div`
       text-decoration: none;
       color: #fff;
       margin-right: 13px;
-      font-size: 0.625rem;
+      font-size: 0.75rem;
       transition: 0.2s;
       &:hover {
         font-weight: bold;

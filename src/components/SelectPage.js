@@ -102,13 +102,12 @@ function SelectToppingMenu({
       {open
         && smallToppings[val.name].map((topping, idx) => (
           <div className="topping-item" key={idx}>
+            {/* 이거 하려면! 컴포넌트 하나 따로 만들어서 거기서 컨트롤 하는게 나을 듯 */}
             {selectedTopping.findIndex((el) => el.name === topping.name) >= 0 && (
-              <div
-                className="topping-Wrapper"
-                onClick={() => handleDelete(topping)}
-              >
-                픽!!
-              </div>
+              <SelectedToppingWrapper
+                handleDelete={handleDelete}
+                topping={topping}
+              />
             )}
             <div
               className={`circle ${topping.name}`}
@@ -122,6 +121,22 @@ function SelectToppingMenu({
           </div>
         ))}
     </>
+  );
+}
+
+function SelectedToppingWrapper({ handleDelete, topping }) {
+  const [isHover, setIsHover] = useState(false);
+  return (
+    <div
+      className="topping-Wrapper"
+      onClick={() => handleDelete(topping)}
+      onMouseOver={() => setIsHover(true)}
+      onFocus={() => setIsHover(true)}
+      onMouseLeave={() => setIsHover(false)}
+      onBlur={() => setIsHover(false)}
+    >
+      {isHover ? '삭제!' : '픽!!'}
+    </div>
   );
 }
 
@@ -337,7 +352,7 @@ const ResetSelectedTopping = styled.div`
   z-index: 10;
   position: absolute;
   top: 50px;
-  right: 265px;
+  right: 300px;
   font-weight: bold;
   transition: 0.2s;
   width: 10rem;
@@ -354,7 +369,7 @@ const ResetSelectedTopping = styled.div`
     background-color: rgba(0, 0, 0, 0.4);
   }
   @media (max-width: 479px) {
-    right: 235px;
+    left: 10px;
   }
 `;
 
