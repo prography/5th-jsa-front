@@ -7,7 +7,7 @@
     "cross-env": "^6.0.3",
     "eslint": "^6.6.0",
     "eslint-config-airbnb": "^18.0.1",
-    "immer": "^5.0.0",
+    "immer": "^9.0.6",
     "immutable": "^4.0.0-rc.12",
     "moment": "^2.24.0",
     "node-sass": "^4.13.0",
