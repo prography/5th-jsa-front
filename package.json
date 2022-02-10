@@ -10,7 +10,7 @@
     "immer": "^5.0.0",
     "immutable": "^4.0.0-rc.12",
     "moment": "^2.24.0",
-    "node-sass": "^4.13.0",
+    "node-sass": "^7.0.0",
     "react": "^16.11.0",
     "react-app-polyfill": "^1.0.6",
     "react-dnd": "^9.4.0",
