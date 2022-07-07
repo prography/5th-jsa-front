@@ -9,7 +9,7 @@
     "eslint-config-airbnb": "^18.0.1",
     "immer": "^5.0.0",
     "immutable": "^4.0.0-rc.12",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "node-sass": "^4.13.0",
     "react": "^16.11.0",
     "react-app-polyfill": "^1.0.6",
